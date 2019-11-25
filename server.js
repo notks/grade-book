@@ -1,4 +1,3 @@
-
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
@@ -32,6 +31,11 @@ app.use(methodOverride('_method'))
 
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('index.ejs', { name: req.user.name })
+
+})
+app.get('/home', checkAuthenticated, (req, res) => {
+  res.render('index.ejs', { name: req.user.name })
+
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
@@ -39,20 +43,26 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/home',
   failureRedirect: '/login',
   failureFlash: true
+
 })
 )
 
-app.get('/register', checkNotAuthenticated, (req, res) => {
-  res.render('register.ejs')
+app.get('/register', checkAuthenticated, (req, res) => {
+  if(req.user.role==="admin"){
+  res.render('register.ejs')}
+  else
+  {res.redirect('/home')}
+
 })
 
-app.post('/register', checkNotAuthenticated, async (req, res) => {
+app.post('/register', checkAuthenticated, async (req, res) => {
+  if(req.user.role==="admin"){
   var regErrors=[]
   var isValidInfo
-  const {name,surname, razred, email, class2}=req.body;
+  const {name,surname, razred, email, class2,role}=req.body;
   
  MongoClient.connect(url,function(err,db){
 var dbo=db.db('mainDB')
@@ -92,7 +102,8 @@ name:name,
 email:email,
 password:hasshedPassword,
 razred:razred,
-class2:class2
+class2:class2,
+role:role
 
     }
     dbo.collection('users').insertOne(userToInsert,function(err,response){
@@ -100,6 +111,7 @@ class2:class2
       res.redirect('/login')
       
       })
+      console.log(userToInsert)
     }
 
 })
@@ -110,7 +122,11 @@ class2:class2
  })
   
 
-
+  }
+  else
+  {
+    res.redirect('/home')
+  }
   
 })
 
@@ -131,10 +147,10 @@ function checkAuthenticated(req, res, next) {
 
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect('/')
+    return res.redirect('/home')
   }
   next()
 }
 
 
-app.listen(300)
+app.listen(3000)
