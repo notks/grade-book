@@ -17,6 +17,7 @@ initializePassport(
 
 const users = []
 var hashedPassword 
+
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
@@ -25,32 +26,78 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+
+//passport
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
+
+//root
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('index.ejs', { name: req.user.name })
 
 })
-app.get('/home', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.name })
+
+
+
+
+//home
+app.get('/home',checkAuthenticated,(req,res)=>{
+
+
+
+  
+})
+
+
+
+
+//ocjene
+app.get('/ocjene', checkAuthenticated, (req, res) => {
+  console.log(req.user)
+  MongoClient.connect(url,(err,db)=>{
+    if (err) throw err
+    var dbo=db.db('mainDB')
+    var col=dbo.collection('ocjene').findOne({ime:req.user.name},(err,ocjene)=>{
+      if (err) throw err
+console.log(ocjene)
+
+
+
+
+    })
+  })
+  
+  
+  
+  
+  
+  
+  res.render('index.ejs',{name:"ocjene"})
 
 })
 
+
+
+//login
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs')
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/home',
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 
 })
 )
 
-app.get('/register', checkAuthenticated, (req, res) => {
+
+
+
+//register
+app.get('/register', (req, res) => {
   if(req.user.role==="admin"){
   res.render('register.ejs')}
   else
@@ -58,7 +105,7 @@ app.get('/register', checkAuthenticated, (req, res) => {
 
 })
 
-app.post('/register', checkAuthenticated, async (req, res) => {
+app.post('/register', async (req, res) => {
   if(req.user.role==="admin"){
   var regErrors=[]
   var isValidInfo
@@ -116,26 +163,28 @@ role:role
 
 })
 
-
-
-
  })
   
-
   }
   else
   {
     res.redirect('/home')
   }
-  
+
 })
 
+
+
+//logout
 app.delete('/logout', (req, res) => {
  
   req.logOut()
   res.redirect('/login')
 })
 
+
+
+//checking if user is authenticated
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next()
@@ -145,6 +194,9 @@ function checkAuthenticated(req, res, next) {
   res.redirect('/login')
 }
 
+
+
+//checking if user is not authenticated
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect('/home')
@@ -153,4 +205,6 @@ function checkNotAuthenticated(req, res, next) {
 }
 
 
+
+//port
 app.listen(3000)
