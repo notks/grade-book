@@ -37,6 +37,7 @@ app.use(methodOverride('_method'))
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('index.ejs', { name: req.user.name })
 
+
 })
 
 
@@ -61,7 +62,7 @@ app.get('/ocjene', checkAuthenticated, (req, res) => {
     var dbo=db.db('mainDB')
     var col=dbo.collection('ocjene').findOne({ime:req.user.name},(err,ocjene)=>{
       if (err) throw err
-console.log(ocjene)
+      res.render('ocjene.ejs',{ocjene})
 
 
 
@@ -73,8 +74,7 @@ console.log(ocjene)
   
   
   
-  
-  res.render('index.ejs',{name:"ocjene"})
+
 
 })
 
