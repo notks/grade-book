@@ -34,8 +34,12 @@ app.use(methodOverride('_method'))
 
 
 //root
-app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.name })
+app.get('/', (req, res) => {
+ 
+  if(req.query.login==='LogIn')
+  res.redirect('/login')
+  else
+  res.render('home.ejs')
 
 
 })
@@ -45,7 +49,8 @@ app.get('/', checkAuthenticated, (req, res) => {
 
 //home
 app.get('/home',checkAuthenticated,(req,res)=>{
-
+res.render('index.ejs',{
+  name:req.user.name})
 
 
   
@@ -77,7 +82,11 @@ app.get('/ocjene', checkAuthenticated, (req, res) => {
 
 
 })
+ app.post('/dodajocjenu',(req,res)=>{
 
+console.log(req.body)
+
+ })
 
 
 //login
@@ -86,7 +95,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/home',
   failureRedirect: '/login',
   failureFlash: true
 
@@ -98,15 +107,16 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 
 //register
 app.get('/register', (req, res) => {
-  if(req.user.role==="admin"){
-  res.render('register.ejs')}
-  else
-  {res.redirect('/home')}
+ // if(req.user.role==="admin"){
+  res.render('register.ejs')//}
+  //else
+  //{
+   // res.redirect('/home')//}
 
 })
 
 app.post('/register', async (req, res) => {
-  if(req.user.role==="admin"){
+ // if(req.user.role==="admin"){
   var regErrors=[]
   var isValidInfo
   const {name,surname, razred, email, class2,role}=req.body;
@@ -165,11 +175,11 @@ role:role
 
  })
   
-  }
-  else
-  {
+ // }
+ // else
+ // {
     res.redirect('/home')
-  }
+  //}
 
 })
 
