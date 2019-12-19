@@ -14,6 +14,7 @@ initializePassport(
   email => users.find(user => user.email === email),
   id => users.find(user => user.id === id)
 )
+const userroute=require('./routes/users')
 
 const users = []
 var hashedPassword 
@@ -26,6 +27,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+app.use('/users',checkAuthenticated,userroute)
 
 //passport
 app.use(passport.initialize())
