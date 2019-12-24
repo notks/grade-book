@@ -2,10 +2,10 @@ const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
 const passport = require('passport')
+const Ocjena=require('./dataTypes/ocjene')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
-//const mongodb=require('mongodb')
 const initializePassport = require('./passport-config')
 const url="mongodb://localhost:27017/"
 const MongoClient=require('mongodb').MongoClient
@@ -62,6 +62,7 @@ res.render('index.ejs',{
 
 
 //ocjene
+/*
 app.get('/ocjene', checkAuthenticated, (req, res) => {
   console.log(req.user)
   MongoClient.connect(url,(err,db)=>{
@@ -76,17 +77,40 @@ app.get('/ocjene', checkAuthenticated, (req, res) => {
 
     })
   })
-  
-  
+  })
+  */
+  app.get('/ocjene',checkAuthenticated,(req,res)=>{
+if(req.user.role==='admin'||req.user.role==='profesor'){
+res.render('ocjeneprofview.ejs')
+}else{
+  res.render('ocjene.ejs')
+}
+
+  })
   
   
   
 
-
+app.get('/dodajocjenu',checkAuthenticated,(req,res)=>{
+if(req.user.role==='profesor'||req.user.role==='admin'){
+res.render('dodajocjenu.ejs')
+}else{
+  res.render('noauth.ejs')
+}
 })
- app.post('/dodajocjenu',(req,res)=>{
 
-console.log(req.body)
+ app.post('/dodajocjenu',checkAuthenticated,(req,res)=>{
+  if(req.user.role==='profesor'||req.user.role==='admin'){
+    let date_ob = new Date();
+    let date = (  date_ob.getDate()+date_ob.getDay()+date_ob.getMonth()+date_ob.getFullYear());
+    let ocjena=new Ocjena(req.body.ocjena,{opis:req.body.opis,date:date,profesor:(req.user.name+" "+req.user.surname)})
+    console.log(ocjena)
+    console.log(date)
+    res.send('ok')
+    }else{
+      res.render('noauth.ejs')
+    }
+
 
  })
 
@@ -158,6 +182,7 @@ email,razred,class2
     
     var userToInsert={
 name:name,
+surname:surname,
 email:email,
 password:hasshedPassword,
 razred:razred,
@@ -167,6 +192,7 @@ role:role
     }
     dbo.collection('users').insertOne(userToInsert,function(err,response){
       if(err) throw err
+      console.log(response)
       res.redirect('/login')
       
       })
