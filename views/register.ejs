@@ -1,7 +1,30 @@
+<head>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("select.user").change(function(){
+            var selectedUser= $(this).children("option:selected").val();
+            if(selectedUser==="ucenik"){
+
+            }
+        });
+    });
+    </script>
+</head>
+<body>
+
 <h1>Register</h1>
 
 <% include errors %>
 <form action="/register" method="POST">
+  <div>
+<select class="user" name="user">
+<option>ucenik</option>
+<option>profesor</option>
+<option>admin</option>
+</select>
+
+  </div>
   <div>
     <label for="ime">Name</label>
     <input type="name" id="ime" name="name" required  value="<%= typeof name != 'undefined' ? name : '' %>">
@@ -81,3 +104,4 @@
   <button type="submit">Register</button>
 </form>
 <a href="/login">Login</a>
+</body>

@@ -6,7 +6,7 @@
     "devStart": "nodemon server.js",
     "start": "nodemon server.js"
   },
-  "author": "",
+  "author": "KS",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
