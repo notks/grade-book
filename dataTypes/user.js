@@ -13,7 +13,7 @@ class Ucenik{
 
 }
 class Profesor{
-    constructor(ime,prezime,email,password,predmet,brojTelefona,adresa,role,{razrednoOdjeljenje}={}){
+    constructor(ime,prezime,email,password,predmet,brojTelefona,adresa,role,odjeljenjeKojimaPredaje,{razrednoOdjeljenje}={}){
         this.ime=ime,
         this.prezime=prezime,
         this.email=email,
@@ -23,6 +23,7 @@ class Profesor{
         this.predmet=predmet,
         this.razrednoOdjeljenje=razrednoOdjeljenje,
         this.role=role
+        this.odjeljenjeKojimaPredaje=odjeljenjeKojimaPredaje
         }
 
 }

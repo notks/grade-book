@@ -1,0 +1,28 @@
+<html>
+<head>
+
+</head>
+<body>
+    <form action="/predmeti" >
+
+        <input type="submit" name="action" value="dodaj">
+        
+    </form>
+    <form action="/predmeti">
+     
+        <input type="submit"  name="action" value="obrisi" >
+        
+    </form>
+    <%predmeti.forEach(p=>{%>
+        <p>predmet: <%=p.ime%> <br>
+            smjer: <%=p.smjer%><br>
+            razred: <%=p.razred%><br> 
+            broj modula: <%=p.brojModula%><br>
+          
+                profesor: <%=p.profesor%><br>
+          
+           opis: <%=p.opis%><br>
+            </p>
+   <% })%>
+</body>
+</html>

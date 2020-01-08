@@ -1,0 +1,42 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <form action="/predmeti/dodaj" method="POST">
+            ime: <input type="text" name="ime" required><br>
+          <select name="razred">
+              <option selected hidden>razred</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+          </select>
+          <select name="brojModula">
+            <option selected hidden>Broj Modula</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+        <br>
+        <select name="smjer">
+            <option selected hidden>smjer</option>
+            <%smjerovi.forEach(s=>{%>
+                <option><%=s.ime%></option>
+            <%})%>
+        </select>
+        <br>
+        <select name="profesor" multiple>
+            <option selected hidden>profesor</option>
+            <%users.forEach(u=>{%>
+                <option><%=u.ime%> <%=u.prezime%></option>
+            <%})%>
+        </select>
+        <label for="opis">Opis</label>
+        <textarea name="opis" cols="20" rows="5"></textarea>
+
+            <input type="submit" value="submit">
+         </form>
+    </body>
+</html>

@@ -1,12 +1,14 @@
-class Predmeti{
-    constructor(predmet,godina,odjeljenje,{opis,datum,profesor}={}){
-        this.predmet=preddmet,
-        this.ocjena=ocjena,
-        this.opis=opis,
-        this.datum=datum,
+class Predmet{
+    constructor(ime,razred,profesor,brojModula,smjer,{opis}={}){
+        this.ime=ime,
+        this.smjer=smjer,
+        this.razred=razred,
+        this.brojModula=brojModula,
         this.profesor=profesor
+        this.opis=opis
         }
 
 
 }
-module.exports=Predmeti
+
+module.exports=Predmet

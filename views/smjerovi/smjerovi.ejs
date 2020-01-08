@@ -1,0 +1,19 @@
+<html>
+<head>
+
+</head>
+<body>
+    <form action="/smjerovi" >
+
+        <input type="submit" name="action" value="dodaj">
+        
+    </form>
+    <%smjerovi.forEach(s=>{%>
+        <p>smjer: <%=s.ime%> <br> opis: <%=s.opis%></p>
+   <% })%>
+
+
+        
+    
+</body>
+</html>

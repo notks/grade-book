@@ -1,0 +1,11 @@
+profesor
+
+<form action="/ocjene">
+  <%odjeljenja.forEach(o=>{%>
+<input type="submit" name="odjeljenje" value="<%=o%>">
+  <%})%>
+ 
+  </form>
+<form action="/logout?_method=DELETE" method="POST">
+    <button type="submit">Log Out</button>
+  </form>
