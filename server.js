@@ -110,7 +110,22 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 app.get('/register',checkAuthenticated, (req, res) => {
   //if(req.user.role==="admin"){
   if(req.query.user==="profesor"){
-res.render("./register/regprofesor.ejs")
+MongoClient.connect(url,(err,db)=>{
+  if (err) throw err
+db.db('mainDB').collection('predmeti').find({}).toArray((err,predmeti)=>{
+  if (err) throw err
+
+
+db.db('mainDB').collection('odjeljenja').find({}).toArray((err,odjeljenja)=>{
+  if (err) throw err
+
+res.render("./register/regprofesor.ejs",{predmeti:predmeti,odjeljenja:odjeljenja})
+})
+})
+})
+
+
+
  }else if(req.query.user==="ucenik"){
   res.render("./register/regucenik.ejs")
  }
@@ -124,6 +139,7 @@ res.render('./register/reg.ejs')
 })
 
 app.post('/registerProfesor',(req,res)=>{
+
   if(req.user.role==="admin"){
   var regErrors=[]
  var role="profesor"
@@ -139,7 +155,7 @@ app.post('/registerProfesor',(req,res)=>{
     regErrors.push({msg:"Passwords do not match!"})    
       }
       if(regErrors.length>0){
-    res.render('register.ejs',{
+    res.render('./register/regadmin.ejs',{
       regErrors,
     name,
     surname,
@@ -326,11 +342,11 @@ app.post('/predmeti/dodaj',checkAuthenticated,(req,res)=>{
     MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
       if (err) throw err
       var dbo=db.db('mainDB')
-      const {ime,smjer,razred,brojModula,profesor,opis}=req.body
+      const {ime,smjer,razred,brojModula,opis}=req.body
       var predmetInsert=new predmet(
         ime,
         razred,
-        profesor,
+       
         brojModula,
         smjer,
         {
@@ -379,6 +395,44 @@ app.post('/smjerovi/dodaj',checkAuthenticated,(req,res)=>{
     var col=dbo.collection('smjerovi').insertOne(smjerinsert,(err,succes)=>{
 if (err) throw err
 res.redirect('/smjerovi')
+    })
+
+    
+    
+        })
+})
+app.get('/odjeljenja',checkAuthenticated,(req,res)=>{
+  if(req.user.role==="admin"){
+    if(req.query.action==="dodaj"){
+      res.render('./odjeljenja/dodaj.ejs')
+    }else{
+    MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
+      if (err) throw err
+      var dbo=db.db('mainDB')
+      var col=dbo.collection('odjeljenja').find({}).toArray((err,resp)=>{
+if(err) throw err
+res.render('./odjeljenja/odjeljenja.ejs',{
+  odjeljenja:resp
+})
+      })
+      
+          })
+  }}
+
+
+})
+app.post('/odjeljenja/dodaj',checkAuthenticated,(req,res)=>{
+  const {odjeljenje}=req.body
+  MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
+    if (err) throw err
+    var dbo=db.db('mainDB')
+    var odjeljenjeinsert={
+      odjeljenje:odjeljenje
+    }
+
+    var col=dbo.collection('odjeljenja').insertOne(odjeljenjeinsert,(err,succes)=>{
+if (err) throw err
+res.redirect('/odjeljenja')
     })
 
     

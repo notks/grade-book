@@ -13,10 +13,13 @@
    broj telefona: <input type="tel" name="BrojTelefona" required><br>
    adresa: <input type="text" name="adresa" required><br>
    <select name="predmet" multiple required><br>
-    <option value="" selected  hidden>Choose here</option>
-<option>matematika</option>
-<option>fizika</option>
-<option>engleski</option>
+   <option value="" selected  hidden>Choose here</option> 
+    <%predmeti.forEach(p=>{%>
+        <option><%=p.ime%></option>
+
+   <% })%>
+   
+
    </select>
    <select name="razrednoOdjeljenje" required><br>
     <option selected >nema</option>

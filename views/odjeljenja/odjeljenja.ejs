@@ -1,0 +1,19 @@
+<html>
+<head>
+
+</head>
+<body>
+    <form action="/odjeljenja" >
+
+        <input type="submit" name="action" value="dodaj">
+        
+    </form>
+    <%odjeljenja.forEach(s=>{%>
+        <p>smjer: <%=s.odjeljenje%></p>
+   <% })%>
+
+
+        
+    
+</body>
+</html>

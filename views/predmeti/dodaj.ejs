@@ -27,12 +27,7 @@
             <%})%>
         </select>
         <br>
-        <select name="profesor" multiple>
-            <option selected hidden>profesor</option>
-            <%users.forEach(u=>{%>
-                <option><%=u.ime%> <%=u.prezime%></option>
-            <%})%>
-        </select>
+       
         <label for="opis">Opis</label>
         <textarea name="opis" cols="20" rows="5"></textarea>
 
