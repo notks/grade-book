@@ -1,0 +1,24 @@
+
+<html>
+
+<form action="/predmetiOdjeljenja" method="POST">
+<select name="predmeti" multiple>
+   <%predmeti.forEach(p=>{%>
+    <option>predmet: <%=p.ime%> 
+        smjer: <%=p.smjer%><br>
+        razred: <%=p.razred%><br> 
+        broj modula: <%=p.brojModula%><br>
+      
+            profesor: <%=p.profesor%><br>
+      
+       opis: <%=p.opis%><br>
+    </option>
+<% })%>
+</select>
+<input type="submit">
+
+</form>
+
+
+</html>
+

@@ -39,7 +39,7 @@ app.use(methodOverride('_method'))
 
 
 //frontpage
-app.get('/', (req, res) => {
+app.get('/',checkNotAuthenticated, (req, res) => {
  
   if(req.query.login==='LogIn')
   res.redirect('/login')
@@ -296,6 +296,46 @@ app.post('/registerAdmin',(req,res)=>{
      })
     }
 })
+//razredni----------------------------------------------------------------------------------------------------------------------
+app.get('/predmetiOdjeljenja',checkAuthenticated,(req,res)=>{
+if((req.user.role==="profesor" && req.user.razrednoOdjeljenje!=="nema")||(req.user.role==="admin")){
+  MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
+    if (err) throw err
+  
+    var dbo=db.db('mainDB').collection('predmeti').find({}).toArray((err,predmeti)=>{
+if (err) throw err
+
+
+
+ res.render('predmeti.ejs',{
+   predmeti:predmeti,
+
+})
+})
+}) 
+}
+})
+
+app.post('/predmetiOdjeljenja',checkAuthenticated,(req,res)=>{
+  if((req.user.role==="profesor" && req.user.razrednoOdjeljenje!=="nema")||(req.user.role==="admin")){
+console.log(req.body)
+console.log(JSON.parse(req.body))
+res.send("ok")
+
+  }
+
+
+}  )
+
+
+
+
+
+
+
+
+
+
 //admin only
 //---------------------------------------------------------------------------------------------------------------------------------
 app.get('/predmeti',checkAuthenticated,(req,res)=>{
