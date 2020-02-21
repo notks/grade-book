@@ -9,26 +9,30 @@
     ime: <input type="text" name="ime" required><br>
     prezime: <input type="text" name="prezime" required><br>
     email: <input type="email" name="email" required><br>
-    password: <input type="password" name="password" required><br>
-    confirm password: <input type="password" name="password2" required><br>
+  
+    
     broj telefona: <input type="tel" name="BrojTelefona" required><br>
     adresa: <input type="text" name="adresa" required><br>
     
     <select name="odjeljenje" required><br>
-        <option>t1</option>
-        <option>t2</option>
-        <option>t3</option>
-        <option>t4</option>
-        <option>t5</option>
-        <option>t6</option>
-        <option>t7</option>
-        <option>t8</option>
+        <option hidden selected>Izaberite odjeljenje</option>
+        <%odjeljenja.forEach(s=>{%>
+      
+            <option><%=s.odjeljenje%></option>
+    
+    
+          
+       <% })%> 
     </select>
-    <select name="razred" required><br>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
+    <select name="smjer" required><br>
+        <option hidden selected>Izaberite smjer</option>
+        <%smjerovi.forEach(s=>{%>
+      
+            <option><%=s.ime%></option>
+    
+    
+          
+       <% })%> 
     </select>
  
  <input type="submit">

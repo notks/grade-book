@@ -5,6 +5,18 @@
     <body>
         <form action="/odjeljenja/dodaj" method="POST">
             odjeljenje: <input type="text" name="odjeljenje" required><br>
+            <select name="smjer">
+                <option selected hidden>choose smjer</option>
+                <%smjerovi.forEach(s=>{%>
+      
+                    <option><%=s.ime%></option>
+            
+            
+                  
+               <% })%>
+                <select></select>
+
+            </select>
           
             <input type="submit" value="submit">
          </form>

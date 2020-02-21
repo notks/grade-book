@@ -2,6 +2,10 @@ const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 const MongoClient= require('mongodb').MongoClient
 const url="mongodb://localhost:27017/"
+require('dotenv').config()
+
+var skolskaGodina=process.env.skolskaGodina;
+
 //initialize passport in main server file
 function initialize(passport, getUserByEmail, getUserById) {
   //getting username and password from body
@@ -10,7 +14,7 @@ function initialize(passport, getUserByEmail, getUserById) {
     MongoClient.connect(url,{ useUnifiedTopology: true }, function(err, db) {
      
        if (err) throw err;
-      var dbo = db.db("mainDB")
+      var dbo = db.db(skolskaGodina)
   
       dbo.collection("users").findOne({email:email}, function(err, response) {
         var user=response;

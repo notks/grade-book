@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>page</title>
+</head>
+<body>
+<form action="/addpage">
+     <select name="smjer">
+         <option value="" selected hidden>choose</option>
+    <%smjerovi.forEach(s=>{%>
+      
+        <option><%=s.ime%></option>
+
+
+      
+   <% })%> </select>
+   <input type="submit" value="submit">
+   
+</form>
+
+    
+</body>
+
+</html>

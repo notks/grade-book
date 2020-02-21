@@ -1,13 +1,13 @@
 class Ucenik{
-    constructor(ime,prezime,email,password,brojTelefona,adresa,razred,odjeljenje,role){
+    constructor(ime,prezime,email,password,brojTelefona,adresa,smjer,odjeljenje,role){
         this.ime=ime,
         this.prezime=prezime,
         this.email=email,
         this.password=password,
-        this.razred=razred,
         this.odjeljenje=odjeljenje,
         this.brojTelefona=brojTelefona,
         this.adresa=adresa,
+        this.smjer=smjer,
         this.role=role
         }
 
