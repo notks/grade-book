@@ -14,6 +14,10 @@ const initializePassport = require('./passport-config')
 require('dotenv').config()
 const url="mongodb://localhost:27017/"
 const MongoClient=require('mongodb').MongoClient
+const mongo=require('mongodb')
+var ObjectID = require('mongodb').ObjectID;
+
+
 initializePassport(
   passport,
   email => users.find(user => user.email === email),
@@ -409,7 +413,7 @@ if(req.query.smjer===undefined){
     
   
   db.db(skolskaGodina).collection("smjerovi").find({}).toArray((err,smjerovi)=>{
-res.render("page.ejs",{smjerovi:smjerovi})
+res.render("./page/page.ejs",{smjerovi:smjerovi})
   })
   db.close()
   }) 
@@ -417,29 +421,53 @@ res.render("page.ejs",{smjerovi:smjerovi})
 
 
 }
-if(req.query.smjer!=undefined ) {
-  var dbusers
-  var dbpredmeti 
-  var dbodjeljenja
+
+
+}
+})
+
+
+
+app.get('/addpage/user',(req,res)=>{
+  
   MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
-
-  db.db(skolskaGodina).collection("users").find({smjer:req.body.smjer,odjeljenje:req.user.razrednoOdjeljenje}).toArray((err,users)=>{
-    dbusers=users
-      })
-      db.db(skolskaGodina).collection("predmeti").find({smjer:req.body.smjer}).toArray((err,predmeti)=>{
-        dbpredmeti=predmeti
-          })
-          db.db(skolskaGodina).collection("odjeljenja").find({smjer:req.body.smjer}).toArray((err,odjeljenja)=>{
-           dbodjeljenja=odjeljenja
-              })
-              res.render('page.ejs',{
+var smjer=req.query.smjer
+    db.db(skolskaGodina).collection("users").find({smjer:smjer,role:'ucenik'}).toArray((err,users)=>{
+     res.render('./page/page2.ejs',{smjerovi:users
+                 
+                })
+              
+                 
+        })
+        
                 
-              })
-      db.close()
- })    
-}
+        db.close()
+   })   
+})
+app.get('/addpage/user/page',(req,res)=>{
 
-}
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+if (err) throw err
+
+
+db.db(skolskaGodina).collection('users').findOne ({ _id: new ObjectID(req.query.ucenik) },{ projection: { password: 0,email:0 } },(err,user)=>{
+  if (err) throw err
+ 
+  db.db(skolskaGodina).collection('predmeti').find({smjer:user.smjer}).toArray((err,predmet)=>{
+res.render('./page/pageadd.ejs',{
+  predmeti:predmet,users:user
+})
+  })
+  
+})
+})
+
+
+})
+
+app.post('/addpage',(req,res)=>{
+
+
 })
 
 

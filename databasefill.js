@@ -33,7 +33,7 @@ if(b==4){
   b+=1  
 }
 
-db.db('2019-2020').collection('test').insertOne(user,(err,res)=>{
+db.db('2019-2020').collection('users').insertOne(user,(err,res)=>{
     if(err)throw err
     console.log("ok")
 })

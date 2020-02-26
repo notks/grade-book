@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>page add</title>
+</head>
+<body>
+<form action="/addpage" method="POST">
+     <select name="predmet" multiple>
+        
+    <%predmeti.forEach(p=>{%>
+      
+        <option><%= p.ime %>  </option>
+
+
+      
+   <% })%> </select>
+<p><%=users %> </p>
+   <input type="submit" value="submit">
+   
+</form>
+
+    
+</body>
+
+</html>

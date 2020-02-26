@@ -9,7 +9,7 @@
   "author": "KS",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^3.0.8",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
@@ -23,5 +23,13 @@
     "dotenv": "^8.0.0",
     "nodemon": "^1.19.1"
   },
-  "description": ""
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ksprivate/mat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ksprivate/mat/issues"
+  },
+  "homepage": "https://github.com/ksprivate/mat#readme"
 }
