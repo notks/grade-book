@@ -3,12 +3,12 @@
     <title>page</title>
 </head>
 <body>
-<form action="/addpage/user">
-     <select name="smjer">
+<form action="/addpage/predmeti">
+     <select name="odjeljenje">
          <option value="" selected hidden>choose</option>
-    <%smjerovi.forEach(s=>{%>
+    <%odjeljenja.forEach(o=>{%>
       
-        <option><%=s.ime%></option>
+        <option value="<%=JSON.stringify(o)%>"><%=o.odjeljenje%></option>
 
 
       

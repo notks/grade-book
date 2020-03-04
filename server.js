@@ -16,6 +16,7 @@ const url="mongodb://localhost:27017/"
 const MongoClient=require('mongodb').MongoClient
 const mongo=require('mongodb')
 var ObjectID = require('mongodb').ObjectID;
+var userpage=require('./dataTypes/page')
 
 
 initializePassport(
@@ -118,9 +119,16 @@ app.get('/home',checkAuthenticated,(req,res)=>{
     res.render('./home/adminhome.ejs')
   }else if(req.user.role==="profesor"){
     if(req.user.razrednoOdjeljenje==="nema"){
+      if(req.query){
+
+      }
+
+
       res.render('./home/profesorhome.ejs',{
         odjeljenja:req.user.odjeljenjeKojimaPredaje,
         predmet:req.user.predmet
+      
+      
       })
     }else{
       res.render('./home/razrednihome.ejs',{
@@ -402,9 +410,12 @@ res.send("ok")
 
 }  )
 
-app.get('/addpage',checkAuthenticated,(req,res)=>{
-  if((req.user.role==="profesor" && req.user.razrednoOdjeljenje!=="nema")||(req.user.role==="admin")){
-    console.log(req.query.smjer)
+
+
+//page--------------------------------------------------------------------------------------------------------
+app.get('/addpage',checkAuthenticated,checkAdmin,(req,res)=>{
+  
+    
 if(req.query.smjer===undefined){
 
     MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
@@ -412,61 +423,98 @@ if(req.query.smjer===undefined){
     
     
   
-  db.db(skolskaGodina).collection("smjerovi").find({}).toArray((err,smjerovi)=>{
-res.render("./page/page.ejs",{smjerovi:smjerovi})
+  db.db(skolskaGodina).collection("odjeljenja").find({}).toArray((err,odjeljenja)=>{
+    if(err) throw err
+res.render("./page/page.ejs",{odjeljenja:odjeljenja})
+
   })
   db.close()
   }) 
-
-
-
-}
-
-
 }
 })
 
 
 
-app.get('/addpage/user',(req,res)=>{
-  
-  MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
-var smjer=req.query.smjer
-    db.db(skolskaGodina).collection("users").find({smjer:smjer,role:'ucenik'}).toArray((err,users)=>{
-     res.render('./page/page2.ejs',{smjerovi:users
-                 
-                })
-              
-                 
-        })
-        
-                
-        db.close()
-   })   
-})
-app.get('/addpage/user/page',(req,res)=>{
+
+app.get('/addpage/predmeti',checkAuthenticated,checkAdmin,(req,res)=>{
+  var odjeljenje=JSON.parse(req.query.odjeljenje)
 
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 if (err) throw err
 
 
-db.db(skolskaGodina).collection('users').findOne ({ _id: new ObjectID(req.query.ucenik) },{ projection: { password: 0,email:0 } },(err,user)=>{
-  if (err) throw err
+
  
-  db.db(skolskaGodina).collection('predmeti').find({smjer:user.smjer}).toArray((err,predmet)=>{
-res.render('./page/pageadd.ejs',{
-  predmeti:predmet,users:user
+ 
+  db.db(skolskaGodina).collection('predmeti').find({smjer:odjeljenje.smjer,razred:odjeljenje.odjeljenje[0]},{ projection: { _id: 0 } }).toArray((err,predmet)=>{
+    if (err) throw err
+
+    
+    res.render('./page/pageadd.ejs',{
+  predmeti:predmet,odjeljenje:odjeljenje
 })
   })
   
-})
-})
 
 
 })
 
-app.post('/addpage',(req,res)=>{
 
+})
+
+app.post('/addpage',checkAuthenticated,checkAdmin,(req,res)=>{
+const {predmet,imeRoditelja1,imeRoditelja2,jmbg,o}=req.body
+
+
+ var odjeljenjepars=JSON.parse(o)
+  
+  var predmeti=[]
+ 
+ predmet.forEach(p => {
+    predmeti.push(JSON.parse(p))
+  
+    
+  })
+ 
+  
+  MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+ 
+
+db.db(skolskaGodina).collection('users').find({odjeljenje:odjeljenjepars.odjeljenje,role:'ucenik'}).toArray((err,users)=>{
+  if(err)throw err
+  console.log(users.length)
+  users.forEach(user => {
+    
+    var userpageins={
+ime:user.ime,
+prezime:user.prezime,
+imeRoditelja1:imeRoditelja1,
+imeRoditelja2:imeRoditelja2,
+jmbg:jmbg,
+_userid:user._id,
+odjeljenje:user.odjeljenje,
+email:user.email,
+smjer:user.smjer,
+brojTelefona:user.brojTelefona,
+adresa:user.adresa,
+predmeti
+}
+db.db(skolskaGodina).collection('userinfo').insertOne(userpageins,(err,res)=>{
+  if (err) throw err
+})
+  });
+ res.send('ok')
+})
+
+
+ 
+  
+
+
+
+
+ 
+})
 
 })
 

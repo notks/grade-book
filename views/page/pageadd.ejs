@@ -1,19 +1,31 @@
 <html>
 <head>
+
     <title>page add</title>
 </head>
 <body>
-<form action="/addpage" method="POST">
-     <select name="predmet" multiple>
+    <%= odjeljenje.odjeljenje%> <br>
+    <%= odjeljenje.smjer%> 
+
+<form action="/addpage" method="POST" >
+    <select name="predmet" multiple >
         
-    <%predmeti.forEach(p=>{%>
-      
-        <option><%= p.ime %>  </option>
+        <%predmeti.forEach(s=>{%>
+          
+            <option value="<%=JSON.stringify(s)%>" ><%=s.ime%> </option>
+    
+    
+          
+       <% })%> </select><br>
 
 
-      
-   <% })%> </select>
-<p><%=users %> </p>
+<input type="text" name="imeRoditelja1" placeholder="ime roditelja" ><br>
+<input type="text" name="imeRoditelja2" placeholder="ime roditelja" ><br>
+<input type="text" name="jmbg" placeholder="jmbg" ><br>
+<input type="text" name="o" value="<%=JSON.stringify(odjeljenje)%>" hidden>
+
+
+
    <input type="submit" value="submit">
    
 </form>
