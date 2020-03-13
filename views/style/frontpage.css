@@ -1,0 +1,153 @@
+
+body{
+    
+    background-color:#3978B8;
+    padding-top: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.wrapper{
+    
+    max-width: 70%;
+    min-height: 100%;
+    
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #336699;
+    padding-top: 3px;
+
+}
+.logo{
+    width: 150px;
+    height: 150px;
+    position: relative;
+    top: 100px;
+    left: 30px;
+    
+    
+}
+.slogan{
+    color: white;
+    font-family:Segoe UI;
+    font-size: 40px;
+    float: right;
+    margin-top: 140px;
+    margin-right: 120px;
+    
+}
+
+.headerblock{
+    
+   overflow: hidden;
+    border: 0px;
+      margin: 30;
+    height: 40%;
+  
+    background-image: url("../media/books-cover-hardcover-literature-326624.png");
+    
+        
+        
+
+}
+
+.loginblock{
+   overflow: hidden;
+     border: 0px;
+      margin: 30;
+    height: 40%;
+    background-image: url("../media/books-cover-empty-hardcover-335253.png");
+}
+
+.emailblock{
+     border: 0px;
+    background-color: #394C97;
+      margin: 30;
+    height: 40%;
+}
+.studentblock{
+      margin: 30;
+    height: 40%;
+    background-color: #3A47A2;
+    margin-bottom: 0px;
+    border: 0px;
+    padding: 0;
+    
+    
+}
+.footerblock{
+     margin: 30;
+    height: 40%;
+     border: 0px;
+    margin-top: 0px;
+    background-color: #394C97;
+    padding: 0;
+    
+}
+.contact{
+    color: white;
+    font-family:Segoe UI;
+    font-size: 40px;
+    float: right;
+    max-width: 70%;
+
+
+    
+}
+.studentimg{
+    float: right;
+    margin-top: 50px;
+    margin-right: 40px;
+    
+}
+.student{
+    color: white;
+    font-family:Segoe UI;
+     font-size: 40px;
+   
+    max-width: 70%;
+    padding-top: 100px;
+    padding-left: 50px;
+
+}
+.copyright{
+     color: white;
+    font-family:Segoe UI;
+    position: relative;
+    top: 90%;
+    left: 20px;
+    
+}
+.loginbtn{
+    
+    width: 250px;
+    height: 75px;
+    position: relative;
+    top: 55%;
+    left: 5%;
+    border-radius: 100px;
+    border: 0;
+    background-color: #4A5CA2;
+    color: white;
+     font-family:Segoe UI;
+    font-size: 40;
+    
+}
+.loginbtn:hover{
+transform: scale(1.1);
+    transition: 0.2;
+    
+}
+.contactimg:hover{
+    transform: scale(1.1);
+       transition: 0.2;
+}
+.studentimg:hover{
+      transform: scale(1.1);
+       transition: 0.2;
+    
+}
+.logo:hover{
+    transform: scale(1.1);
+       transition: 0.2;
+    
+}

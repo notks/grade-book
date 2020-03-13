@@ -11,12 +11,14 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const initializePassport = require('./passport-config')
+var path = require('path');
 require('dotenv').config()
 const url="mongodb://localhost:27017/"
 const MongoClient=require('mongodb').MongoClient
 const mongo=require('mongodb')
 var ObjectID = require('mongodb').ObjectID;
 var userpage=require('./dataTypes/page')
+var fs=require('fs')
 
 
 initializePassport(
@@ -24,11 +26,16 @@ initializePassport(
   email => users.find(user => user.email === email),
   id => users.find(user => user.id === id)
 )
+
 const userroute=require('./routes/users')
 var skolskaGodina=process.env.skolskaGodina;
 const users = []
 var hashedPassword 
+
+app.use(express.static(path.join(__dirname,'views')))
 app.set('view-engine', 'ejs')
+
+
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
@@ -103,7 +110,7 @@ res.render("./firstrun/regadmin.ejs")
 //frontpage
 app.get('/', (req, res) => {
  
-  console.log(process.env.firstRun)
+
   if(req.query.login==='LogIn')
   res.redirect('/login')
   else
@@ -119,14 +126,17 @@ app.get('/home',checkAuthenticated,(req,res)=>{
     res.render('./home/adminhome.ejs')
   }else if(req.user.role==="profesor"){
     if(req.user.razrednoOdjeljenje==="nema"){
-      if(req.query){
-
-      }
-
-
+      
+        
+        
+      
+      
       res.render('./home/profesorhome.ejs',{
         odjeljenja:req.user.odjeljenjeKojimaPredaje,
-        predmet:req.user.predmet
+        predmet:req.user.predmet,
+        ime:req.user.ime,
+        prezime:req.user.prezime
+        
       
       
       })
@@ -519,8 +529,32 @@ db.db(skolskaGodina).collection('userinfo').insertOne(userpageins,(err,res)=>{
 })
 
 
+//-------------------------------------------------------------------------------------------------------------
+//ocjene
+app.get('/ocjene/ucenici',checkAuthenticated,checkProfesor,(req,res)=>{
+
+  MongoClient.connect(url,(err,db)=>{
+    if(err) throw err
+    console.log(req.query.odjeljenje)
+    db.db(skolskaGodina).collection('userinfo').find({odjeljenje:req.query.odjeljenje}).toArray((err,resp)=>{
+      if(err) throw err
+      console.log(resp)
+      res.render('./ocjene/ucenici.ejs',
+      {ucenici:resp,
+      ime:req.user.ime,
+      prezime:req.user.prezime
+      })
+      //izbaci neki error missing) u ejs fajlu 
+    })
+  })
+
+})
+app.get('/ocjene/page',checkAuthenticated,checkProfesor,(req,res)=>{
 
 
+console.log(JSON.parse(req.query.ucenik))
+
+})
 
 
 

@@ -29,9 +29,9 @@
             
             <select class="select" name="odjeljenje" onchange="this.form.submit()">
                 <option selected hidden>Izaberite odjeljenje</option>
-                <% odjeljenja.forEach(o=>{%>
+                <% ucenici.forEach(o=>{%>
 
-                    <option><%= o %> </option>
+                    <option><%= o.ime %> <%= o.prezime %> </option>
 
 
                 <%}) %> 
