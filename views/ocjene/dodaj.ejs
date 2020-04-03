@@ -1,0 +1,65 @@
+<html>
+<head>
+    <title>ucenik</title>
+    <link rel="stylesheet" href="../style/home.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="navbar">
+            <img src="media/user.svg" alt="avatar" class="avatar">
+            <img>
+            <img src="media/support.svg" class="settingsicon" alt="settings">
+            <a href="/settings"> <button class="settings">
+                
+                </button></a>
+            <button class="n">
+            </button>
+            
+          <a href="/home"><p class="ime">Ime Prezime</p></a>
+            <div class="settinsmenu">
+            
+            
+            
+            
+            
+            </div>
+        </div>
+        <div class="main">
+        <%= predmet.ime %> <br>
+       
+        <form action="/ocjene/dodaj" method="POST" onclick="this.form.submit()">
+           
+           <select name="opis">
+               <option>Test modula</option>
+               <option>Pismena provjera</option>
+               <option>Esej</option>
+               <option>Usmena provjera</option>
+               <option>Aktivnost</option>
+
+
+           </select>
+           <select name="ocjena">
+            <option selected hidden>Izaberite ocjenu</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+        
+        <select name="modul">
+          <option selected hidden>Izaberite modul</option>
+              <%  for(var i=1;i<=predmet.brojModula;i++){%>
+<option><%= i %> </option>
+              <%} %> 
+        </select>
+<input type="submit" value="dodaj">
+<input type="text" value="<%= JSON.stringify(predmet) %>" name="predmet" hidden>
+<input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
+                    </form>
+        </div>
+    </div>
+    
+</body>
+
+</html>

@@ -25,13 +25,13 @@
         </div>
         <div class="main">
         
-        <form action="/ocjene/ucenici">
+        <form action="/ocjene/ucenik">
             
-            <select class="select" name="odjeljenje" onchange="this.form.submit()">
-                <option selected hidden>Izaberite odjeljenje</option>
+            <select class="select" name="ucenik" onchange="this.form.submit()">
+                <option selected hidden>Izaberite ucenika</option>
                 <% ucenici.forEach(o=>{%>
 
-                    <option><%= o.ime %> <%= o.prezime %> </option>
+                    <option value="<%= o._userid %>"><%= o.ime %> <%= o.prezime %> </option>
 
 
                 <%}) %> 

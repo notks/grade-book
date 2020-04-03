@@ -8,14 +8,12 @@
    ime: <input type="text" name="ime" required><br>
    prezime: <input type="text" name="prezime" required><br>
    email: <input type="email" name="email" required><br>
-   password: <input type="password" name="password" required><br>
-   confirm password: <input type="password" name="password2" required><br>
-   broj telefona: <input type="tel" name="BrojTelefona" required><br>
+   broj telefona: <input type="text" name="BrojTelefona" required><br>
    adresa: <input type="text" name="adresa" required><br>
    <select name="predmet" multiple required><br>
    <option value="" selected  hidden>Choose here</option> 
     <%predmeti.forEach(p=>{%>
-        <option><%=p.ime%></option>
+        <option value="<%= JSON.stringify(p) %>"><%=p.opis%></option>
 
    <% })%>
    
@@ -23,25 +21,17 @@
    </select>
    <select name="razrednoOdjeljenje" required><br>
     <option selected >nema</option>
-       <option>1t1</option>
-       <option>1t2</option>
-       <option>2t1</option>
-       <option>2t2</option>
-       <option>3t1</option>
-       <option>3t2</option>
-       <option>4t1</option>
-       <option>4t2</option>
+     <%odjeljenja.forEach(o=>{%>
+<option><%= o.odjeljenje %> </option>
+
+     <%})%>
    </select>
    <select name="odjeljenjeKojimaPredaje" required multiple><br>
     
-       <option>1t1</option>
-       <option>1t2</option>
-       <option>2t1</option>
-       <option>2t2</option>
-       <option>3t1</option>
-       <option>3t2</option>
-       <option>4t1</option>
-       <option>4t2</option>
+    <%odjeljenja.forEach(o=>{%>
+        <option><%= o.odjeljenje %> </option>
+        
+             <%})%>
    </select>
 
 <input type="submit">

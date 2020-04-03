@@ -19,7 +19,8 @@ const mongo=require('mongodb')
 var ObjectID = require('mongodb').ObjectID;
 var userpage=require('./dataTypes/page')
 var fs=require('fs')
-
+var opener=require('opener')
+var fr=require('./firstrun')
 
 initializePassport(
   passport,
@@ -49,66 +50,24 @@ app.use('/users',checkAuthenticated,userroute)
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
-
-if(process.env.firstRun=="true")
-{
-
-  app.get('/',(req,res)=>{
-res.render("./firstrun/regadmin.ejs")
-
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+  if(err) throw err
+  
+  //console.log(db.db(skolskaGodina).collection('users'))
+  
+  db.db(skolskaGodina).collection('users').find({}).toArray((err,res)=>{
+ 
+    if(err) throw err
+   if(res.length===0){
+     console.log("this is first run")
+    
+     fr()
+   }
+    })
   })
-  app.post('/firstregisterAdmin',(req,res)=>{
-
-    var regErrors=[]
-   var role="admin"
-    const {ime,prezime, email, adresa,brojTelefona}=req.body
-    MongoClient.connect(url,{ useUnifiedTopology: true },async(err,db)=>{
-      if(err) throw err
-      var dbo=db.db(skolskaGodina)
-     
-         
-        if(req.body.password!==req.body.password2){
-      regErrors.push({msg:"Passwords do not match!"})    
-        }
-     if(regErrors.length>0){
-      res.render('./firstrun/regadmin.ejs',{
-        regErrors:regErrors,
-        
-      })
-     
-        }
-        else{
-            var hasshedPassword=await bcrypt.hash(req.body.password,10)
-           var admin=new Users.Admin(
-             ime,
-             prezime,
-             email,
-             hasshedPassword,
-             brojTelefona,
-             adresa,
-             role
-             )
-             console.log("check")
-           dbo.collection('users').insertOne(admin,function(err,response){
-            if(err)throw err
-            
-              console.log(response)
-              process.env.firstRun='false'
-            res.redirect('/login')
-          
-            })
-          }
-          
-       })
-      
-  })
-  
-  
-  
-}
 
 //frontpage
-app.get('/', (req, res) => {
+app.get('/', checkNotAuthenticated, (req, res) => {
  
 
   if(req.query.login==='LogIn')
@@ -149,8 +108,22 @@ app.get('/home',checkAuthenticated,(req,res)=>{
       })
     }
   }else if(req.user.role==="ucenik"){
-res.render('./home/ucenikhome.ejs',{
-  name:req.user.name})
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+  if(err) throw err
+db.db(skolskaGodina).collection('userinfo').findOne({_userid:ObjectID(req.user._id)},(err,ucenik)=>{
+
+if(err) throw err
+res.render('./home/ucenik.ejs',{
+  ime:req.user.ime,
+  prezime:req.user.prezime,
+predmeti:ucenik.predmeti})
+})
+
+})
+
+
+
+
   }
 })
 //ocjene
@@ -239,6 +212,16 @@ app.post('/registerProfesor',(req,res)=>{
   var regErrors=[]
  var role="profesor"
   const {ime,prezime, email, adresa,predmet,razrednoOdjeljenje,brojTelefona,odjeljenjeKojimaPredaje}=req.body
+  var predmetparsed=[]
+  if(typeof predmet=="object"){
+  predmet.forEach(p=>{
+
+    predmetparsed.push(JSON.parse(p))
+  })
+}else{
+  predmetparsed=JSON.parse(predmet)
+}
+ 
   MongoClient.connect(url,{ useUnifiedTopology: true },function(err,db){
     var dbo=db.db(skolskaGodina)
     var col=dbo.collection('users').findOne({email:req.body.email}, async (err,existingUser)=>{
@@ -246,9 +229,7 @@ app.post('/registerProfesor',(req,res)=>{
     //render partial    
     regErrors.push({msg:"User with that email already exists!"})
       }
-      if(req.body.password!==req.body.password2){
-    regErrors.push({msg:"Passwords do not match!"})    
-      }
+      
       if(regErrors.length>0){
     res.render('./register/regadmin.ejs',{
       regErrors,
@@ -258,13 +239,13 @@ app.post('/registerProfesor',(req,res)=>{
     })
       }
       else{
-          var hasshedPassword=await bcrypt.hash(req.body.password,10)
+          var hasshedPassword=await bcrypt.hash("changemeprofesor",10)
          var professor=new Users.Profesor(
            ime,
            prezime,
            email,
            hasshedPassword,
-           predmet,
+           predmetparsed,
            brojTelefona,
            adresa,
            role,
@@ -287,7 +268,10 @@ app.post('/registerProfesor',(req,res)=>{
 app.post('/registerUcenik',(req,res)=>{
   var regErrors=[]
  var role="ucenik"
-  const {ime,prezime, email, adresa,smjer,odjeljenje,brojTelefona}=req.body
+  const {ime,prezime, email, adresa,odjeljenje,brojTelefona,imeroditelj1,telefonroditelj1,imeroditelj2,telefonroditelj2,jmbg}=req.body
+  console.log(odjeljenje)
+  var o=JSON.parse(odjeljenje)
+console.log(o)
   MongoClient.connect(url,{ useUnifiedTopology: true },function(err,db){
     var dbo=db.db(skolskaGodina)
     var col=dbo.collection('users').findOne({email:req.body.email}, async (err,existingUser)=>{
@@ -322,9 +306,13 @@ app.post('/registerUcenik',(req,res)=>{
           hasshedPassword,
           brojTelefona,
           adresa,
-          smjer,
-          
-          odjeljenje,
+          o.smjer,
+          o.odjeljenje,
+           imeroditelj1,
+          telefonroditelj1,
+          imeroditelj2,
+          telefonroditelj2,
+          jmbg,
           role)
          dbo.collection('users').insertOne(ucenik,(err,response)=>{
           if(err) throw err
@@ -481,14 +469,16 @@ const {predmet,imeRoditelja1,imeRoditelja2,jmbg,o}=req.body
   var predmeti=[]
  
  predmet.forEach(p => {
-    predmeti.push(JSON.parse(p))
+   var pred=JSON.parse(p)
+  
+    predmeti.push(pred)
   
     
   })
  
   
   MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
- 
+ if(err) throw err
 
 db.db(skolskaGodina).collection('users').find({odjeljenje:odjeljenjepars.odjeljenje,role:'ucenik'}).toArray((err,users)=>{
   if(err)throw err
@@ -507,7 +497,9 @@ email:user.email,
 smjer:user.smjer,
 brojTelefona:user.brojTelefona,
 adresa:user.adresa,
+ocjene:[],
 predmeti
+
 }
 db.db(skolskaGodina).collection('userinfo').insertOne(userpageins,(err,res)=>{
   if (err) throw err
@@ -533,30 +525,142 @@ db.db(skolskaGodina).collection('userinfo').insertOne(userpageins,(err,res)=>{
 //ocjene
 app.get('/ocjene/ucenici',checkAuthenticated,checkProfesor,(req,res)=>{
 
-  MongoClient.connect(url,(err,db)=>{
+  MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
     if(err) throw err
-    console.log(req.query.odjeljenje)
+    
     db.db(skolskaGodina).collection('userinfo').find({odjeljenje:req.query.odjeljenje}).toArray((err,resp)=>{
       if(err) throw err
-      console.log(resp)
+     
       res.render('./ocjene/ucenici.ejs',
       {ucenici:resp,
       ime:req.user.ime,
       prezime:req.user.prezime
       })
-      //izbaci neki error missing) u ejs fajlu 
+      
     })
   })
 
 })
-app.get('/ocjene/page',checkAuthenticated,checkProfesor,(req,res)=>{
+app.get('/ocjene/ucenik',checkAuthenticated,checkProfesor,(req,res)=>{
+
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+if(err) throw err
+db.db(skolskaGodina).collection('userinfo').findOne({_userid:ObjectID(req.query.ucenik)},(err,ucenik)=>{
+if(err) throw err
+res.render('./ocjene/ucenik.ejs',{
+ucenik:ucenik,
+predmet:req.user.predmet,
+ime:req.user.ime,
+prezime:req.user.prezime
 
 
-console.log(JSON.parse(req.query.ucenik))
+
+})
 
 })
 
 
+})
+
+
+})
+app.get('/ocjene/predmet',checkAuthenticated,checkProfesor,(req,res)=>{
+
+var p=JSON.parse(req.query.predmet)
+var u=JSON.parse(req.query.ucenik)
+
+res.render('./ocjene/predmet.ejs',{predmet:p,
+  ucenik:u,
+user_predmet:req.user.predmet})
+
+})
+app.get('/ocjene/dodaj',checkAuthenticated,checkProfesor,(req,res)=>{
+
+  var p=JSON.parse(req.query.predmet)
+  var u=JSON.parse(req.query.ucenik)
+
+
+res.render('./ocjene/dodaj.ejs',{
+  predmet:p,
+  ucenik:u,
+
+})
+
+
+
+
+  
+
+  
+
+})
+app.post('/ocjene/dodaj',checkAuthenticated,checkProfesor,(req,res)=>{
+  var p=JSON.parse(req.body.predmet)
+  var u=JSON.parse(req.body.ucenik)
+  var currentdate = new Date();
+  var datetime =  + currentdate.getDate() + "/" + currentdate.getMonth() 
+  + "/" + currentdate.getFullYear() + " @ " 
+  + currentdate.getHours() + ":" 
+  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+
+
+var o=new Ocjena(
+  req.body.ocjena,
+  req.body.opis,
+  datetime,
+  (req.user.prezime+" "+req.user.ime),
+  req.body.modul,
+  p.ime
+  )
+
+ 
+
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+  if(err) throw err
+  db.db(skolskaGodina).collection('userinfo').updateOne({_userid:ObjectID(u._userid)},{ $push: {ocjene:o} },(err,done)=>{
+
+    if(err) throw err
+    res.redirect('/ocjene/ucenik')
+  })
+
+})
+
+})
+
+//-----------------------------------------------------------------------------------------------------
+//ucenik
+app.get('/ucenik/predmet',checkAuthenticated,(req,res)=>{
+
+var predmet=JSON.parse(req.query.predmet)
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+if(err) throw err
+db.db(skolskaGodina).collection('userinfo').findOne({_userid:ObjectID(req.user._id)},(err,ucenik)=>{
+  if(err) throw err
+var ocjene=[]
+ucenik.ocjene.forEach(o=>{
+if(o.predmet===predmet.ime)
+{
+  ocjene.push(o)
+}
+
+
+})
+
+
+
+res.render('./ucenik/predmet.ejs',{
+  predmet:predmet,
+  ime:req.user.ime,
+  prezime:req.user.prezime,
+  ocjene:ocjene
+
+
+})
+})
+
+})
+
+})
 
 
 

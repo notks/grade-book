@@ -11,30 +11,26 @@
     email: <input type="email" name="email" required><br>
   
     
-    broj telefona: <input type="tel" name="BrojTelefona" required><br>
+    broj telefona: <input type="text" name="brojTelefona" required><br>
     adresa: <input type="text" name="adresa" required><br>
-    
+    ime 1 roditelja: <input type="text" name="imeroditelj1" required><br>
+    broj telefona 1 roditelja: <input type="text" name="telefonroditelj1" required><br>
+    ime 2 roditelja: <input type="text" name="imeroditelj2" required><br>
+    broj telefona 2 roditelja: <input type="text" name="telefonroditelj2" required><br>
+    jmbg: <input type="text" name="jmbg" required><br>
+
     <select name="odjeljenje" required><br>
         <option hidden selected>Izaberite odjeljenje</option>
         <%odjeljenja.forEach(s=>{%>
       
-            <option><%=s.odjeljenje%></option>
+            <option value="<%=JSON.stringify(s)%>"><%=s.odjeljenje%></option>
     
     
           
        <% })%> 
     </select>
-    <select name="smjer" required><br>
-        <option hidden selected>Izaberite smjer</option>
-        <%smjerovi.forEach(s=>{%>
-      
-            <option><%=s.ime%></option>
     
     
-          
-       <% })%> 
-    </select>
- 
  <input type="submit">
  </form>
 </body>

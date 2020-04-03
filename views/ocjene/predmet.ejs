@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title>ucenik</title>
+    <link rel="stylesheet" href="../style/home.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="navbar">
+            <img src="media/user.svg" alt="avatar" class="avatar">
+            <img>
+            <img src="media/support.svg" class="settingsicon" alt="settings">
+            <a href="/settings"> <button class="settings">
+                
+                </button></a>
+            <button class="n">
+            </button>
+            
+          <a href="/home"><p class="ime">Ime Prezime</p></a>
+            <div class="settinsmenu">
+            
+            
+            
+            
+            
+            </div>
+        </div>
+        <div class="main">
+        <%= predmet.ime %> <br>
+        
+         <form action="/ocjene/dodaj"  onclick="this.form.submit()">
+           <% if(predmet.ime==user_predmet){%>
+        <button  value="<%=JSON.stringify(predmet)%>" name="predmet">dodaj ocjenu</button>
+              <%}%>
+                <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
+
+                </form>
+        </div>
+    </div>
+    
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title><%= ime %> <%= prezime %></title>
+    <link rel="stylesheet" href="../style/ucenik.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="navbar">
+            <img src="media/user.svg" alt="avatar" class="avatar">
+            <img>
+            <img src="media/support.svg" class="settingsicon" alt="settings">
+            <a href="/settings"> <button class="settings">
+                
+                </button></a>
+            <button class="n">
+            </button>
+            
+          <a href="/home"><p class="ime"><%= ime %> <%= prezime %> </p></a>
+           
+        </div>
+        <div class="main">
+           <form action="/ucenik/predmet" onclick="this.form.submit()">
+                <% predmeti.forEach(p=>{%>
+
+                            <button class="btn" name="predmet" value="<%= JSON.stringify(p) %>"><%= p.ime %> </button>            
+
+
+                <%}) %> 
+                        
+
+
+            </form>
+                 
+        </div>
+    </div>
+    
+</body>
+
+</html>

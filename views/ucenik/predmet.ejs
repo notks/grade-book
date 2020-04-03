@@ -1,0 +1,121 @@
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="/style/predmet_ucenik.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="navbar">
+            <img src="media/user.svg" alt="avatar" class="avatar">
+            <img>
+            <img src="media/support.svg" class="settingsicon" alt="settings">
+            <a href="/settings"> <button class="settings">
+                
+                </button></a>
+            <button class="n">
+            </button>
+            
+          <a href="/home"><p class="ime">Ime Prezime</p></a>
+           
+        </div>
+        <div class="main">
+        <table class="tabela" border="1">
+            <tr><td colspan="100%"><%= predmet.ime %> </td></tr> 
+           <tr>
+            <%for(var i=1;i<=predmet.brojModula;i++){%>
+
+<td colspan="1">
+modul <%= i %> 
+</td>
+
+
+            <%} %> 
+            </tr>
+            <tr>
+                <%for(var i=1;i<=predmet.brojModula;i++){%>
+
+                  
+                     <td>
+                    <%ocjene.forEach(o=>{%>
+ 
+               <%if(o.modul==i){%>
+              
+                    <button onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
+
+               <%} %> 
+                
+                        <%}) %> 
+                    
+                </td>
+                    
+                                <%} %> 
+               
+
+            </tr>
+            <tr>
+              <%for(var i=1;i<=predmet.brojModula;i++){%>
+
+                  
+                <td>
+
+
+                  
+                </td>
+                
+ 
+               
+           </td>
+               
+                           <%} %> 
+
+            </tr>
+            
+        </table>       
+  
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div id="modal-content" class="modal-content">
+    <span class="close">&times;</span>
+    
+  </div>
+</div>
+
+        </div>
+    </div>
+    <script>
+function show (o){
+    var x=JSON.parse(o)
+    var modal = document.getElementById("myModal");
+    var span = document.getElementsByClassName("close")[0];
+    var ocjena=document.getElementById('modal-content')
+    modal.style.display="block";
+  
+    ocjena.innerHTML=
+    "<span class="+"close"+">&times;</span>"+
+    "<br>"+
+    
+    "<p>"+x.ocjena+"<br>"+x.datum+"<br>"+
+    x.profesor+"<br>"+
+    x.opis+"<br>"+"</p>"
+
+      span.onclick = function() {
+    modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
+  }
+
+
+
+}
+
+    </script>
+</body>
+
+</html>

@@ -11,12 +11,14 @@
   "dependencies": {
     "bcrypt": "^3.0.8",
     "ejs": "^2.6.2",
+    "ejs-lint": "^1.0.1",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
     "express-session": "^1.16.2",
     "fs": "0.0.1-security",
     "method-override": "^3.0.0",
     "mongodb": "^3.3.3",
+    "opener": "^1.5.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7"

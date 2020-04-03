@@ -1,0 +1,44 @@
+<html>
+<head>
+    <title><%= ucenik.ime %> <%= ucenik.prezime %></title>
+    <link rel="stylesheet" href="/style/home.css">
+</head>
+<body>
+   
+  
+    <div class="wrapper">
+        <div class="navbar">
+            <img src="media/user.svg" alt="avatar" class="avatar">
+            <img>
+            <img src="media/support.svg" class="settingsicon" alt="settings">
+            <a href="/settings"> <button class="settings">
+                
+                </button></a>
+            <button class="n">
+            </button>
+            
+          <a href="/home"><p class="ime"><%= ime %> <%= prezime %>   </p></a>
+           
+        </div>
+        <div class="main">
+        <%= ucenik.ime %><br>
+        <%= ucenik.prezime %><br>
+        <%= ucenik.odjeljenje %><br>
+        <%= ucenik.email %> <br>
+        <%= ucenik.smjer %><br>
+        <form action="/ocjene/predmet"  onclick="this.form.submit()">
+    <% ucenik.predmeti.forEach(p=>{%>
+            <br>
+<button  value="<%=JSON.stringify(p)%>" name="predmet"><%= p.ime %> </button>
+        <%}) %> 
+<input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
+        </form>
+    
+
+       
+        </div>
+    </div>
+    
+</body>
+
+</html>
