@@ -1,39 +1,102 @@
 <html>
 <head>
     <title><%= ime %> <%= prezime %></title>
-    <link rel="stylesheet" href="../style/ucenik.css">
+    <link rel="stylesheet" href="../style/style.css">
 </head>
-<body>
-    <div class="wrapper">
-        <div class="navbar">
-            <img src="media/user.svg" alt="avatar" class="avatar">
-            <img>
-            <img src="media/support.svg" class="settingsicon" alt="settings">
-            <a href="/settings"> <button class="settings">
-                
-                </button></a>
-            <button class="n">
-            </button>
-            
-          <a href="/home"><p class="ime"><%= ime %> <%= prezime %> </p></a>
-           
-        </div>
-        <div class="main">
-           <form action="/ucenik/predmet" onclick="this.form.submit()">
-                <% predmeti.forEach(p=>{%>
 
-                            <button class="btn" name="predmet" value="<%= JSON.stringify(p) %>"><%= p.ime %> </button>            
-
-
-                <%}) %> 
+        <body id="body">
+            <div class="wrapper" id="wrapper">
+                <div class="navbar">
+                    <img src="../media/user.svg" alt="avatar" class="avatar">
+                    <img>
+                    <img src="media/support.svg" class="settingsicon" alt="settings" >
+                   <button id="settingsbtn" class="settings" onclick="showsettings()">
                         
+                        </button>
+                    
+                   
+                    
+                    
+                        <a href="/home"><p class="ime"><%= ime %> <%= prezime %> </p></a>
+                   
+                </div>
+                <div id="settings">
+                    <ul>
+                    
+                        <li><a href="">
+                            <img src="../media/grid.svg" alt="home" class="homedropico">Home
+                            
+                            </a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a href="/settings">
+                            <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                            </a>
+                        
+                        
+                        </li>
+                        <hr>
+                        <li>
+                            
+                            <form action="/logout?_method=DELETE" method="POST">
+                                <button type="submit" class="logout">
+                                    <img src="../media/logout.svg" alt="logout" class="logouticon"> Log out
+                                </button>
+                            </form>
+                            
+                        
+                        
+                        
+                        </li>
+                        <hr>
+                    </ul>
+                    
+                    </div>
+                <div class="main" id="main">
+                    <form action="/ucenik/predmet" onclick="this.form.submit()">
+                        <% predmeti.forEach(p=>{%>
+        
+                                    <button class="btn" name="predmet" value="<%= JSON.stringify(p) %>"><%= p.ime %> </button>              
+        
+        
+                        <%}) %> 
+                                
+        
+        
+                    </form>  
+                </div>
+            </div>
+            <script>
+            function showsettings(){
+           
+            var settings = document.getElementById("settings");
+        var body=document.getElementById("body");
+            var settingsbtn=document.getElementById("settingsbtn");
+                var main=document.getElementById("main");
+          if(settings.style.display=="block"){
+              
+                  settings.style.display = "none";
+        
+          }else{
+              
+                  settings.style.display="block";
+        
+          }
+        
+            window.onclick = function(event) {
+            if (event.target == settings ||event.target == body  ||event.target == main ) {
+            settings.style.display = "none";
+            
+            
+                }
+            }
+        }
+            
+            
+            </script>
+        </body>
+            
+        
+        </html>
 
-
-            </form>
-                 
-        </div>
-    </div>
-    
-</body>
-
-</html>

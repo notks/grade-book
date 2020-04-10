@@ -1,44 +1,179 @@
 <html>
 <head>
     <title><%= ucenik.ime %> <%= ucenik.prezime %></title>
-    <link rel="stylesheet" href="/style/home.css">
+    <link rel="stylesheet" href="../style/style.css">
 </head>
-<body>
-   
-  
-    <div class="wrapper">
-        <div class="navbar">
-            <img src="media/user.svg" alt="avatar" class="avatar">
-            <img>
-            <img src="media/support.svg" class="settingsicon" alt="settings">
-            <a href="/settings"> <button class="settings">
+
+     <body id="body">
+                    <div class="wrapper" id="wrapper">
+                        <div class="navbar">
+                            <img src="../media/user.svg" alt="avatar" class="avatar">
+                            <img>
+                            <img src="media/support.svg" class="settingsicon" alt="settings" >
+                           <button id="settingsbtn" class="settings" onclick="showsettings()">
+                                
+                                </button>
+                            
+                           
+                            
+                            
+                                <a href="/home"><p class="ime"><%= ime %> <%= prezime %> </p></a>
+                           
+                        </div>
+                        <div id="settings">
+                            <ul>
+                            
+                                <li><a href="">
+                                    <img src="../media/grid.svg" alt="home" class="homedropico">Home
+                                    
+                                    </a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a href="/settings">
+                                    <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                                    </a>
+                                
+                                
+                                </li>
+                                <hr>
+                                <li>
+                                    
+                                    <form action="/logout?_method=DELETE" method="POST">
+                                        <button type="submit" class="logout">
+                                            <img src="../media/logout.svg" alt="logout" class="logouticon"> Log out
+                                        </button>
+                                    </form>
+                                    
+                                
+                                
+                                
+                                </li>
+                                <hr>
+                            </ul>
+                            
+                            </div>
+                        <div class="main" id="main">
+  <table  class="userinfo">
+<tr>
+<td rowspan="3">
+    <img src="../media/user.svg" alt="avatar" class="avataruserinfo">
+
+</td>
+<td>
+    Name: <%= ucenik.ime %> <%= ucenik.prezime %> 
+</td>
+<td>
+Class:<%= ucenik.smjer %> <%= ucenik.odjeljenje %> 
+
+</td>
+
+
+
+</tr>
+<tr>
+    <td>
+ ime roditelja
+
+    </td>
+    <td>
+      imeroditelja 
+
+    </td>
+</tr>
+<tr>
+<td>broj roditelja</td>
+<td>
+    brojroditelja
+</td></tr>
+<tr>
+    <td>
+        brojtelefona
+    </td>
+    
+</tr>
+<tr>
+<td>
+    Adress:<%= ucenik.adresa %> 
+</td>
+
+</tr>
+<tr>
+    <td>E-mail:<%= ucenik.email %> </td>
+</tr>
+
+
+
+ </table>
+                           
+                           
+                           
+                           
+
+                           
+
+                            <form action="/ocjene/predmet"  onclick="this.form.submit()">
+                                <% ucenik.predmeti.forEach(p=>{%>
+                                        
+                            <button class="btn" value="<%=JSON.stringify(p)%>" name="predmet"><%= p.ime %> </button>
+                                    <%}) %> 
+                            <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
+                                    </form>
+                        </div>
+                    </div>
+                    <script>
+                    function showsettings(){
+                   
+                    var settings = document.getElementById("settings");
+                var body=document.getElementById("body");
+                    var settingsbtn=document.getElementById("settingsbtn");
+                        var main=document.getElementById("main");
+                  if(settings.style.display=="block"){
+                      
+                          settings.style.display = "none";
                 
-                </button></a>
-            <button class="n">
-            </button>
-            
-          <a href="/home"><p class="ime"><%= ime %> <%= prezime %>   </p></a>
-           
-        </div>
-        <div class="main">
-        <%= ucenik.ime %><br>
-        <%= ucenik.prezime %><br>
-        <%= ucenik.odjeljenje %><br>
-        <%= ucenik.email %> <br>
-        <%= ucenik.smjer %><br>
-        <form action="/ocjene/predmet"  onclick="this.form.submit()">
-    <% ucenik.predmeti.forEach(p=>{%>
-            <br>
-<button  value="<%=JSON.stringify(p)%>" name="predmet"><%= p.ime %> </button>
-        <%}) %> 
-<input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
-        </form>
-    
+                  }else{
+                      
+                          settings.style.display="block";
+                
+                  }
+                
+                    window.onclick = function(event) {
+                    if (event.target == settings ||event.target == body  ||event.target == main ) {
+                    settings.style.display = "none";
+                    
+                    
+                        }
+                    }
+                }
+                    
+                    
+                    </script>
+                </body>
+                    
+                
+                </html>
+        
+        
 
-       
-        </div>
-    </div>
-    
-</body>
 
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,6 +7,7 @@ const Ocjena=require('./dataTypes/ocjene')
 const smjer=require('./dataTypes/smjerovi')
 const predmet=require('./dataTypes/predmeti')
 const Users=require('./dataTypes/user')
+const ejsLint = require('ejs-lint');
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
@@ -84,7 +85,7 @@ app.get('/home',checkAuthenticated,(req,res)=>{
   if(req.user.role==="admin"){
     res.render('./home/adminhome.ejs')
   }else if(req.user.role==="profesor"){
-    if(req.user.razrednoOdjeljenje==="nema"){
+    
       
         
         
@@ -99,14 +100,14 @@ app.get('/home',checkAuthenticated,(req,res)=>{
       
       
       })
-    }else{
+    /*else{
       res.render('./home/razrednihome.ejs',{
         odjeljenja:req.user.odjeljenjeKojimaPredaje,
         razrednoOdjeljenje:req.user.razrednoOdjeljenje,
         predmet:req.user.predmet
 
       })
-    }
+    }*/
   }else if(req.user.role==="ucenik"){
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   if(err) throw err
@@ -571,7 +572,8 @@ var u=JSON.parse(req.query.ucenik)
 
 res.render('./ocjene/predmet.ejs',{predmet:p,
   ucenik:u,
-user_predmet:req.user.predmet})
+user_predmet:req.user.predmet,
+brojpredmeta:req.user.predmet.length})
 
 })
 app.get('/ocjene/dodaj',checkAuthenticated,checkProfesor,(req,res)=>{
@@ -620,11 +622,11 @@ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   db.db(skolskaGodina).collection('userinfo').updateOne({_userid:ObjectID(u._userid)},{ $push: {ocjene:o} },(err,done)=>{
 
     if(err) throw err
-    res.redirect('/ocjene/ucenik')
+    
   })
 
 })
-
+res.redirect('/home')
 })
 
 //-----------------------------------------------------------------------------------------------------

@@ -29,7 +29,7 @@
        
         <form action="/ocjene/dodaj" method="POST" onclick="this.form.submit()">
            
-           <select name="opis">
+           <select name="opis" required>
                <option>Test modula</option>
                <option>Pismena provjera</option>
                <option>Esej</option>
@@ -38,7 +38,7 @@
 
 
            </select>
-           <select name="ocjena">
+           <select name="ocjena" required>
             <option selected hidden>Izaberite ocjenu</option>
             <option>1</option>
             <option>2</option>
@@ -47,7 +47,7 @@
             <option>5</option>
         </select>
         
-        <select name="modul">
+        <select name="modul" required>
           <option selected hidden>Izaberite modul</option>
               <%  for(var i=1;i<=predmet.brojModula;i++){%>
 <option><%= i %> </option>
