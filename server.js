@@ -543,7 +543,7 @@ app.get('/ocjene/ucenici',checkAuthenticated,checkProfesor,(req,res)=>{
 
 })
 app.get('/ocjene/ucenik',checkAuthenticated,checkProfesor,(req,res)=>{
-
+  
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 if(err) throw err
 db.db(skolskaGodina).collection('userinfo').findOne({_userid:ObjectID(req.query.ucenik)},(err,ucenik)=>{
@@ -566,7 +566,12 @@ prezime:req.user.prezime
 
 })
 app.get('/ocjene/predmet',checkAuthenticated,checkProfesor,(req,res)=>{
+  if(req.query.action=="update"){
 
+    console.log(req.query)
+    
+    }
+    
 var p=JSON.parse(req.query.predmet)
 var u=JSON.parse(req.query.ucenik)
 
@@ -622,11 +627,11 @@ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   db.db(skolskaGodina).collection('userinfo').updateOne({_userid:ObjectID(u._userid)},{ $push: {ocjene:o} },(err,done)=>{
 
     if(err) throw err
-    
+    res.redirect('/ocjene/ucenici?odjeljenje='+u.odjeljenje)
   })
 
 })
-res.redirect('/home')
+
 })
 
 //-----------------------------------------------------------------------------------------------------
@@ -668,9 +673,22 @@ res.render('./ucenik/predmet.ejs',{
 
 //admin only
 //---------------------------------------------------------------------------------------------------------------------------------
-app.get('/predmeti',checkAuthenticated,(req,res)=>{
+app.get('/predmeti',checkAuthenticated,checkAdmin,(req,res)=>{
 
 if(req.user.role==="admin"){
+  if(req.query.del!=undefined){
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+if(err) throw err;
+db.db(skolskaGodina).collection("predmeti").deleteOne({_id:ObjectID(req.query.del)},(err,done)=>{
+if(err) throw err
+
+res.redirect("/predmeti")
+})
+
+
+})
+
+  }
 if(req.query.action==="dodaj"){
   MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
     if (err) throw err

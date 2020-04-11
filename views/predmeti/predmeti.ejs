@@ -1,28 +1,188 @@
-<html>
-<head>
 
-</head>
-<body>
-    <form action="/predmeti" >
 
-        <input type="submit" name="action" value="dodaj">
+    <html>
+        <head>
+            <title>Predmet</title>
+            <link rel="stylesheet" href="../style/style.css">
+        </head>
         
+                <body id="body">
+                    <div class="wrapper" id="wrapper">
+                        <div class="navbar">
+                            <img src="../media/user.svg" alt="avatar" class="avatar">
+                            <img>
+                            <img src="media/support.svg" class="settingsicon" alt="settings" >
+                           <button id="settingsbtn" class="settings" onclick="showsettings()">
+                                
+                                </button>
+                            
+                           
+                            
+                            
+                                <a href="/home"><p class="ime">Admin </p></a>
+                           
+                        </div>
+                        <div id="settings">
+                            <ul>
+                            
+                                <li><a href="">
+                                    <img src="../media/grid.svg" alt="home" class="homedropico">Home
+                                    
+                                    </a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a href="/settings">
+                                    <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                                    </a>
+                                
+                                
+                                </li>
+                                <hr>
+                                <li>
+                                    
+                                    <form action="/logout?_method=DELETE" method="POST">
+                                        <button type="submit" class="logout">
+                                            <img src="../media/logout.svg" alt="logout" class="logouticon"> Log out
+                                        </button>
+                                    </form>
+                                    
+                                
+                                
+                                
+                                </li>
+                                <hr>
+                            </ul>
+                            
+                            </div>
+                        <div class="main" id="main">
+                           
+                      <table border="1">
+                          <tr>
+                              <td>Predmet</td>
+                              <td> Smjer</td>
+                              <td>
+                                Razared
+                              </td>
+                              <td>
+                                  Broj modula
+                              </td>
+                              <td>Opis</td>
+                              <td>
+                                  Obrisi
+                              </td>
+                          </tr>
+                            <%predmeti.forEach(p=>{%>
+<tr>
+<td>
+
+<%=p.ime%>
+</td>
+<td>
+    <%=p.smjer%>
+</td>
+<td>
+    <%=p.razred%>
+</td>
+<td>
+    <%=p.brojModula%>
+</td>
+<td>
+    <%=p.opis%>
+</td>
+<td>
+
+    <form action="/predmeti" onclick="this.form.submit();">
+<button value="<%= p._id %>" name="del">Delete</button>
+
     </form>
-    <form action="/predmeti">
-     
-        <input type="submit"  name="action" value="obrisi" >
+
+
+</td>
+
+</tr>
+                                    
+                           <% })%>
+
+
+                      </table>     
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                            
+                           <form action="/predmeti" >
+
+                            <button class="btn" type="submit" name="action" value="dodaj">dodaj</button>
+                            
+                        </form>
+                        
+                        </div>
+                    </div>
+                    <script>
+                    function showsettings(){
+                   
+                    var settings = document.getElementById("settings");
+                var body=document.getElementById("body");
+                    var settingsbtn=document.getElementById("settingsbtn");
+                        var main=document.getElementById("main");
+                  if(settings.style.display=="block"){
+                      
+                          settings.style.display = "none";
+                
+                  }else{
+                      
+                          settings.style.display="block";
+                
+                  }
+                
+                    window.onclick = function(event) {
+                    if (event.target == settings ||event.target == body  ||event.target == main ) {
+                    settings.style.display = "none";
+                    
+                    
+                        }
+                    }
+                }
+                    
+                    
+                    </script>
+                </body>
+                    
+                
+                </html>
         
-    </form>
-    <%predmeti.forEach(p=>{%>
-        <p>predmet: <%=p.ime%> <br>
-            smjer: <%=p.smjer%><br>
-            razred: <%=p.razred%><br> 
-            broj modula: <%=p.brojModula%><br>
-          
-                profesor: <%=p.profesor%><br>
-          
-           opis: <%=p.opis%><br>
-            </p>
-   <% })%>
-</body>
-</html>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   

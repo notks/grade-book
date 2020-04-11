@@ -1,39 +1,124 @@
-<html>
-<head>
-    <title>ucenik</title>
-    <link rel="stylesheet" href="../style/home.css">
-</head>
-<body>
-    <div class="wrapper">
-        <div class="navbar">
-            <img src="media/user.svg" alt="avatar" class="avatar">
-            <img>
-            <img src="media/support.svg" class="settingsicon" alt="settings">
-            <a href="/settings"> <button class="settings">
+
+
+
+  <html>
+    <head>
+        <title><%=ucenik.ime %> <%= ucenik.prezime %></title>
+        <link rel="stylesheet" href="../style/style.css">
+    </head>
+    
+            <body id="body">
+                <div class="wrapper" id="wrapper">
+                    <div class="navbar">
+                        <img src="../media/user.svg" alt="avatar" class="avatar">
+                        <img>
+                        <img src="media/support.svg" class="settingsicon" alt="settings" >
+                       <button id="settingsbtn" class="settings" onclick="showsettings()">
+                            
+                            </button>
+                        
+                       
+                        
+                        
+                            <a href="/home"><p class="ime"><%= ucenik.ime %> <%= ucenik.prezime %> </p></a>
+                       
+                    </div>
+                    <div id="settings">
+                        <ul>
+                        
+                            <li><a href="">
+                                <img src="../media/grid.svg" alt="home" class="homedropico">Home
+                                
+                                </a>
+                            </li>
+                            <hr>
+                            <li>
+                                <a href="/settings">
+                                <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                                </a>
+                            
+                            
+                            </li>
+                            <hr>
+                            <li>
+                                
+                                <form action="/logout?_method=DELETE" method="POST">
+                                    <button type="submit" class="logout">
+                                        <img src="../media/logout.svg" alt="logout" class="logouticon"> Log out
+                                    </button>
+                                </form>
+                                
+                            
+                            
+                            
+                            </li>
+                            <hr>
+                        </ul>
+                        
+                        </div>
+                    <div class="main" id="main">
+                        <p align="center"> <table class="tabela" border="1">
+            <tr><td colspan="100%"><%= predmet.ime %> </td></tr> 
+           <tr>
+            <%for(var i=1;i<=predmet.brojModula;i++){%>
+
+<td colspan="1">
+Modul <%= i %> 
+</td>
+
+
+            <%} %> 
+            </tr>
+            <tr>
+                <%for(var i=1;i<=predmet.brojModula;i++){%>
+
+                  
+                     <td>
+                    <%ucenik.ocjene.forEach(o=>{%>
+ 
+               <%if(o.modul==i){%>
+              
+                    <button onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
+
+               <%} %> 
                 
-                </button></a>
-            <button class="n">
-            </button>
+                        <%}) %> 
+                    
+                </td>
+                    
+                                <%} %> 
+               
+
+            </tr>
+            <tr>
+              <%for(var i=1;i<=predmet.brojModula;i++){%>
+
+                  
+                <td>
+
+
+                  
+                </td>
+                
+ 
+               
+           </td>
+               
+                           <%} %> 
+
+            </tr>
             
-          <a href="/home"><p class="ime">Ime Prezime</p></a>
-            <div class="settinsmenu">
-            
-            
-            
-            
-            
-            </div>
-        </div>
-        <div class="main">
-        <%= predmet.ime %> <br>
-        
-         <form action="/ocjene/dodaj"  onclick="this.form.submit()">
+        </table>  
+        </p>     
+   <form action="/ocjene/dodaj"  onclick="this.form.submit()">
          <%if(brojpredmeta){%>
             
             
             <%user_predmet.forEach(up=>{%>
                 <% if(predmet.ime==up.ime && predmet.razred==up.razred ){%>
-                    <button  value="<%=JSON.stringify(predmet)%>" name="predmet">dodaj ocjenu</button>
+                  <p align="center">
+                       <button class="btn"  value="<%=JSON.stringify(predmet)%>" name="predmet">Dodaj ocjenu</button>
+                  </p> 
                           <%}%>
     
     
@@ -46,7 +131,10 @@
 
 
             <% if(predmet.ime==user_predmet.ime && predmet.razred==user_predmet.razred){%>
-                <button  value="<%=JSON.stringify(predmet)%>" name="predmet">dodaj ocjenu</button>
+               <p>
+
+                <button class="btn"  value="<%=JSON.stringify(predmet)%>" name="predmet">Dodaj ocjenu</button>
+               </p> 
                       <%}%>
 
 
@@ -54,9 +142,171 @@
                 <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
 
                 </form>
-        </div>
-    </div>
-    
-</body>
+                <form action="/ocjene/predmet" id="procenat" >
+                    <table>
+<tr>
+<td>Test modula:</td><td><input type="number" name="Test modula" placeholder="Test modula" value="50">     % </td>
 
-</html>                                         
+</tr>
+<tr>
+<td>Pismena provjera:</td><td><input type="number" name="Pismena provjera" placeholder="Pismena provjera" value="10"> %                                                                                                                             
+</td>
+
+</tr><tr>
+
+
+    <td>Esej:</td><td> <input type="number" name="Esej" placeholder="Esej" value="10">    %     </td>
+</tr>
+<tr>
+    <td>Usmena provjera:</td><td><input type="number" name="Usmena provjera" placeholder="Usmena provjera" value="10">   %  </td>
+</tr>
+<tr><td>
+    Aktivnost:</td> <td> <input type="number" name="Aktivnost" placeholder="Aktivnost" value="10">             %  </td>
+</tr>
+<tr>
+    <td>Vjezba:</td><td>  <input type="number" name="Vjezba" placeholder="Vjezba" value="10">              % </td>
+</tr>
+
+                    </table>
+                    <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
+                    <input type="text" value="<%= JSON.stringify(predmet) %>" name="predmet" hidden>
+
+                       <button type="submit" name="action" value="update">Update</button>
+                </form>
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div id="modal-content" class="modal-content">
+    
+    
+  </div>
+</div>
+
+                      
+
+
+                    </div>
+                </div>
+                <script>
+                function showsettings(){
+               
+                var settings = document.getElementById("settings");
+            var body=document.getElementById("body");
+                var settingsbtn=document.getElementById("settingsbtn");
+                    var main=document.getElementById("main");
+              if(settings.style.display=="block"){
+                  
+                      settings.style.display = "none";
+            
+              }else{
+                  
+                      settings.style.display="block";
+            
+              }
+            
+                window.onclick = function(event) {
+                if (event.target == settings ||event.target == body  ||event.target == main ) {
+                settings.style.display = "none";
+                
+                
+                    }
+                }
+            }
+                
+            function show (o){
+    var x=JSON.parse(o)
+    var modal = document.getElementById("myModal");
+    
+    var ocjena=document.getElementById('modal-content')
+    modal.style.display="block";
+  
+    ocjena.innerHTML=
+    
+    
+    "<p>"+x.ocjena+"<br>"+x.datum+"<br>"+
+    x.profesor+"<br>"+
+    x.opis+"<br>"+"</p>"
+
+     
+    window.onclick = function(event) {
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
+  }
+
+
+
+}    
+function checkprocent(){
+var f2=document.getElementById("procenat")
+
+
+
+}
+                </script>
+            </body>
+                
+            
+            </html>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

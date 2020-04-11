@@ -1,44 +1,82 @@
-<html>
-<head>
-    <title>ucenik</title>
-    <link rel="stylesheet" href="../style/home.css">
-</head>
-<body>
-    <div class="wrapper">
-        <div class="navbar">
-            <img src="media/user.svg" alt="avatar" class="avatar">
-            <img>
-            <img src="media/support.svg" class="settingsicon" alt="settings">
-            <a href="/settings"> <button class="settings">
-                
-                </button></a>
-            <button class="n">
-            </button>
-            
-          <a href="/home"><p class="ime">Ime Prezime</p></a>
-            <div class="settinsmenu">
-            
-            
-            
-            
-            
-            </div>
-        </div>
-        <div class="main">
-        <%= predmet.ime %> <br>
+
+    <html>
+        <head>
+            <title><%= ucenik.ime %> <%= ucenik.prezime %></title>
+            <link rel="stylesheet" href="../style/style.css">
+        </head>
+        
+             <body id="body">
+                            <div class="wrapper" id="wrapper">
+                                <div class="navbar">
+                                    <img src="../media/user.svg" alt="avatar" class="avatar">
+                                    <img>
+                                    <img src="media/support.svg" class="settingsicon" alt="settings" >
+                                   <button id="settingsbtn" class="settings" onclick="showsettings()">
+                                        
+                                        </button>
+                                    
+                                   
+                                    
+                                    
+                                        <a href="/home"><p class="ime"><%= ucenik.ime %> <%= ucenik.prezime %> </p></a>
+                                   
+                                </div>
+                                <div id="settings">
+                                    <ul>
+                                    
+                                        <li><a href="">
+                                            <img src="../media/grid.svg" alt="home" class="homedropico">Home
+                                            
+                                            </a>
+                                        </li>
+                                        <hr>
+                                        <li>
+                                            <a href="/settings">
+                                            <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                                            </a>
+                                        
+                                        
+                                        </li>
+                                        <hr>
+                                        <li>
+                                            
+                                            <form action="/logout?_method=DELETE" method="POST">
+                                                <button type="submit" class="logout">
+                                                    <img src="../media/logout.svg" alt="logout" class="logouticon"> Log out
+                                                </button>
+                                            </form>
+                                            
+                                        
+                                        
+                                        
+                                        </li>
+                                        <hr>
+                                    </ul>
+                                    
+                                    </div>
+                                <div class="main" id="main"><p align="center">
+<p style="color: white; font-size: 30px;
+color: white;" align="center"><%= predmet.ime %></p>
+        </p> <br>
        
         <form action="/ocjene/dodaj" method="POST" onclick="this.form.submit()">
-           
-           <select name="opis" required>
+           <p align="center">
+<select name="opis" class="select"required>
                <option>Test modula</option>
                <option>Pismena provjera</option>
                <option>Esej</option>
                <option>Usmena provjera</option>
                <option>Aktivnost</option>
+               <option>Vjezba</option>
 
 
            </select>
-           <select name="ocjena" required>
+
+
+           </p>
+
+           <p align="center">
+ <select name="ocjena"class="select" required>
             <option selected hidden>Izaberite ocjenu</option>
             <option>1</option>
             <option>2</option>
@@ -46,20 +84,71 @@
             <option>4</option>
             <option>5</option>
         </select>
-        
-        <select name="modul" required>
+
+
+
+           </p>
+           <p align="center">
+ <select name="modul" required class="select">
           <option selected hidden>Izaberite modul</option>
               <%  for(var i=1;i<=predmet.brojModula;i++){%>
 <option><%= i %> </option>
               <%} %> 
         </select>
-<input type="submit" value="dodaj">
+
+           </p>
+          
+        
+     <p align="center">
+       
+<button type="submit" class="btn">Dodaj</button>
+
+     </p>  
+
 <input type="text" value="<%= JSON.stringify(predmet) %>" name="predmet" hidden>
 <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
                     </form>
-        </div>
-    </div>
-    
-</body>
-
-</html>
+         
+                                   
+                                   
+                                   
+                                   
+        
+                                   
+        
+                                    
+                                </div>
+                            </div>
+                            <script>
+                            function showsettings(){
+                           
+                            var settings = document.getElementById("settings");
+                        var body=document.getElementById("body");
+                            var settingsbtn=document.getElementById("settingsbtn");
+                                var main=document.getElementById("main");
+                          if(settings.style.display=="block"){
+                              
+                                  settings.style.display = "none";
+                        
+                          }else{
+                              
+                                  settings.style.display="block";
+                        
+                          }
+                        
+                            window.onclick = function(event) {
+                            if (event.target == settings ||event.target == body  ||event.target == main ) {
+                            settings.style.display = "none";
+                            
+                            
+                                }
+                            }
+                        }
+                            
+                            
+                            </script>
+                        </body>
+                            
+                        
+                        </html>
+  

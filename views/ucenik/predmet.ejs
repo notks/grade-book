@@ -1,25 +1,62 @@
-<html>
-<head>
-    <title>Home</title>
-    <link rel="stylesheet" href="/style/predmet_ucenik.css">
-</head>
-<body>
-    <div class="wrapper">
-        <div class="navbar">
-            <img src="media/user.svg" alt="avatar" class="avatar">
-            <img>
-            <img src="media/support.svg" class="settingsicon" alt="settings">
-            <a href="/settings"> <button class="settings">
-                
-                </button></a>
-            <button class="n">
-            </button>
-            
-          <a href="/home"><p class="ime">Ime Prezime</p></a>
-           
-        </div>
-        <div class="main">
-        <table class="tabela" border="1">
+
+
+  <html>
+    <head>
+        <title><%= ime %> <%= prezime %></title>
+        <link rel="stylesheet" href="../style/style.css">
+    </head>
+    
+            <body id="body">
+                <div class="wrapper" id="wrapper">
+                    <div class="navbar">
+                        <img src="../media/user.svg" alt="avatar" class="avatar">
+                        <img>
+                        <img src="media/support.svg" class="settingsicon" alt="settings" >
+                       <button id="settingsbtn" class="settings" onclick="showsettings()">
+                            
+                            </button>
+                        
+                       
+                        
+                        
+                            <a href="/home"><p class="ime"><%= ime %> <%= prezime %> </p></a>
+                       
+                    </div>
+                    <div id="settings">
+                        <ul>
+                        
+                            <li><a href="">
+                                <img src="../media/grid.svg" alt="home" class="homedropico">Home
+                                
+                                </a>
+                            </li>
+                            <hr>
+                            <li>
+                                <a href="/settings">
+                                <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                                </a>
+                            
+                            
+                            </li>
+                            <hr>
+                            <li>
+                                
+                                <form action="/logout?_method=DELETE" method="POST">
+                                    <button type="submit" class="logout">
+                                        <img src="../media/logout.svg" alt="logout" class="logouticon"> Log out
+                                    </button>
+                                </form>
+                                
+                            
+                            
+                            
+                            </li>
+                            <hr>
+                        </ul>
+                        
+                        </div>
+                    <div class="main" id="main">
+                        <p align="center"> <table class="tabela" border="1">
             <tr><td colspan="100%"><%= predmet.ime %> </td></tr> 
            <tr>
             <%for(var i=1;i<=predmet.brojModula;i++){%>
@@ -70,7 +107,8 @@ modul <%= i %>
 
             </tr>
             
-        </table>       
+        </table>  
+        </p>     
   
 
 
@@ -79,32 +117,57 @@ modul <%= i %>
 
   <!-- Modal content -->
   <div id="modal-content" class="modal-content">
-    <span class="close">&times;</span>
+    
     
   </div>
 </div>
 
-        </div>
-    </div>
-    <script>
-function show (o){
+                      
+
+
+                    </div>
+                </div>
+                <script>
+                function showsettings(){
+               
+                var settings = document.getElementById("settings");
+            var body=document.getElementById("body");
+                var settingsbtn=document.getElementById("settingsbtn");
+                    var main=document.getElementById("main");
+              if(settings.style.display=="block"){
+                  
+                      settings.style.display = "none";
+            
+              }else{
+                  
+                      settings.style.display="block";
+            
+              }
+            
+                window.onclick = function(event) {
+                if (event.target == settings ||event.target == body  ||event.target == main ) {
+                settings.style.display = "none";
+                
+                
+                    }
+                }
+            }
+                
+            function show (o){
     var x=JSON.parse(o)
     var modal = document.getElementById("myModal");
-    var span = document.getElementsByClassName("close")[0];
+    
     var ocjena=document.getElementById('modal-content')
     modal.style.display="block";
   
     ocjena.innerHTML=
-    "<span class="+"close"+">&times;</span>"+
-    "<br>"+
+    
     
     "<p>"+x.ocjena+"<br>"+x.datum+"<br>"+
     x.profesor+"<br>"+
     x.opis+"<br>"+"</p>"
 
-      span.onclick = function() {
-    modal.style.display = "none";
-    }
+     
     window.onclick = function(event) {
     if (event.target == modal) {
     modal.style.display = "none";
@@ -113,9 +176,50 @@ function show (o){
 
 
 
-}
+}    
+                </script>
+            </body>
+                
+            
+            </html>
+    
+    
 
-    </script>
-</body>
 
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

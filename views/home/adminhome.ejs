@@ -1,20 +1,123 @@
+<html>
 <head>
     <title>
-        admin home
+       Home
     </title>
+    <link rel="stylesheet" href="../style/style.css">
 </head>
-<body>
-    <a href="/predmeti"><button value="predmeti">predmeti</button></a><br>
 
-    <a href="/register"><button>Dodaj korisnika</button> </a><br>
-    <a href="/smjerovi"><button value="smjerovi">smjerovi</button></a><br>
-    
-    <a href="/odjeljenja"><button value="odjeljenja">odjeljenja</button></a>
-    <br>
-    <a href="/addpage"><button value="page">ocjene setup</button></a>
-    <br>
+        
+                <body id="body">
+                    <div class="wrapper" id="wrapper">
+                        <div class="navbar">
+                            <img src="../media/user.svg" alt="avatar" class="avatar">
+                            <img>
+                            <img src="media/support.svg" class="settingsicon" alt="settings" >
+                           <button id="settingsbtn" class="settings" onclick="showsettings()">
+                                
+                                </button>
+                            
+                           
+                            
+                            
+                                <a href="/home"><p class="ime">Admin </p></a>
+                           
+                        </div>
+                        <div id="settings">
+                            <ul>
+                            
+                                <li><a href="">
+                                    <img src="../media/grid.svg" alt="home" class="homedropico">Home
+                                    
+                                    </a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a href="/settings">
+                                    <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                                    </a>
+                                
+                                
+                                </li>
+                                <hr>
+                                <li>
+                                    
+                                    <form action="/logout?_method=DELETE" method="POST">
+                                        <button type="submit" class="logout">
+                                            <img src="../media/logout.svg" alt="logout" class="logouticon"> Log out
+                                        </button>
+                                    </form>
+                                    
+                                
+                                
+                                
+                                </li>
+                                <hr>
+                            </ul>
+                            
+                            </div>
+                        <div class="main" id="main">
+                            <a href="/predmeti"><button class="btn" value="predmeti">predmeti</button></a>
 
-    <form action="/logout?_method=DELETE" method="POST">
-        <button type="submit">Log Out</button>
-      </form>
-</body>
+
+
+                            <a href="/register" >  <button class="btn" >Dodaj korisnika</button> </a>
+                            <a href="/smjerovi">   <button class="btn" value="smjerovi">smjerovi</button></a>
+                            
+                            <a href="/odjeljenja"> <button class="btn" value="odjeljenja">odjeljenja</button></a>
+                            
+                            <a href="/addpage">    <button class="btn" value="page">ocjene setup</button></a>
+                            
+                        </div>
+                    </div>
+                    <script>
+                    function showsettings(){
+                   
+                    var settings = document.getElementById("settings");
+                var body=document.getElementById("body");
+                    var settingsbtn=document.getElementById("settingsbtn");
+                        var main=document.getElementById("main");
+                  if(settings.style.display=="block"){
+                      
+                          settings.style.display = "none";
+                
+                  }else{
+                      
+                          settings.style.display="block";
+                
+                  }
+                
+                    window.onclick = function(event) {
+                    if (event.target == settings ||event.target == body  ||event.target == main ) {
+                    settings.style.display = "none";
+                    
+                    
+                        }
+                    }
+                }
+                    
+                    
+                    </script>
+                </body>
+                    
+                
+                </html>
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+   
