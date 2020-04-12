@@ -14,7 +14,7 @@ const methodOverride = require('method-override')
 const initializePassport = require('./passport-config')
 var path = require('path');
 require('dotenv').config()
-const url="mongodb://localhost:27017/"
+const url=process.env.url
 const MongoClient=require('mongodb').MongoClient
 const mongo=require('mongodb')
 var ObjectID = require('mongodb').ObjectID;
@@ -32,7 +32,7 @@ initializePassport(
 const userroute=require('./routes/users')
 var skolskaGodina=process.env.skolskaGodina;
 const users = []
-var hashedPassword 
+
 
 app.use(express.static(path.join(__dirname,'views')))
 app.set('view-engine', 'ejs')
@@ -41,7 +41,7 @@ app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
-  secret:"seacret",
+  secret:process.env.hash,
   resave: false,
   saveUninitialized: false
 }))
@@ -111,7 +111,7 @@ app.get('/home',checkAuthenticated,(req,res)=>{
   }else if(req.user.role==="ucenik"){
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   if(err) throw err
-db.db(skolskaGodina).collection('userinfo').findOne({_userid:ObjectID(req.user._id)},(err,ucenik)=>{
+db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.user._id)},(err,ucenik)=>{
 
 if(err) throw err
 res.render('./home/ucenik.ejs',{
@@ -502,7 +502,7 @@ ocjene:[],
 predmeti
 
 }
-db.db(skolskaGodina).collection('userinfo').insertOne(userpageins,(err,res)=>{
+db.db(skolskaGodina).collection('users').insertOne(userpageins,(err,res)=>{
   if (err) throw err
 })
   });
@@ -529,7 +529,7 @@ app.get('/ocjene/ucenici',checkAuthenticated,checkProfesor,(req,res)=>{
   MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
     if(err) throw err
     
-    db.db(skolskaGodina).collection('userinfo').find({odjeljenje:req.query.odjeljenje}).toArray((err,resp)=>{
+    db.db(skolskaGodina).collection('users').find({odjeljenje:req.query.odjeljenje}).toArray((err,resp)=>{
       if(err) throw err
      
       res.render('./ocjene/ucenici.ejs',
@@ -546,7 +546,7 @@ app.get('/ocjene/ucenik',checkAuthenticated,checkProfesor,(req,res)=>{
   
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 if(err) throw err
-db.db(skolskaGodina).collection('userinfo').findOne({_userid:ObjectID(req.query.ucenik)},(err,ucenik)=>{
+db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.query.ucenik)},(err,ucenik)=>{
 if(err) throw err
 res.render('./ocjene/ucenik.ejs',{
 ucenik:ucenik,
@@ -624,7 +624,7 @@ var o=new Ocjena(
 
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   if(err) throw err
-  db.db(skolskaGodina).collection('userinfo').updateOne({_userid:ObjectID(u._userid)},{ $push: {ocjene:o} },(err,done)=>{
+  db.db(skolskaGodina).collection('users').updateOne({_id:ObjectID(u._id)},{ $push: {ocjene:o} },(err,done)=>{
 
     if(err) throw err
     res.redirect('/ocjene/ucenici?odjeljenje='+u.odjeljenje)
@@ -641,7 +641,7 @@ app.get('/ucenik/predmet',checkAuthenticated,(req,res)=>{
 var predmet=JSON.parse(req.query.predmet)
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 if(err) throw err
-db.db(skolskaGodina).collection('userinfo').findOne({_userid:ObjectID(req.user._id)},(err,ucenik)=>{
+db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.user._id)},(err,ucenik)=>{
   if(err) throw err
 var ocjene=[]
 ucenik.ocjene.forEach(o=>{
