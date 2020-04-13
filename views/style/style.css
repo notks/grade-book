@@ -258,3 +258,22 @@ ucenik predmet info
         
         
     }
+
+    /*procentage updating */
+    .procentage{
+margin: auto;
+       color: white; 
+       font-size: 20px;
+
+    }
+    .procentage tr td input{
+        color: white;
+        background-color: transparent;
+        border: 0;
+        font-size: 25;
+        width:50px;
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        
+    }
+    

@@ -54,7 +54,7 @@ app.use(methodOverride('_method'))
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   if(err) throw err
   
-  //console.log(db.db(skolskaGodina).collection('users'))
+
   
   db.db(skolskaGodina).collection('users').find({}).toArray((err,res)=>{
  
@@ -127,18 +127,6 @@ predmeti:ucenik.predmeti})
 
   }
 })
-//ocjene
-//------------------------------------------------------------------------------------------------------------------------------
-app.get('/ocjene',checkAuthenticated,(req,res)=>{
- MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
-var dbo=db.db(skolskaGodina)
-var col=dbo.collection(req.query.odjeljenje).find({}).toArray((req,resp)=>{
-  console.log(resp)
-})
-
-    })
-
-})
 
 
 
@@ -164,7 +152,7 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 app.get('/register',checkAuthenticated, (req, res) => {
   //if(req.user.role==="admin"){
   if(req.query.user==="profesor"){
-MongoClient.connect(url,(err,db)=>{
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   if (err) throw err
 db.db(skolskaGodina).collection('predmeti').find({}).toArray((err,predmeti)=>{
   if (err) throw err
@@ -182,7 +170,7 @@ res.render("./register/regprofesor.ejs",{predmeti:predmeti,odjeljenja:odjeljenja
 
  }else if(req.query.user==="ucenik"){
    
-  MongoClient.connect(url,(err,db)=>{
+  MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
     if (err) throw err
   db.db(skolskaGodina).collection('smjerovi').find({}).toArray((err,smjerovi)=>{
     if (err) throw err
@@ -272,7 +260,7 @@ app.post('/registerUcenik',(req,res)=>{
   var ocjene=[]
  var role="ucenik"
   const {ime,prezime, email, adresa,odjeljenje,brojTelefona,imeroditelj1,telefonroditelj1,imeroditelj2,telefonroditelj2,jmbg}=req.body
-  console.log(odjeljenje)
+  
   var o=JSON.parse(odjeljenje)
 
   MongoClient.connect(url,{ useUnifiedTopology: true },function(err,db){
@@ -353,7 +341,7 @@ app.post('/registerAdmin',(req,res)=>{
   var regErrors=[]
  var role="admin"
   const {ime,prezime, email, adresa,brojTelefona}=req.body
-  MongoClient.connect(url,function(err,db){
+  MongoClient.connect(url,{useUnifiedTopology:true},function(err,db){
     var dbo=db.db(skolskaGodina)
     var col=dbo.collection('users').findOne({email:req.body.email}, async (err,existingUser)=>{
           if(existingUser!==null){
@@ -393,40 +381,6 @@ app.post('/registerAdmin',(req,res)=>{
      })
     }
 })
-//razredni----------------------------------------------------------------------------------------------------------------------
-app.get('/predmetiOdjeljenja',checkAuthenticated,(req,res)=>{
-if((req.user.role==="profesor" && req.user.razrednoOdjeljenje!=="nema")||(req.user.role==="admin")){
-  MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
-    if (err) throw err
-  
-    var dbo=db.db(skolskaGodina).collection('predmeti').find({}).toArray((err,predmeti)=>{
-if (err) throw err
-
-
-
- res.render('predmeti.ejs',{
-   predmeti:predmeti,
-
-})
-})
-}) 
-}
-})
-
-app.post('/predmetiOdjeljenja',checkAuthenticated,(req,res)=>{
-  if((req.user.role==="profesor" && req.user.razrednoOdjeljenje!=="nema")||(req.user.role==="admin")){
-console.log(req.body)
-console.log(JSON.parse(req.body))
-res.send("ok")
-
-  }
-
-
-}  )
-
-
-
-
 
 //-------------------------------------------------------------------------------------------------------------
 //ocjene
@@ -480,7 +434,27 @@ app.get('/ocjene/predmet',checkAuthenticated,checkProfesor,(req,res)=>{
     
 var p=JSON.parse(req.query.predmet)
 var u=JSON.parse(req.query.ucenik)
+ if(req.query.action=="update"){
 
+    MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+      if(err) throw err;
+      db.db(skolskaGodina).collection('predmeti').updateOne({ime:p.ime,razred:p.razred,brojModula:p.brojModula,smjer:p.smjer,opis:p.opis},
+        {$set:{procenti:
+          {testModula:Number(req.query.Testmodula),
+        pismenaProvjera:Number(req.query.Pismenaprovjera),
+        esej:Number(req.query.Esej),
+      usmenaprovjera:Number( req.query.Usmenaprovjera),
+    aktivnost:Number(req.query.Aktivnost),
+  vjezba:Number(req.query.Vjezba)}}},(err,done)=>{
+    if(err) throw err
+
+  })
+
+
+
+    })
+    
+    }
 res.render('./ocjene/predmet.ejs',{predmet:p,
   ucenik:u,
 user_predmet:req.user.predmet,
