@@ -1,7 +1,16 @@
+html{
+    height: 100%;
+ 
+}
 body{
-    
+   height: 100%;
     font-family: 'Open Sans', sans-serif;
-    background-color: #3978B8;
+  /* background-color: #3978B8;*/
+    /*background: rgb(218,83,210);*/
+ 
+       background: linear-gradient(180deg,#007991 40%, #78ffd6   150%);
+       background-repeat: no-repeat;
+       background-attachment: fixed;
 }
 .navbar{
     
@@ -261,7 +270,7 @@ ucenik predmet info
 
     /*procentage updating */
     .procentage{
-margin: auto;
+margin: auto    ;
        color: white; 
        font-size: 20px;
 
