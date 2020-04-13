@@ -223,12 +223,13 @@ Modul <%= i %>
     var ocjena=document.getElementById('modal-content')
     modal.style.display="block";
   
-    ocjena.innerHTML=
-    
-    
-    "<p>"+x.ocjena+"<br>"+x.datum+"<br>"+
-    x.profesor+"<br>"+
-    x.opis+"<br>"+"</p>"
+    ocjena.innerHTML="<table class=ocjenatable >"+
+"<tr>"+
+"<td rowspan=2 style=font-size:130px;>"+x.ocjena+"</td>"+
+"<td style=text-align:start;font-size:50px; >"+x.profesor+"</td>"+
+"<td rowspan=2 style=width:40%;font-size:50px; >"+ x.opis+"</td></tr>"+
+
+"<tr><td style=text-align:left;font-size:30px; >"+x.datum+"</td></tr></table>"
 
      
     window.onclick = function(event) {

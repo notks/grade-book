@@ -7,7 +7,7 @@ const mongodb=require('mongodb')
 
 mongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
     if (err) throw err
-    db.db('2019-2020').collection('userinfo').find({}).toArray((err,ucenik)=>{
+   /* db.db('2019-2020').collection('userinfo').find({}).toArray((err,ucenik)=>{
 
 
 if (err) throw err
@@ -20,6 +20,19 @@ ucenik.forEach(u => {
 })
 
     })
+})
+*/
+
+
+
+
+
+db.db('2019-2020').collection('users').findOne({},{ projection: { password: 0 } },(err,ucenik)=>{
+
+if(err) throw err
+console.log(ucenik)
+
+
 })
 /*db.db('2019-2020').collection('userinfo').find({},(err,ucenik=>{
 if(err) throw err;

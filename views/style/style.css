@@ -10,6 +10,10 @@ body{
     
     
 }
+.navbar a{
+
+    text-decoration: none;
+}
 #settings{
     
  display: none;
@@ -88,10 +92,12 @@ text-decoration: none;
     margin-left: 50px;
     display: none
 }
+
 .ime{
     position: relative;
     left: 60px;
     bottom: 50px;
+    text-decoration: none;
     
 }
 .wrapper{
@@ -224,6 +230,7 @@ ucenik predmet info
         border: 1px solid #888;
         width: 60%;
         text-align: center;
+        border-radius: 10px;
       }
       
       /* The Close Button */
@@ -241,4 +248,13 @@ ucenik predmet info
         cursor: pointer;
       }
       /* dodaj ejs section*/
-     
+
+
+      /*ocjena modal */
+      .ocjenatable{
+        width: 100%;
+        color: #3978B8;
+        text-align:center;
+        
+        
+    }

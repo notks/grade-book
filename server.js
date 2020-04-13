@@ -111,7 +111,7 @@ app.get('/home',checkAuthenticated,(req,res)=>{
   }else if(req.user.role==="ucenik"){
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   if(err) throw err
-db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.user._id)},(err,ucenik)=>{
+db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.user._id)},{ projection: { password: 0 } },(err,ucenik)=>{
 
 if(err) throw err
 res.render('./home/ucenik.ejs',{
@@ -268,15 +268,28 @@ app.post('/registerProfesor',(req,res)=>{
 
 app.post('/registerUcenik',(req,res)=>{
   var regErrors=[]
+  var predmeti
+  var ocjene=[]
  var role="ucenik"
   const {ime,prezime, email, adresa,odjeljenje,brojTelefona,imeroditelj1,telefonroditelj1,imeroditelj2,telefonroditelj2,jmbg}=req.body
   console.log(odjeljenje)
   var o=JSON.parse(odjeljenje)
-console.log(o)
+
   MongoClient.connect(url,{ useUnifiedTopology: true },function(err,db){
+    if(err) throw err
+    
+    db.db(skolskaGodina).collection('predmeti').find({smjer:o.smjer,razred:o.odjeljenje[0]},{ projection: { _id: 0 } }).toArray((err,predmet)=>{
+      if (err) throw err
+  predmeti=predmet
+      
+
+    })
+
+
+
     var dbo=db.db(skolskaGodina)
     var col=dbo.collection('users').findOne({email:req.body.email}, async (err,existingUser)=>{
-    
+    if(err) throw err;
       if(existingUser!==null){
     //render partial
     
@@ -314,6 +327,8 @@ console.log(o)
           imeroditelj2,
           telefonroditelj2,
           jmbg,
+          predmeti,
+          ocjene,
           role)
          dbo.collection('users').insertOne(ucenik,(err,response)=>{
           if(err) throw err
@@ -411,115 +426,6 @@ res.send("ok")
 
 
 
-//page--------------------------------------------------------------------------------------------------------
-app.get('/addpage',checkAuthenticated,checkAdmin,(req,res)=>{
-  
-    
-if(req.query.smjer===undefined){
-
-    MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
-      if (err) throw err
-    
-    
-  
-  db.db(skolskaGodina).collection("odjeljenja").find({}).toArray((err,odjeljenja)=>{
-    if(err) throw err
-res.render("./page/page.ejs",{odjeljenja:odjeljenja})
-
-  })
-  db.close()
-  }) 
-}
-})
-
-
-
-
-app.get('/addpage/predmeti',checkAuthenticated,checkAdmin,(req,res)=>{
-  var odjeljenje=JSON.parse(req.query.odjeljenje)
-
-MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
-if (err) throw err
-
-
-
- 
- 
-  db.db(skolskaGodina).collection('predmeti').find({smjer:odjeljenje.smjer,razred:odjeljenje.odjeljenje[0]},{ projection: { _id: 0 } }).toArray((err,predmet)=>{
-    if (err) throw err
-
-    
-    res.render('./page/pageadd.ejs',{
-  predmeti:predmet,odjeljenje:odjeljenje
-})
-  })
-  
-
-
-})
-
-
-})
-
-app.post('/addpage',checkAuthenticated,checkAdmin,(req,res)=>{
-const {predmet,imeRoditelja1,imeRoditelja2,jmbg,o}=req.body
-
-
- var odjeljenjepars=JSON.parse(o)
-  
-  var predmeti=[]
- 
- predmet.forEach(p => {
-   var pred=JSON.parse(p)
-  
-    predmeti.push(pred)
-  
-    
-  })
- 
-  
-  MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
- if(err) throw err
-
-db.db(skolskaGodina).collection('users').find({odjeljenje:odjeljenjepars.odjeljenje,role:'ucenik'}).toArray((err,users)=>{
-  if(err)throw err
-  console.log(users.length)
-  users.forEach(user => {
-    
-    var userpageins={
-ime:user.ime,
-prezime:user.prezime,
-imeRoditelja1:imeRoditelja1,
-imeRoditelja2:imeRoditelja2,
-jmbg:jmbg,
-_userid:user._id,
-odjeljenje:user.odjeljenje,
-email:user.email,
-smjer:user.smjer,
-brojTelefona:user.brojTelefona,
-adresa:user.adresa,
-ocjene:[],
-predmeti
-
-}
-db.db(skolskaGodina).collection('users').insertOne(userpageins,(err,res)=>{
-  if (err) throw err
-})
-  });
- res.send('ok')
-})
-
-
- 
-  
-
-
-
-
- 
-})
-
-})
 
 
 //-------------------------------------------------------------------------------------------------------------
@@ -529,7 +435,7 @@ app.get('/ocjene/ucenici',checkAuthenticated,checkProfesor,(req,res)=>{
   MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
     if(err) throw err
     
-    db.db(skolskaGodina).collection('users').find({odjeljenje:req.query.odjeljenje}).toArray((err,resp)=>{
+    db.db(skolskaGodina).collection('users').find({odjeljenje:req.query.odjeljenje},{ projection: { password: 0 } }).toArray((err,resp)=>{
       if(err) throw err
      
       res.render('./ocjene/ucenici.ejs',
@@ -546,7 +452,7 @@ app.get('/ocjene/ucenik',checkAuthenticated,checkProfesor,(req,res)=>{
   
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 if(err) throw err
-db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.query.ucenik)},(err,ucenik)=>{
+db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.query.ucenik)},{ projection: { password: 0 } },(err,ucenik)=>{
 if(err) throw err
 res.render('./ocjene/ucenik.ejs',{
 ucenik:ucenik,
@@ -641,7 +547,7 @@ app.get('/ucenik/predmet',checkAuthenticated,(req,res)=>{
 var predmet=JSON.parse(req.query.predmet)
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 if(err) throw err
-db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.user._id)},(err,ucenik)=>{
+db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.user._id)},{ projection: { password: 0 } },(err,ucenik)=>{
   if(err) throw err
 var ocjene=[]
 ucenik.ocjene.forEach(o=>{
@@ -693,11 +599,11 @@ if(req.query.action==="dodaj"){
   MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
     if (err) throw err
     var dbo=db.db(skolskaGodina)
-    var col=dbo.collection('users').find({role:"profesor"}).toArray((err,users)=>{
+    var col=dbo.collection('users').find({role:"profesor"},{ projection: { password: 0 } }).toArray((err,users)=>{
 if (err) throw err
 var usersfromDB=users
 var col=dbo.collection('smjerovi').find({}).toArray((err,smjerovi)=>{
-
+if(err) throw err
  res.render('./predmeti/dodaj.ejs',{
    users:usersfromDB,
 smjerovi:smjerovi
@@ -842,6 +748,19 @@ res.redirect('/odjeljenja')
         })
 })
 
+//settings
+//--------------------------------------------------------------------------------------------------------------------
+app.get('/settings',checkAuthenticated,(req,res)=>{
+if(req.user.role==="admin"){
+  res.send("admin")
+}
+if(req.user.role==="profesor"){
+  res.send("profesor")
+}
+if(req.user.role==="ucenik"){
+  res.send("ucenik")
+}
+})
 //-----------------------------------------------------------------------------------------------------------------------------------
 //logout
 app.delete('/logout',checkAuthenticated, (req, res) => {
@@ -880,29 +799,15 @@ function checkAdmin(req, res, next) {
  }
 }
 function checkProfesor(req, res, next) {
-  if (req.user.role==="profesor") {
+  if (req.user.role==="profesor" || req.user.role==="admin") {
    return next()
   }
  else {
    return res.render('noauth.ejs')
  }
 }
-function checkRazredni(req, res, next) {
-  if (req.user.role==="profesor" && req.user.razrednoOdjeljenje!=="nema") {
-   return next()
-  }
- else {
-   return res.render('noauth.ejs')
- }
-}
-function checkUcenik(req, res, next) {
-  if (req.user.role==="ucenik") {
-   return next()
-  }
- else {
-   return res.render('noauth.ejs')
- }
-}
+
+
 
 
 

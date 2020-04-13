@@ -1,5 +1,5 @@
 class Ucenik{
-    constructor(ime,prezime,email,password,brojTelefona,adresa,smjer,odjeljenje,imeroditelj1,telefonroditelj1,imeroditelj2,telefonroditelj2,jmbg,role){
+    constructor(ime,prezime,email,password,brojTelefona,adresa,smjer,odjeljenje,imeroditelj1,telefonroditelj1,imeroditelj2,telefonroditelj2,jmbg,predmeti,ocjene,role){
         this.ime=ime,
         this.prezime=prezime,
         this.email=email,
@@ -13,7 +13,10 @@ class Ucenik{
         this.telefonroditelj1=telefonroditelj1,
         this.imeroditelj2=imeroditelj2,
         this.telefonroditelj2=telefonroditelj2,
-        this.jmbg=jmbg
+        this.jmbg=jmbg,
+        this.ocjene=ocjene,
+        this.predmeti=predmeti
+        
 
         }
 
