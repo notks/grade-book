@@ -96,8 +96,98 @@ Modul <%= i %>
 
                   
                     <td>
-    zaklucna
-    
+                        <% var modul=0%> 
+                        <% var modulbr=0%> 
+                        <% var pismena=0%> 
+                        <% var pismenabr=0%> 
+
+                        <%var usmena=0%> 
+                        <%var usmenabr=0%> 
+
+                        <%var aktivnost=0%> 
+                        <%var aktivnostbr=0%> 
+
+                        <%var esej=0%> 
+                        <%var esejbr=0%> 
+
+                        <%var vjezba=0 %> 
+                        <%var vjezbabr=0%> 
+
+                        <% var konacno=0 %> 
+                        <%ucenik.ocjene.forEach(o=>{%>
+
+
+                        <% var konacno=0 %> 
+                            <%if(o.modul==i){%>
+                           
+<% if(o.opis==="Pismena provjera"){ %>
+     <%pismena=pismena+Number(o.ocjena) %> 
+     <%  pismenabr=pismenabr+1%>  
+     <%} %> 
+     <% if(o.opis==="Usmena provjera"){ %>
+        <%usmena=usmena+Number(o.ocjena) %>
+        <% usmenabr=usmenabr+1%> 
+  
+        <%} %> 
+        <% if(o.opis==="Esej"){ %>
+            <%esej=esej+Number(o.ocjena) %>
+            <% esejbr=esejbr+1%> 
+  
+            <%} %> 
+            <% if(o.opis==="Aktivnost"){ %>
+                <%aktivnost=aktivnost+Number(o.ocjena) %>  
+                <% aktivnostbr=aktivnostbr+1%> 
+
+                <%} %> 
+                <% if(o.opis==="Vjezba"){ %>
+                    <%vjezba=vjezba+Number(o.ocjena) %>
+                    <%vjezbabr=vjezbabr+1%> 
+  
+                    <%} %> 
+                    <% if(o.opis==="Test modula"){ %>
+                        <%modul=modul+Number(o.ocjena) %>  
+                        <% modulbr=modulbr+1%> 
+                        <%} %> 
+                               
+
+                            <%} %> 
+                             
+               <%}) %> 
+             
+
+                    <%if(pismenabr!=0 ){%>
+                        <%pismena=(pismena/pismenabr)*predmet.procenti.pismenaProvjera/100 %> 
+
+
+                    <%}%> 
+                    <%if(usmenabr!=0 ){%>
+                        <%usmena=(usmena/usmenabr)*predmet.procenti.usmenaprovjera/100 %> 
+
+
+                    <%}%> 
+                    <%if(esejbr!=0 ){%>
+                        <%esej=(esej/esejbr)*predmet.procenti.esej/100 %> 
+
+
+                    <%}%> 
+                    <%if(aktivnost!=0 ){%>
+                        <%aktivnost=(aktivnost/aktivnostbr)*predmet.procenti.aktivnost/100 %> 
+
+
+                    <%}%> 
+                    <%if(vjezbabr!=0 ){%>
+                        <%vjezba=(vjezba/vjezbabr)*predmet.procenti.vjezba/100 %> 
+
+
+                    <%}%> 
+                    <%if(modulbr!=0 ){%>
+                        <%modul=(modul/modulbr)*predmet.procenti.testModula/100 %> 
+
+
+                    <%}%> 
+                    
+               <%= konacno=pismena+usmena+esej+aktivnost+vjezba+modul%> 
+                           
                       
                     </td>
                     
@@ -144,29 +234,30 @@ Modul <%= i %>
                 <form action="/ocjene/predmet" id="procenat" >
                     <table class="procentage">
 <tr>
-<td>Test modula:</td><td><input type="number" name="Testmodula" placeholder="Test modula" value="50">     % </td>
+<td>Test modula:</td><td><input type="number" name="Testmodula" placeholder="Test modula" value="<%= predmet.procenti.testModula %>" step="any">     % </td>
 
 </tr>
 <tr>
-<td>Pismena provjera:</td><td><input type="number" name="Pismenaprovjera" placeholder="Pismena provjera" value="10"> %                                                                                                                             
+<td>Pismena provjera:</td><td><input type="number" name="Pismenaprovjera" placeholder="Pismena provjera" value="<%= predmet.procenti.pismenaProvjera %>" step="any"> %                                                                                                                             
 </td>
 
 </tr><tr>
 
 
-    <td>Esej:</td><td> <input type="number" name="Esej" placeholder="Esej" value="10">    %     </td>
+    <td>Esej:</td><td> <input type="number" name="Esej" placeholder="Esej" value="<%= predmet.procenti.esej %>" step="any">    %     </td>
 </tr>
 <tr>
-    <td>Usmena provjera:</td><td><input type="number" name="Usmenaprovjera" placeholder="Usmena provjera" value="10">   %  </td>
+    <td>Usmena provjera:</td><td><input type="number" name="Usmenaprovjera" placeholder="Usmena provjera" value="<%= predmet.procenti.usmenaprovjera %>" step="any">   %  </td>
 </tr>
 <tr><td>
-    Aktivnost:</td> <td> <input type="number" name="Aktivnost" placeholder="Aktivnost" value="10">             %  </td>
+    Aktivnost:</td> <td> <input type="number" name="Aktivnost" placeholder="Aktivnost" value="<%= predmet.procenti.aktivnost %>" step="any">             %  </td>
 </tr>
 <tr>
-    <td>Vjezba:</td><td>  <input type="number" name="Vjezba" placeholder="Vjezba" value="10">              % </td>
+    <td>Vjezba:</td><td>  <input type="number" name="Vjezba" placeholder="Vjezba" value="<%= predmet.procenti.vjezba %>" step="any">              % </td>
 </tr>
 
                     </table>
+                    <%console.log(predmet)%>
                     <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
                     <input type="text" value="<%= JSON.stringify(predmet) %>" name="predmet" hidden>
                     <%if(brojpredmeta){%>

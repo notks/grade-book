@@ -90,33 +90,116 @@ modul <%= i %>
 
             </tr>
             <tr>
-              <%for(var i=1;i<=predmet.brojModula;i++){%>
+                <%for(var i=1;i<=predmet.brojModula;i++){%>
 
                   
-                <td>
+                    <td>
+                        <% var modul=0%> 
+                        <% var modulbr=0%> 
+                        <% var pismena=0%> 
+                        <% var pismenabr=0%> 
+
+                        <%var usmena=0%> 
+                        <%var usmenabr=0%> 
+
+                        <%var aktivnost=0%> 
+                        <%var aktivnostbr=0%> 
+
+                        <%var esej=0%> 
+                        <%var esejbr=0%> 
+
+                        <%var vjezba=0 %> 
+                        <%var vjezbabr=0%> 
+
+                        <% var konacno=0 %> 
+                        <%ocjene.forEach(o=>{%>
 
 
-                  
-                </td>
-                
- 
-               
-           </td>
-               
-                           <%} %> 
+                        <% var konacno=0 %> 
+                            <%if(o.modul==i){%>
+                           
+<% if(o.opis==="Pismena provjera"){ %>
+     <%pismena=pismena+Number(o.ocjena) %> 
+     <%  pismenabr=pismenabr+1%>  
+     <%} %> 
+     <% if(o.opis==="Usmena provjera"){ %>
+        <%usmena=usmena+Number(o.ocjena) %>
+        <% usmenabr=usmenabr+1%> 
+  
+        <%} %> 
+        <% if(o.opis==="Esej"){ %>
+            <%esej=esej+Number(o.ocjena) %>
+            <% esejbr=esejbr+1%> 
+  
+            <%} %> 
+            <% if(o.opis==="Aktivnost"){ %>
+                <%aktivnost=aktivnost+Number(o.ocjena) %>  
+                <% aktivnostbr=aktivnostbr+1%> 
+
+                <%} %> 
+                <% if(o.opis==="Vjezba"){ %>
+                    <%vjezba=vjezba+Number(o.ocjena) %>
+                    <%vjezbabr=vjezbabr+1%> 
+  
+                    <%} %> 
+                    <% if(o.opis==="Test modula"){ %>
+                        <%modul=modul+Number(o.ocjena) %>  
+                        <% modulbr=modulbr+1%> 
+                        <%} %> 
+                               
+
+                            <%} %> 
+                             
+               <%}) %> 
+             
+
+                    <%if(pismenabr!=0 ){%>
+                        <%pismena=(pismena/pismenabr)*predmet.procenti.pismenaProvjera/100 %> 
+
+
+                    <%}%> 
+                    <%if(usmenabr!=0 ){%>
+                        <%usmena=(usmena/usmenabr)*predmet.procenti.usmenaprovjera/100 %> 
+
+
+                    <%}%> 
+                    <%if(esejbr!=0 ){%>
+                        <%esej=(esej/esejbr)*predmet.procenti.esej/100 %> 
+
+
+                    <%}%> 
+                    <%if(aktivnost!=0 ){%>
+                        <%aktivnost=(aktivnost/aktivnostbr)*predmet.procenti.aktivnost/100 %> 
+
+
+                    <%}%> 
+                    <%if(vjezbabr!=0 ){%>
+                        <%vjezba=(vjezba/vjezbabr)*predmet.procenti.vjezba/100 %> 
+
+
+                    <%}%> 
+                    <%if(modulbr!=0 ){%>
+                        <%modul=(modul/modulbr)*predmet.procenti.testModula/100 %> 
+
+
+                    <%}%> 
+                    
+               <%= konacno=pismena+usmena+esej+aktivnost+vjezba+modul%> 
+                           
+                      
+                    </td>
+                    
+     
+                   
+              
+                   
+                               <%} %> 
 
             </tr>
             
         </table>  
         </p>     
-        <table border="1">
-            <tr>
-<td rowspan="3" style="color: #3978B8;font-size: 30;"> 3</td>
-<td>Edin Zulfic</td>
-
-            </tr>
-            <tr><td>datum</td></tr>
-        </table>
+  
   
 
 

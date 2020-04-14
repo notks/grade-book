@@ -266,7 +266,7 @@ app.post('/registerUcenik',(req,res)=>{
   MongoClient.connect(url,{ useUnifiedTopology: true },function(err,db){
     if(err) throw err
     
-    db.db(skolskaGodina).collection('predmeti').find({smjer:o.smjer,razred:o.odjeljenje[0]},{ projection: { _id: 0 } }).toArray((err,predmet)=>{
+    db.db(skolskaGodina).collection('predmeti').find({smjer:o.smjer,razred:o.odjeljenje[0]},{projection:{procenti:0}}).toArray((err,predmet)=>{
       if (err) throw err
   predmeti=predmet
       
@@ -426,14 +426,36 @@ prezime:req.user.prezime
 
 })
 app.get('/ocjene/predmet',checkAuthenticated,checkProfesor,(req,res)=>{
-  if(req.query.action=="update"){
+ var p=JSON.parse(req.query.predmet) 
+ var u=JSON.parse(req.query.ucenik)
+ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+if(err) throw err;
 
-    console.log(req.query)
-    
-    }
-    
-var p=JSON.parse(req.query.predmet)
-var u=JSON.parse(req.query.ucenik)
+ db.db(skolskaGodina).collection('predmeti').findOne({_id:ObjectID(p._id)},(err,predmet)=>{
+if (err) throw err
+
+
+console.log("predmet iz db")
+
+
+
+res.render('./ocjene/predmet.ejs',{predmet:predmet,
+  ucenik:u,
+user_predmet:req.user.predmet,
+brojpredmeta:req.user.predmet.length})
+
+
+
+
+
+
+
+})
+
+
+  })
+
+
  if(req.query.action=="update"){
 
     MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
@@ -455,10 +477,7 @@ var u=JSON.parse(req.query.ucenik)
     })
     
     }
-res.render('./ocjene/predmet.ejs',{predmet:p,
-  ucenik:u,
-user_predmet:req.user.predmet,
-brojpredmeta:req.user.predmet.length})
+   
 
 })
 app.get('/ocjene/dodaj',checkAuthenticated,checkProfesor,(req,res)=>{
@@ -533,16 +552,39 @@ if(o.predmet===predmet.ime)
 
 })
 
+  if(err) throw err;
+  
+   db.db(skolskaGodina).collection('predmeti').findOne({_id:ObjectID(predmet._id)},(err,predmet)=>{
+  if (err) throw err
+  
+  
+  
+  
+  
+  
+  res.render('./ucenik/predmet.ejs',{
+    predmet:predmet,
+    ime:req.user.ime,
+    prezime:req.user.prezime,
+    ocjene:ocjene
+  
+  
+  })
+  
+  
+  
+  
+  
+  
+  
+  })
+  
+  
+    
+  
 
 
-res.render('./ucenik/predmet.ejs',{
-  predmet:predmet,
-  ime:req.user.ime,
-  prezime:req.user.prezime,
-  ocjene:ocjene
 
-
-})
 })
 
 })

@@ -34,7 +34,7 @@ MongoClient.connect(process.env.url,{useUnifiedTopology:true},(err,db)=>{
              var admin=new Users.Admin(
                "admin",
                "admin",
-               "admin@aadmin",
+               "admin@admin",
                hasshedPassword,
                null,
                null,

@@ -23,14 +23,20 @@ ucenik.forEach(u => {
 })
 */
 
+var procenti=
+{testModula:Number(50),
+pismenaProvjera:Number(10),
+esej:Number(10),
+usmenaprovjera:Number(10),
+aktivnost:Number(10),
+vjezba:Number(10)}
 
 
 
-
-db.db('2019-2020').collection('users').findOne({},{ projection: { password: 0 } },(err,ucenik)=>{
+db.db('2019-2020').collection('predmeti').updateMany({},{$set:{procenti:procenti}},(err,ucenik)=>{
 
 if(err) throw err
-console.log(ucenik)
+console.log("done")
 
 
 })
