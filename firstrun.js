@@ -30,7 +30,7 @@ MongoClient.connect(process.env.url,{useUnifiedTopology:true},(err,db)=>{
            
        
          
-              var hasshedPassword=await bcrypt.hash("changeme",10)
+              var hasshedPassword=await bcrypt.hash("changemeadmin",10)
              var admin=new Users.Admin(
                "admin",
                "admin",

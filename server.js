@@ -112,7 +112,6 @@ app.get('/home',checkAuthenticated,(req,res)=>{
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   if(err) throw err
 db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.user._id)},{ projection: { password: 0 } },(err,ucenik)=>{
-
 if(err) throw err
 res.render('./home/ucenik.ejs',{
   ime:req.user.ime,
