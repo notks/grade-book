@@ -150,6 +150,9 @@ background-color:transparent;
     
 
 }
+.settings:hover{
+    cursor: pointer;
+}
 
 .ime{
     width: 20%;
@@ -184,6 +187,11 @@ background-color:transparent;
     border-radius: 5px;
 
     
+}
+.btn:hover{
+    cursor: pointer;
+    background-color: #2ecc71;
+    transition: 0.50s;
 }
 .userinfo{
 margin-left: 30px;
