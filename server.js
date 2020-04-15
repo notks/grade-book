@@ -14,7 +14,7 @@ const methodOverride = require('method-override')
 const initializePassport = require('./passport-config')
 var path = require('path');
 require('dotenv').config()
-const url=process.env.url
+const url=process.env.urlLocal
 const MongoClient=require('mongodb').MongoClient
 const mongo=require('mongodb')
 var ObjectID = require('mongodb').ObjectID;

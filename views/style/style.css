@@ -190,7 +190,7 @@ background-color:transparent;
 }
 .btn:hover{
     cursor: pointer;
-    background-color: #2ecc71;
+    background-color: #72b88f;
     transition: 0.50s;
 }
 .userinfo{
