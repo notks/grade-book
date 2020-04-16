@@ -434,7 +434,7 @@ if(err) throw err;
 if (err) throw err
 
 
-console.log("predmet iz db")
+
 
 
 
@@ -526,6 +526,14 @@ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 
     if(err) throw err
     res.redirect('/ocjene/ucenici?odjeljenje='+u.odjeljenje)
+    db.db(skolskaGodina).collection('log').insertOne({
+      type:"notify",
+      msg:"Korisnik "+(req.user.prezime+" "+req.user.ime)+" je unio novu ocjenu iz predmeta "+p.ime+"!",
+      odjeljenje:u.odjeljenje,
+      datum:datetime
+    },(err,res)=>{
+      if(err)throw err;
+    })
   })
 
 })
@@ -594,6 +602,20 @@ if(o.predmet===predmet.ime)
 
 //admin only
 //---------------------------------------------------------------------------------------------------------------------------------
+app.get('/logs',checkAuthenticated,checkAdmin,(req,res)=>{
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+  if(err)throw err
+  db.db(skolskaGodina).collection('log').find({}).toArray((err,logs)=>{
+if(err) throw err
+res.render('./log.ejs',{logs:logs})
+
+  })
+})
+
+
+})
+
+
 app.get('/predmeti',checkAuthenticated,checkAdmin,(req,res)=>{
 
 if(req.user.role==="admin"){

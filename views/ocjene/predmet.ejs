@@ -31,10 +31,11 @@
                                 
                                 </a>
                             </li>
+                            
                             <hr>
                             <li>
                                 <a href="/settings">
-                                <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                                <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settings
                                 </a>
                             
                             
@@ -57,7 +58,7 @@
                         
                         </div>
                     <div class="main" id="main">
-                        <p align="center"> <table class="tabela" border="1">
+                        <p align="center"> <table class="tabela" >
             <tr><td colspan="100%"><%= predmet.ime %> </td></tr> 
            <tr>
             <%for(var i=1;i<=predmet.brojModula;i++){%>
@@ -78,7 +79,7 @@ Modul <%= i %>
  
                <%if(o.modul==i){%>
               
-                    <button onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
+                    <button class="ocjenabtn" onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
 
                <%} %> 
                 
@@ -185,9 +186,10 @@ Modul <%= i %>
 
 
                     <%}%> 
-                    
-               <%= konacno=pismena+usmena+esej+aktivnost+vjezba+modul%> 
-                           
+                    <%konacno=pismena+usmena+esej+aktivnost+vjezba+modul%>
+                    <button class="zakljucnabtn"  id="zakljucna" disabled value="<%= konacno %>"><%= konacno%></button>  
+                   
+                       
                       
                     </td>
                     
@@ -234,7 +236,7 @@ Modul <%= i %>
                 <form action="/ocjene/predmet" id="procenat" >
                     <table class="procentage">
 <tr>
-<td>Test modula:</td><td><input type="number" name="Testmodula" placeholder="Test modula" value="<%= predmet.procenti.testModula %>" step="any">     % </td>
+<td>Test modula:</td><td><input type="number" class="" name="Testmodula" placeholder="Test modula" value="<%= predmet.procenti.testModula %>" step="any">     % </td>
 
 </tr>
 <tr>
@@ -257,7 +259,7 @@ Modul <%= i %>
 </tr>
 
                     </table>
-                    <%console.log(predmet)%>
+                  
                     <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
                     <input type="text" value="<%= JSON.stringify(predmet) %>" name="predmet" hidden>
                     <%if(brojpredmeta){%>
@@ -362,6 +364,17 @@ var f2=document.getElementById("procenat")
 
 
 }
+
+function checkzakljucna(o){
+    
+    console.log(o)
+var btn=document.getElementById("zakljucna")
+if(Number(o)<2.1){
+    btn.style.backgroundColor="#c94b4b"
+}
+
+}
+
                 </script>
             </body>
                 

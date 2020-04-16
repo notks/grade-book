@@ -31,7 +31,20 @@ function initialize(passport, getUserByEmail, getUserById) {
 //if  match return user 
 if(match)
 {
+  var currentdate = new Date();
+  var datetime =  + currentdate.getDate() + "/" + currentdate.getMonth() 
+  + "/" + currentdate.getFullYear() + " @ " 
+  + currentdate.getHours() + ":" 
+  + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+  db.db(skolskaGodina).collection('log').insertOne({
+    type:"login",
+    msg:"Korisnik "+(user.prezime+" "+user.ime)+" je izvrsio login!",
+    datum:datetime
+  },(err,res)=>{
+    if(err)throw err;
+  })
   return done(null,user)
+  
 }
 //if doesnt match return false with error message 
 else {

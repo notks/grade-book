@@ -211,17 +211,47 @@ ucenik predmet info
 
 .tabela{
    
-    border: thin;
+border: thin;
     border-color: white;
     color: white;
     font-size: 20;
     
     }
     .tabela td{
-
+width: 200px;
+height: 70px;
+font-size: 30;
         text-align: center;
       
     }
+   .ocjenabtn{
+margin: 5;
+    height: 50px;
+      width: 80px;
+    
+      background-color: #1F4287;
+      color: white;
+      border: 0;
+     
+      border-radius: 5px;
+      font-size: 30;
+   }
+   .ocjenabtn:hover{
+    cursor: pointer;
+    background-color: #72b88f;
+    transition: 0.50s;
+   }
+   .zakljucnabtn{
+       margin-top: 50px;
+background-color: #72b88f;
+border: 0;
+      color: #1F4287;
+      border: 0;
+      height: 50px;
+      width: 80px;
+      border-radius: 5px;
+      font-size: 30;
+   }
    
   
     .modal {
@@ -283,6 +313,7 @@ margin: auto    ;
        font-size: 20px;
 
     }
+    
     .procentage tr td input{
         color: white;
         background-color: transparent;
@@ -293,4 +324,14 @@ margin: auto    ;
         -moz-appearance: textfield;
         
     }
-    
+    /*logs*/
+    .logtable{
+        margin-top: 20px;
+        width: 100%;
+        height: 80%;
+        overflow:scroll;
+    }
+    .logtable tr td{
+        margin-left: 5px;
+
+    }

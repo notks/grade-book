@@ -33,7 +33,7 @@
                             <hr>
                             <li>
                                 <a href="/settings">
-                                <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settingts
+                                <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settings
                                 </a>
                             
                             
@@ -56,13 +56,13 @@
                         
                         </div>
                     <div class="main" id="main">
-                        <p align="center"> <table class="tabela" border="1">
+                        <p align="center"> <table class="tabela"  >
             <tr><td colspan="100%"><%= predmet.ime %> </td></tr> 
            <tr>
             <%for(var i=1;i<=predmet.brojModula;i++){%>
 
 <td colspan="1">
-modul <%= i %> 
+Modul <%= i %> 
 </td>
 
 
@@ -77,7 +77,7 @@ modul <%= i %>
  
                <%if(o.modul==i){%>
               
-                    <button onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
+                    <button class="ocjenabtn" onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
 
                <%} %> 
                 
@@ -184,7 +184,7 @@ modul <%= i %>
 
                     <%}%> 
                     
-               <%= konacno=pismena+usmena+esej+aktivnost+vjezba+modul%> 
+              <button class="zakljucnabtn" disabled><%= konacno=pismena+usmena+esej+aktivnost+vjezba+modul%> </button> 
                            
                       
                     </td>
