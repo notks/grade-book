@@ -789,15 +789,222 @@ res.redirect('/odjeljenja')
 //--------------------------------------------------------------------------------------------------------------------
 app.get('/settings',checkAuthenticated,(req,res)=>{
 if(req.user.role==="admin"){
-  res.send("admin")
+  res.render('./settings/adminsettings.ejs',{
+    ime:req.user.ime,
+    tel:req.user.brojTelefona,
+    prezime:req.user.prezime,
+    tel:req.user.brojTelefona,
+    adresa:req.user.adresa,
+    email:req.user.email
+  })
 }
 if(req.user.role==="profesor"){
-  res.send("profesor")
+  res.render('./settings/profesorsettings.ejs',{
+    ime:req.user.ime,
+    tel:req.user.brojTelefona,
+    prezime:req.user.prezime,
+    odjeljenje:req.user.razrednoOdjeljenje,
+    tel:req.user.brojTelefona,
+    adresa:req.user.adresa,
+    email:req.user.email
+  })
 }
 if(req.user.role==="ucenik"){
-  res.send("ucenik")
+  
+ res.render('./settings/uceniksettings.ejs',{
+   ime:req.user.ime,
+   prezime:req.user.prezime,
+   odjeljenje:req.user.odjeljenje,
+   tel:req.user.brojTelefona,
+   tel1:req.user.telefonroditelj1,
+   tel2:req.user.telefonroditelj2,
+   rod1:req.user.imeroditelj1,
+   rod2:req.user.imeroditelj2,
+   jmbg:req.user.jmbg,
+   smjer:req.user.smjer,
+   adresa:req.user.adresa,
+   email:req.user.email
+ })
 }
 })
+app.post('/settings',checkAuthenticated,async(req,res)=>{
+ if(req.user.role==="ucenik"){
+   console.log(req.body)
+    try{
+const {oldpwd,newpwd,newpwd2,email,tel,p1tel,p2tel,adresa}=req.body
+      MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
+        if(err)throw err
+        if(oldpwd!=''){
+         
+          console.log(oldpwd)
+          await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
+            if(match){
+             
+              if (newpwd===newpwd2){
+                
+                console.log(newpwd)
+var password=await bcrypt.hash(newpwd,10)
+                db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+              {
+                $set:{
+                  email:email,
+                  brojTelefona:tel,
+                  telefonroditelj2:p2tel,
+                  telefonroditelj1:p1tel,
+                  password:password,
+                  adresa:adresa
+                }
+              },(err,response)=>{
+              if(err)throw err
+                res.redirect(307,'/logout?_method=DELETE')
+              })
+              }else{
+                
+                res.send("Not matching passwords")
+              }
+            
+
+
+            }
+          })
+        }
+        
+        db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+        {$set:{
+          email:email,
+          brojTelefona:tel,
+          telefonroditelj2:p2tel,
+          telefonroditelj1:p1tel,
+          adresa:adresa
+        }},(err,response)=>{
+          if(err)throw err
+          res.redirect(307,'/logout?_method=DELETE')
+        })
+      })
+
+
+    }catch(e){
+      console.log(e)
+    }
+      
+  }
+  if(req.user.role==="profesor"){
+    console.log(req.body)
+     try{
+ const {oldpwd,newpwd,newpwd2,email,tel,clas,adresa}=req.body
+       MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
+         if(err)throw err
+         if(oldpwd!=''){
+          
+           console.log(oldpwd)
+           await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
+             if(match){
+              
+               if (newpwd===newpwd2){
+                 
+                 console.log(newpwd)
+ var password=await bcrypt.hash(newpwd,10)
+                 db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+               {
+                 $set:{
+                   email:email,
+                   adresa:adresa,
+                   brojTelefona:tel,
+                   password:password,
+                   razrednoOdjeljenje:clas
+                 }
+               },(err,response)=>{
+               if(err)throw err
+                 res.redirect(307,'/logout?_method=DELETE')
+               })
+               }else{
+                 
+                 res.send("Not matching passwords")
+               }
+             
+ 
+ 
+             }
+           })
+         }
+         
+         db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+         {$set:{
+           email:email,
+           brojTelefona:tel,
+           adresa:adresa,
+           razrednoOdjeljenje:clas
+         }},(err,response)=>{
+           if(err)throw err
+           res.redirect(307,'/logout?_method=DELETE')
+         })
+       })
+ 
+ 
+     }catch(e){
+       console.log(e)
+     }
+       
+   }if(req.user.role==="admin"){
+    console.log(req.body)
+     try{
+ const {oldpwd,newpwd,newpwd2,email,tel,adresa}=req.body
+       MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
+         if(err)throw err
+         if(oldpwd!=''){
+          
+           console.log(oldpwd)
+           await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
+             if(match){
+              
+               if (newpwd===newpwd2){
+                 
+                 console.log(newpwd)
+ var password=await bcrypt.hash(newpwd,10)
+                 db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+               {
+                 $set:{
+                   email:email,
+                   brojTelefona:tel,
+                   adresa:adresa,
+                   password:password
+                 }
+               },(err,response)=>{
+               if(err)throw err
+                 res.redirect(307,'/logout?_method=DELETE')
+               })
+               }else{
+                 
+                 res.send("Not matching passwords")
+               }
+             
+ 
+ 
+             }
+           })
+         }
+         
+         db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+         {$set:{
+           email:email,
+           brojTelefona:tel,
+           adresa:adresa
+         }},(err,response)=>{
+           if(err)throw err
+           res.redirect(307,'/logout?_method=DELETE')
+         })
+       })
+ 
+ 
+     }catch(e){
+       console.log(e)
+     }
+       
+   }
+
+
+})
+
 //-----------------------------------------------------------------------------------------------------------------------------------
 //logout
 app.delete('/logout',checkAuthenticated, (req, res) => {

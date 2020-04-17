@@ -335,3 +335,70 @@ margin: auto    ;
         margin-left: 5px;
 
     }
+    /*settings*/
+  
+    .avatarsettings{
+        margin-left: 50px;
+        margin-top: 10px;
+        height: 100px;
+        width:100px;
+    
+    }
+    .d{
+        clear: both;
+    }
+    .inputdiv{
+        
+        float: left;
+        margin-left: 50px;
+        margin-top: 50px;
+           color: white;
+    
+       
+    }
+    
+    .inputdiv input{
+        font-size: 35px;
+        background-color: transparent;
+    border: 0;
+    color: white;
+
+
+}
+    .custom-file-input {
+        position: relative;
+        bottom: 40px;
+        
+      color: transparent;
+    }
+    .custom-file-input::-webkit-file-upload-button {
+      visibility: hidden;
+    }
+    .custom-file-input::-moz-file-upload-button {
+        visibility: hidden;
+      }
+    .custom-file-input::before {
+        position: relative;
+        
+        left: 50px;
+      content: 'Upload image';
+      color: black;
+      display: inline-block;
+      background-color: #1F4287;
+      border-radius: 5px;
+      padding: 5px 8px;
+      outline: none;
+        color: white;
+      white-space: nowrap;
+      -webkit-user-select: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 10pt;
+    }
+    .custom-file-input:hover::before {
+     background-color: #72b88f;
+    }
+    .custom-file-input:active {
+      outline: 0;
+    }
+    

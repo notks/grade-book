@@ -1,0 +1,152 @@
+<html>
+<head>
+    <title><%= ime %> <%= prezime %>  </title>
+    <link rel="stylesheet" href="../style/style.css">
+</head>
+
+        <body id="body">
+            <div class="wrapper" id="wrapper">
+                <div class="navbar">
+                    <img src="../media/user.svg" alt="avatar" class="avatar">
+                    <img>
+                    <img src="media/support.svg" class="settingsicon" alt="settings" >
+                   <button id="settingsbtn" class="settings" onclick="showsettings()">
+                    
+                        </button>
+                
+                        <a href="/home"><p class="ime"><%= ime %> <%= prezime %>  </p></a>
+                </div>
+                <div id="settings">
+                    <ul>
+                    
+                        <li><a href="">
+                            <img src="../media/grid.svg" alt="home" class="homedropico">Home
+                            
+                            </a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a href="/settings">
+                            <img src="../media/settingsicoblack.svg" alt="settings" class="settingsdropico" >Settings
+                            </a>
+                        
+                        </li>
+                        <hr>
+                        <li>
+                            
+                            <form action="/logout?_method=DELETE" method="POST">
+                                <button type="submit" class="logout">
+                                    <img src="../media/logout.svg" alt="logout" class="logouticon"> Log out
+                                </button>
+                            </form>
+                            
+                        
+                        
+                        
+                        </li>
+                        <hr>
+                    </ul>
+                    
+                    </div>
+                <div class="main" id="main">
+                    <form action="/settings" method="POST">
+                      <!--
+ <div>
+                         <img src="../media/user.svg" name="avatar" id="avatar" class="avatarsettings">
+                       
+                        <input type="file" class="custom-file-input" name="avatarupl" accept="image/*" > </div>    
+                      -->                   
+                        <div class="d"></div>
+                        <div class="inputdiv">
+                         First Name<br>
+                            <input type="text" name="name"  value="<%= ime %>" readonly>
+                           
+                        </div>
+                       
+                       
+                        <div class="inputdiv">
+                          Last Name<br>
+                            <input type="text" name="surname"  value="<%= prezime %>" readonly>
+                           
+                        </div>
+                          <div class="inputdiv">
+                         Old password<br>
+                            <input type="password" name="oldpwd" placeholder="Old Password" readonly onfocus="this.removeAttribute('readonly');">
+                           
+                        </div>
+                        <div class="inputdiv">
+                          New password<br>
+                            <input type="password" name="newpwd"  placeholder="New Password" readonly onfocus="this.removeAttribute('readonly');" >
+                           
+                        </div>
+                         <div class="inputdiv">
+                          E-Mail<br>
+                            <input type="email" name="email"  value="<%= email %>" readonly onfocus="this.removeAttribute('readonly');" >
+                           
+                        </div>
+                                     <div class="inputdiv">
+                          Confirm password<br>
+                            <input type="password" name="newpwd2"  placeholder="Confirm Password" readonly onfocus="this.removeAttribute('readonly');" >
+                           
+                        </div>
+            
+                          <div class="inputdiv">
+                          Mentoring Class<br>
+                            <input type="text" name="clas"  value="<%= odjeljenje %>" readonly>
+                           </div>
+                    
+                       <div class="inputdiv">
+                          Telephone<br>
+                            <input type="text" name="tel"  value="<%= tel %>">
+                       </div>
+                    
+                        <div class="inputdiv">
+                            Adress<br>
+                              <input type="text" name="adresa"  value="<%= adresa %>" >
+                             
+                          </div>
+                          <div class="d"></div>
+                            <div class="inputdiv">
+                            
+                             <button type="submit" class="btn">Update info</button>
+                            
+                            </div>
+                           
+                        </form>
+            
+
+                </div>
+            </div>
+            <script>
+            function showsettings(){
+           
+            var settings = document.getElementById("settings");
+        var body=document.getElementById("body");
+            var settingsbtn=document.getElementById("settingsbtn");
+                var main=document.getElementById("main");
+          if(settings.style.display=="block"){
+              
+                  settings.style.display = "none";
+        
+          }else{
+              
+                  settings.style.display="block";
+        
+          }
+        
+            window.onclick = function(event) {
+            if (event.target == settings ||event.target == body  ||event.target == main ) {
+            settings.style.display = "none";
+            
+            
+                }
+            }
+        }
+            
+            
+            </script>
+        </body>
+            
+        
+        </html>
+
