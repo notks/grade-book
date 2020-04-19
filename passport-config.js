@@ -40,6 +40,7 @@ if(match)
     type:"login",
     msg:"Korisnik "+(user.prezime+" "+user.ime)+" je izvrsio login!",
     datum:datetime
+
   },(err,res)=>{
     if(err)throw err;
   })

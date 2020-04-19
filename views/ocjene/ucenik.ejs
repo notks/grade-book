@@ -57,15 +57,15 @@
                         <div class="main" id="main">
   <table  class="userinfo">
 <tr>
-<td rowspan="3">
+<td rowspan="4">
     <img src="../media/user.svg" alt="avatar" class="avataruserinfo">
 
 </td>
 <td>
-    Name: <%= ucenik.ime %> <%= ucenik.prezime %> 
+    Ime: <%= ucenik.ime %> <%= ucenik.prezime %> 
 </td>
 <td>
-Class:<%= ucenik.smjer %> <%= ucenik.odjeljenje %> 
+Odjeljenje:<%= ucenik.smjer %> <%= ucenik.odjeljenje %> 
 
 </td>
 
@@ -74,37 +74,30 @@ Class:<%= ucenik.smjer %> <%= ucenik.odjeljenje %>
 </tr>
 <tr>
     <td>
- ime roditelja
+Roditelj<br>
+ <%= ucenik.imeroditelj1 %> <br>
+ <%= ucenik.telefonroditelj1 %> 
 
     </td>
     <td>
-      imeroditelja 
-
+    Roditelj<br>
+      <%= ucenik.imeroditelj2 %> <br> 
+      <%= ucenik.telefonroditelj2 %> 
     </td>
 </tr>
-<tr>
-<td>broj roditelja</td>
-<td>
-    brojroditelja
-</td></tr>
+
 <tr>
     <td>
-        brojtelefona
+        Broj telefona<br>
+        <%= ucenik.brojTelefona %> 
 
-    </td>
+    </td><td>E-mail:<%= ucenik.email %> </td>
     
 </tr>
 <tr>
-    <td>jmbg <%= ucenik.jmbg %> </td>
-</tr>
-<tr>
-<td>
+    <td>JMBG <%= ucenik.jmbg %> </td><td>
     Adress:<%= ucenik.adresa %> 
 </td>
-
-</tr>
-<tr>
-    <td>E-mail:<%= ucenik.email %> </td>
 </tr>
 
 

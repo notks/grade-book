@@ -530,7 +530,8 @@ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
       type:"notify",
       msg:"Korisnik "+(req.user.prezime+" "+req.user.ime)+" je unio novu ocjenu iz predmeta "+p.ime+"!",
       odjeljenje:u.odjeljenje,
-      datum:datetime
+      datum:datetime,
+      ip:req.ip
     },(err,res)=>{
       if(err)throw err;
     })
@@ -612,6 +613,12 @@ res.render('./log.ejs',{logs:logs})
   })
 })
 
+
+})
+
+app.get('/manageusers',checkAuthenticated,checkAdmin,(req,res)=>{
+res.send("comming soon")
+  
 
 })
 
@@ -829,20 +836,20 @@ if(req.user.role==="ucenik"){
 })
 app.post('/settings',checkAuthenticated,async(req,res)=>{
  if(req.user.role==="ucenik"){
-   console.log(req.body)
+ 
     try{
 const {oldpwd,newpwd,newpwd2,email,tel,p1tel,p2tel,adresa}=req.body
       MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
         if(err)throw err
         if(oldpwd!=''){
          
-          console.log(oldpwd)
+         
           await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
             if(match){
              
               if (newpwd===newpwd2){
                 
-                console.log(newpwd)
+                
 var password=await bcrypt.hash(newpwd,10)
                 db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
               {
@@ -884,25 +891,26 @@ var password=await bcrypt.hash(newpwd,10)
 
 
     }catch(e){
-      console.log(e)
+      if (e) throw e
+      
     }
       
   }
   if(req.user.role==="profesor"){
-    console.log(req.body)
+    
      try{
  const {oldpwd,newpwd,newpwd2,email,tel,clas,adresa}=req.body
        MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
          if(err)throw err
          if(oldpwd!=''){
           
-           console.log(oldpwd)
+         
            await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
              if(match){
               
                if (newpwd===newpwd2){
                  
-                 console.log(newpwd)
+                 
  var password=await bcrypt.hash(newpwd,10)
                  db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
                {
@@ -942,24 +950,24 @@ var password=await bcrypt.hash(newpwd,10)
  
  
      }catch(e){
-       console.log(e)
+      if (e) throw e
      }
        
    }if(req.user.role==="admin"){
-    console.log(req.body)
+    
      try{
  const {oldpwd,newpwd,newpwd2,email,tel,adresa}=req.body
        MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
          if(err)throw err
          if(oldpwd!=''){
           
-           console.log(oldpwd)
+          
            await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
              if(match){
               
                if (newpwd===newpwd2){
                  
-                 console.log(newpwd)
+                 
  var password=await bcrypt.hash(newpwd,10)
                  db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
                {
@@ -997,7 +1005,7 @@ var password=await bcrypt.hash(newpwd,10)
  
  
      }catch(e){
-       console.log(e)
+      if (e) throw e
      }
        
    }

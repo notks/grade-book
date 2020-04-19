@@ -5,6 +5,87 @@
     <head>
         <title><%=ucenik.ime %> <%= ucenik.prezime %></title>
         <link rel="stylesheet" href="../style/style.css">
+        <script>
+                        function showsettings(){
+           
+           var settings = document.getElementById("settings");
+       var body=document.getElementById("body");
+           var settingsbtn=document.getElementById("settingsbtn");
+               var main=document.getElementById("main");
+         if(settings.style.display=="block"){
+             
+                 settings.style.display = "none";
+       
+         }else{
+             
+                 settings.style.display="block";
+       
+         }
+       
+           window.onclick = function(event) {
+           if (event.target == settings ||event.target == body  ||event.target == main ) {
+           settings.style.display = "none";
+           
+           
+               }
+           }
+       }
+           
+       function show (o){
+var x=JSON.parse(o)
+
+var modal = document.getElementById("myModal");
+
+var ocjena=document.getElementById('modal-content')
+modal.style.display="block";
+
+ocjena.innerHTML="<table class=ocjenatable >"+
+"<tr>"+
+"<td rowspan=2 style=font-size:130px;>"+x.ocjena+"</td>"+
+"<td style=text-align:start;font-size:50px; >"+x.profesor+"</td>"+
+"<td rowspan=2 style=width:40%;font-size:50px; >"+ x.opis+"</td></tr>"+
+
+"<tr><td style=text-align:left;font-size:30px; >"+x.datum+"</td></tr></table>"
+
+
+window.onclick = function(event) {
+if (event.target == modal) {
+modal.style.display = "none";
+}
+}
+
+
+
+}    
+function checkprocent(){
+var f2=document.getElementById("procenat")
+
+
+
+}
+
+function checkzakljucna(o){
+
+console.log(o)
+var btn=document.getElementById("zakljucna")
+if(Number(o)<2.1){
+btn.style.backgroundColor="#c94b4b"
+}
+
+}
+function changecolor(o){
+var x=JSON.parse(o)
+console.log(x)
+var btn =document.getElementById("ocjena")
+if(x.opis=="Test modula"){
+ console.log("modul")
+btn.style.backgroundColor="red"
+}
+
+}
+
+
+        </script>
     </head>
     
             <body id="body">
@@ -71,15 +152,49 @@ Modul <%= i %>
             <%} %> 
             </tr>
             <tr>
+                  <% var broj=0%>
                 <%for(var i=1;i<=predmet.brojModula;i++){%>
 
-                  
                      <td>
                     <%ucenik.ocjene.forEach(o=>{%>
  
                <%if(o.modul==i){%>
-              
-                    <button class="ocjenabtn" onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
+         <%var id="ocjena"+broj%>
+ <button class="ocjenabtn" id="<%= id %>" onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
+ <% broj=broj+1 %> 
+   <script>
+               
+
+var btn =document.getElementById('<%=id%>')
+
+if('<%=o.opis%>'==="Test modula"){
+
+btn.style.backgroundColor="#c2484e"}
+if('<%=o.opis%>'==="Aktivnost"){
+ 
+btn.style.backgroundColor="#ab599d"}
+if('<%=o.opis%>'==="Usmena provjera"){
+ 
+btn.style.backgroundColor="#f09f59"}
+if('<%=o.opis%>'==="Esej"){
+
+btn.style.backgroundColor="#c5d143"}
+if('<%=o.opis%>'==="Pismena provjera"){
+
+btn.style.backgroundColor="#5bab55"}
+if('<%=o.opis%>'==="Vjezba"){
+ 
+btn.style.backgroundColor="#4e5247"}
+
+
+
+
+
+
+
+              </script>
+        
+                   
 
                <%} %> 
                 
@@ -236,26 +351,26 @@ Modul <%= i %>
                 <form action="/ocjene/predmet" id="procenat" >
                     <table class="procentage">
 <tr>
-<td>Test modula:</td><td><input type="number" class="" name="Testmodula" placeholder="Test modula" value="<%= predmet.procenti.testModula %>" step="any">     % </td>
+<td style="color: #c2484e;">Test modula:</td><td><input type="number" class="" name="Testmodula" placeholder="Test modula" value="<%= predmet.procenti.testModula %>" step="any">     % </td>
 
 </tr>
 <tr>
-<td>Pismena provjera:</td><td><input type="number" name="Pismenaprovjera" placeholder="Pismena provjera" value="<%= predmet.procenti.pismenaProvjera %>" step="any"> %                                                                                                                             
+<td style="color:#5bab55;">Pismena provjera:</td><td><input type="number" name="Pismenaprovjera" placeholder="Pismena provjera" value="<%= predmet.procenti.pismenaProvjera %>" step="any"> %                                                                                                                             
 </td>
 
 </tr><tr>
 
 
-    <td>Esej:</td><td> <input type="number" name="Esej" placeholder="Esej" value="<%= predmet.procenti.esej %>" step="any">    %     </td>
+    <td style="color:#c5d143;">Esej:</td><td> <input type="number" name="Esej" placeholder="Esej" value="<%= predmet.procenti.esej %>" step="any">    %     </td>
 </tr>
 <tr>
-    <td>Usmena provjera:</td><td><input type="number" name="Usmenaprovjera" placeholder="Usmena provjera" value="<%= predmet.procenti.usmenaprovjera %>" step="any">   %  </td>
+    <td style="color: #f09f59;">Usmena provjera:</td><td><input type="number" name="Usmenaprovjera" placeholder="Usmena provjera" value="<%= predmet.procenti.usmenaprovjera %>" step="any">   %  </td>
 </tr>
-<tr><td>
+<tr><td style="color: #ab599d;">
     Aktivnost:</td> <td> <input type="number" name="Aktivnost" placeholder="Aktivnost" value="<%= predmet.procenti.aktivnost %>" step="any">             %  </td>
 </tr>
 <tr>
-    <td>Vjezba:</td><td>  <input type="number" name="Vjezba" placeholder="Vjezba" value="<%= predmet.procenti.vjezba %>" step="any">              % </td>
+    <td style="color: #4e5247;">Vjezba:</td><td>  <input type="number" name="Vjezba" placeholder="Vjezba" value="<%= predmet.procenti.vjezba %>" step="any">              % </td>
 </tr>
 
                     </table>
@@ -307,75 +422,7 @@ Modul <%= i %>
 
                     </div>
                 </div>
-                <script>
-                function showsettings(){
-               
-                var settings = document.getElementById("settings");
-            var body=document.getElementById("body");
-                var settingsbtn=document.getElementById("settingsbtn");
-                    var main=document.getElementById("main");
-              if(settings.style.display=="block"){
-                  
-                      settings.style.display = "none";
-            
-              }else{
-                  
-                      settings.style.display="block";
-            
-              }
-            
-                window.onclick = function(event) {
-                if (event.target == settings ||event.target == body  ||event.target == main ) {
-                settings.style.display = "none";
-                
-                
-                    }
-                }
-            }
-                
-            function show (o){
-    var x=JSON.parse(o)
-    var modal = document.getElementById("myModal");
-    
-    var ocjena=document.getElementById('modal-content')
-    modal.style.display="block";
-  
-    ocjena.innerHTML="<table class=ocjenatable >"+
-"<tr>"+
-"<td rowspan=2 style=font-size:130px;>"+x.ocjena+"</td>"+
-"<td style=text-align:start;font-size:50px; >"+x.profesor+"</td>"+
-"<td rowspan=2 style=width:40%;font-size:50px; >"+ x.opis+"</td></tr>"+
 
-"<tr><td style=text-align:left;font-size:30px; >"+x.datum+"</td></tr></table>"
-
-     
-    window.onclick = function(event) {
-    if (event.target == modal) {
-    modal.style.display = "none";
-    }
-  }
-
-
-
-}    
-function checkprocent(){
-var f2=document.getElementById("procenat")
-
-
-
-}
-
-function checkzakljucna(o){
-    
-    console.log(o)
-var btn=document.getElementById("zakljucna")
-if(Number(o)<2.1){
-    btn.style.backgroundColor="#c94b4b"
-}
-
-}
-
-                </script>
             </body>
                 
             
