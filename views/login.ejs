@@ -12,6 +12,9 @@
   <body>
   
 <form class="box" action="/login" method="post">
+  <% if(messages.error){%>
+    <%=messages.error%>
+  <%} %> 
   <h1>Login</h1>
   <input type="text" name="email" placeholder="E-mail">
   <input type="password" name="password" placeholder="Password">

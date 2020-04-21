@@ -14,7 +14,7 @@ const methodOverride = require('method-override')
 const initializePassport = require('./passport-config')
 var path = require('path');
 require('dotenv').config()
-const url=process.env.urlLocal
+const url=process.env.url
 const MongoClient=require('mongodb').MongoClient
 const mongo=require('mongodb')
 var ObjectID = require('mongodb').ObjectID;
@@ -24,14 +24,12 @@ var opener=require('opener')
 var fr=require('./firstrun')
 
 initializePassport(
-  passport,
-  email => users.find(user => user.email === email),
-  id => users.find(user => user.id === id)
+  passport
 )
 
 const userroute=require('./routes/users')
 var skolskaGodina=process.env.skolskaGodina;
-const users = []
+
 
 
 app.use(express.static(path.join(__dirname,'views')))
@@ -841,6 +839,7 @@ app.post('/settings',checkAuthenticated,async(req,res)=>{
 const {oldpwd,newpwd,newpwd2,email,tel,p1tel,p2tel,adresa}=req.body
       MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
         if(err)throw err
+        
         if(oldpwd!=''){
          
          
@@ -897,19 +896,25 @@ var password=await bcrypt.hash(newpwd,10)
       
   }
   if(req.user.role==="profesor"){
-    
+    const {oldpwd,newpwd,newpwd2,email,tel,clas,adresa}=req.body
+    console.log("body:"+req.body)
      try{
- const {oldpwd,newpwd,newpwd2,email,tel,clas,adresa}=req.body
        MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
          if(err)throw err
+         console.log("oldpwd"+oldpwd)
          if(oldpwd!=''){
-          
+            
+  
          
            await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
              if(match){
+              console.log("match")
               
+
                if (newpwd===newpwd2){
-                 
+                console.log("new"+newpwd)
+                console.log("new2"+newpwd2)
+
                  
  var password=await bcrypt.hash(newpwd,10)
                  db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
@@ -954,20 +959,25 @@ var password=await bcrypt.hash(newpwd,10)
      }
        
    }if(req.user.role==="admin"){
-    
+     const {oldpwd,newpwd,newpwd2,email,tel,adresa}=req.body
+     console.log(req.body)
+
      try{
- const {oldpwd,newpwd,newpwd2,email,tel,adresa}=req.body
        MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
          if(err)throw err
+                   console.log("oldpwd"+oldpwd)
+
          if(oldpwd!=''){
-          
+
           
            await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
              if(match){
-              
+              console.log("match")
+
                if (newpwd===newpwd2){
                  
-                 
+                console.log("new"+newpwd)
+                console.log("new2"+newpwd2)
  var password=await bcrypt.hash(newpwd,10)
                  db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
                {
@@ -978,6 +988,8 @@ var password=await bcrypt.hash(newpwd,10)
                    password:password
                  }
                },(err,response)=>{
+                console.log("inertedpwd")
+
                if(err)throw err
                  res.redirect(307,'/logout?_method=DELETE')
                })
@@ -990,17 +1002,21 @@ var password=await bcrypt.hash(newpwd,10)
  
              }
            })
-         }
-         
-         db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+         }else{
+db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
          {$set:{
            email:email,
            brojTelefona:tel,
            adresa:adresa
          }},(err,response)=>{
+           console.log("inerted no pwd")
            if(err)throw err
            res.redirect(307,'/logout?_method=DELETE')
          })
+
+         }
+         
+         
        })
  
  

@@ -58,14 +58,49 @@
                         <div class="main" id="main">
                            <form action="/ocjene/ucenici" onclick="this.form.submit()">
             
+
+                            <%if(typeof odjeljenja=="object"){%>
             
-                <% odjeljenja.forEach(o=>{%>
+            
+                                <%odjeljenja.forEach(o=>{%>
+                                    
+                                     
+                                        <button class="btn" name="odjeljenje" value="<%=o  %>" ><%= o %> </button>
+                                    
+                                              
+                        
+                        
+                                 <%})%>
+                                
+                             
+                    
+                             <%}else{%>
+                               
+                    
+                    
+                              
+                                
+                              
+                    
+                                    <button class="btn" name="odjeljenje" value="<%=odjeljenja  %>" ><%= odjeljenja %> </button>
 
-                    <button class="btn" name="odjeljenje" value="<%=o  %>" ><%= o %> </button>
+                                  
+                                        
+                                   
+                    
+                    
+                             <%}%>
 
 
-                <%}) %> 
 
+
+
+
+
+
+
+          
+               
             
           
         </form>

@@ -1,13 +1,14 @@
+require('dotenv').config()
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 const MongoClient= require('mongodb').MongoClient
-const url="mongodb://localhost:27017/"
-require('dotenv').config()
+const url=process.env.url
+
 
 var skolskaGodina=process.env.skolskaGodina;
 
 //initialize passport in main server file
-function initialize(passport, getUserByEmail, getUserById) {
+function initialize(passport) {
   //getting username and password from body
   const authenticateUser = async (email, password, done) => {
     //getting matching email and password from db
