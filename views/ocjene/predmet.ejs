@@ -156,10 +156,12 @@ Modul <%= i %>
                 <%for(var i=1;i<=predmet.brojModula;i++){%>
 
                      <td>
-                    <%ucenik.ocjene.forEach(o=>{%>
+                    <%ocjene.forEach(o=>{%>
  
                <%if(o.modul==i){%>
          <%var id="ocjena"+broj%>
+
+         
  <button class="ocjenabtn" id="<%= id %>" onclick="show('<%=JSON.stringify(o)%>')"><%= o.ocjena %> </button><br>
  <% broj=broj+1 %> 
    <script>

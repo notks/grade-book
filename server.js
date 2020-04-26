@@ -423,37 +423,9 @@ prezime:req.user.prezime
 
 })
 app.get('/ocjene/predmet',checkAuthenticated,checkProfesor,(req,res)=>{
- var p=JSON.parse(req.query.predmet) 
- var u=JSON.parse(req.query.ucenik)
- MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
-if(err) throw err;
-
- db.db(skolskaGodina).collection('predmeti').findOne({_id:ObjectID(p._id)},(err,predmet)=>{
-if (err) throw err
-
-
-
-
-
-
-res.render('./ocjene/predmet.ejs',{predmet:predmet,
-  ucenik:u,
-user_predmet:req.user.predmet,
-brojpredmeta:req.user.predmet.length})
-
-
-
-
-
-
-
-})
-
-
-  })
-
-
- if(req.query.action=="update"){
+  var p=JSON.parse(req.query.predmet) 
+  var u=JSON.parse(req.query.ucenik)
+  if(req.query.action=="update"){
 
     MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
       if(err) throw err;
@@ -474,6 +446,42 @@ brojpredmeta:req.user.predmet.length})
     })
     
     }
+
+ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+if(err) throw err;
+
+ db.db(skolskaGodina).collection('predmeti').findOne({_id:ObjectID(p._id)},(err,predmet)=>{
+if (err) throw err
+
+
+var ocjene=[]
+u.ocjene.forEach(o=>{
+if(o.predmet===predmet.ime)
+{
+  ocjene.push(o)
+}
+})
+
+
+res.render('./ocjene/predmet.ejs',{predmet:predmet,
+  ocjene:ocjene,
+  ucenik:u,
+user_predmet:req.user.predmet,
+brojpredmeta:req.user.predmet.length})
+
+
+
+
+
+
+
+})
+
+
+  })
+
+
+ 
    
 
 })
