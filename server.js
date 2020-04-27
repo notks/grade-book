@@ -1,5 +1,5 @@
+require('dotenv').config()
 const express = require('express')
-process.env.firstRun=false
 const app = express()
 const bcrypt = require('bcrypt')
 const passport = require('passport')
@@ -7,28 +7,23 @@ const Ocjena=require('./dataTypes/ocjene')
 const smjer=require('./dataTypes/smjerovi')
 const predmet=require('./dataTypes/predmeti')
 const Users=require('./dataTypes/user')
-const ejsLint = require('ejs-lint');
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const initializePassport = require('./passport-config')
-var path = require('path');
-require('dotenv').config()
-const url=process.env.url
+const path = require('path');
 const MongoClient=require('mongodb').MongoClient
-const mongo=require('mongodb')
-var ObjectID = require('mongodb').ObjectID;
-var userpage=require('./dataTypes/page')
-var fs=require('fs')
-var opener=require('opener')
-var fr=require('./firstrun')
+const ObjectID = require('mongodb').ObjectID
+const fr=require('./firstrun')
+const url=process.env.url
+const skolskaGodina=process.env.skolskaGodina
+
 
 initializePassport(
   passport
 )
 
-const userroute=require('./routes/users')
-var skolskaGodina=process.env.skolskaGodina;
+
 
 
 
@@ -43,7 +38,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
-app.use('/users',checkAuthenticated,userroute)
+
 
 //passport
 app.use(passport.initialize())
