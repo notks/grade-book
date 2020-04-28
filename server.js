@@ -19,9 +19,7 @@ const url=process.env.url
 const skolskaGodina=process.env.skolskaGodina
 
 
-initializePassport(
-  passport
-)
+initializePassport(passport)
 
 
 
@@ -62,11 +60,7 @@ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 
 //frontpage
 app.get('/', checkNotAuthenticated, (req, res) => {
- 
 
-  if(req.query.login==='LogIn')
-  res.redirect('/login')
-  else
   res.render('home.ejs')
 })
 

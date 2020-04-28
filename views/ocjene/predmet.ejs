@@ -232,7 +232,7 @@ btn.style.backgroundColor="#4e5247"}
                         <%var vjezbabr=0%> 
 
                         <% var konacno=0 %> 
-                        <%ucenik.ocjene.forEach(o=>{%>
+                        <%ocjene.forEach(o=>{%>
 
 
                         <% var konacno=0 %> 
@@ -324,9 +324,9 @@ btn.style.backgroundColor="#4e5247"}
             
             <%user_predmet.forEach(up=>{%>
                 <% if(predmet.ime==up.ime && predmet.razred==up.razred ){%>
-                  <p align="center">
-                       <button class="btn"  value="<%=JSON.stringify(predmet)%>" name="predmet">Dodaj ocjenu</button>
-                  </p> 
+                 
+                      <p align="center"></p> <button class="btn"  value="<%=JSON.stringify(predmet)%>" name="predmet">Dodaj ocjenu</button>
+                  
                           <%}%>
     
     
@@ -339,7 +339,7 @@ btn.style.backgroundColor="#4e5247"}
 
 
             <% if(predmet.ime==user_predmet.ime && predmet.razred==user_predmet.razred){%>
-               <p>
+               <p align="center">
 
                 <button class="btn"  value="<%=JSON.stringify(predmet)%>" name="predmet">Dodaj ocjenu</button>
                </p> 
@@ -397,7 +397,7 @@ btn.style.backgroundColor="#4e5247"}
         
         
                     <% if(predmet.ime==user_predmet.ime && predmet.razred==user_predmet.razred){%>
-                       <p>
+                       <p align="center">
         
                         <button class="btn" value="update" name="action" type="submit">Update</button>
                        </p> 
@@ -405,7 +405,10 @@ btn.style.backgroundColor="#4e5247"}
         
         
                  <%}%>
-                       
+                 <p align="center">
+        
+                    <button class="btn">Obriši ocjenu</button>
+                   </p> 
                 </form>
 
 
