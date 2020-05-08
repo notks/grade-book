@@ -68,7 +68,7 @@ app.get('/', checkNotAuthenticated, (req, res) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------
 //home
-app.get('/home',checkAuthenticated,(req,res)=>{
+app.get('/home',checkAuthenticated,checkFirstTimeLogin,(req,res)=>{
   if(req.user.role==="admin"){
     res.render('./home/adminhome.ejs')
   }else if(req.user.role==="profesor"){
@@ -1076,7 +1076,31 @@ db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user
 
 
 })
+//first time login password change-----------------------------------------------------------------------------------------------
+app.get('/firstlogin',checkAuthenticated,(req,res)=>{
+  res.render('firstlogin.ejs',
+  {
+    name:req.user.ime,
+    surname:req.user.prezime
+  
+  })
+})
+app.post('/firstlogin',checkAuthenticated,async(req,res)=>{
+  if(req.body.newpassword1===req.body.newpassword2){
+  var newpassword=await bcrypt.hash(req.body.newpassword1,10)
+  MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+  if(err) throw err
+  db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},{$set:{password:newpassword,firstlogin:false}},(err,response)=>{
+    if(err) throw err
+    res.redirect(307,'/logout?_method=DELETE')
+  })
+})
 
+}else{
+    res.redirect(307,'/logout?_method=DELETE')
+  }
+
+})
 //-----------------------------------------------------------------------------------------------------------------------------------
 //logout
 app.delete('/logout',checkAuthenticated, (req, res) => {
@@ -1085,7 +1109,7 @@ app.delete('/logout',checkAuthenticated, (req, res) => {
   res.redirect('/login')
 })
 
-
+//middleware-----------------------------------------------------------------------------------------
 
 //checking if user is authenticated
 function checkAuthenticated(req, res, next) {
@@ -1122,7 +1146,13 @@ function checkProfesor(req, res, next) {
    return res.render('noauth.ejs')
  }
 }
-
+ function checkFirstTimeLogin(req,res,next){
+   if(req.user.firstlogin===true){
+     return res.redirect('/firstlogin')
+   }
+   next()
+   
+ }
 
 
 
