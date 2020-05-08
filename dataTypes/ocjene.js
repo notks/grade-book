@@ -1,5 +1,6 @@
 class Ocjena{
-constructor(ocjena,opis,datum,profesor,modul,predmet,{slika}={}){
+constructor(id,ocjena,opis,datum,profesor,modul,predmet,{slika}={}){
+    this.id=id,
 this.ocjena=ocjena,
 this.opis=opis,
 this.datum=datum,

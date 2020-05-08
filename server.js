@@ -476,22 +476,24 @@ brojpredmeta:req.user.predmet.length})
 })
 app.get('/ocjene/dodaj',checkAuthenticated,checkProfesor,(req,res)=>{
 
-  var p=JSON.parse(req.query.predmet)
-  var u=JSON.parse(req.query.ucenik)
 
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+    db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.query.ucenik)},{ projection: { password: 0 } },(err,studentFromDb)=>{
+if(err) throw err;
 
-res.render('./ocjene/dodaj.ejs',{
-  predmet:p,
-  ucenik:u,
+ db.db(skolskaGodina).collection('predmeti').findOne({ _id: ObjectID(req.query.predmet) }, (err, subjectFromDb) => {
+    if (err) throw err
+    
+    res.render('./ocjene/dodaj.ejs',{
+      predmet:subjectFromDb,
+      ucenik:studentFromDb,
+    
+    })
+  })
+  })
+  
 
 })
-
-
-
-
-  
-
-  
 
 })
 app.post('/ocjene/dodaj',checkAuthenticated,checkProfesor,(req,res)=>{
@@ -505,6 +507,7 @@ app.post('/ocjene/dodaj',checkAuthenticated,checkProfesor,(req,res)=>{
 
 
 var o=new Ocjena(
+  Math.random().toString(36).substring(2),
   req.body.ocjena,
   req.body.opis,
   datetime,
@@ -534,6 +537,54 @@ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
 
 })
 
+})
+
+
+app.get('/deleteGrade',checkAuthenticated,checkProfesor,(req,res)=>{
+  MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+    if(err) throw err
+    db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.query.ucenik)},{ projection: { password: 0 } },(err,studentFromDb)=>{
+if(err) throw err;
+
+ db.db(skolskaGodina).collection('predmeti').findOne({ _id: ObjectID(req.query.predmet) }, (err, subjectFromDb) => {
+    if (err) throw err
+    
+    var ocjene=[]
+    studentFromDb.ocjene.forEach(o=>{
+    if(o.predmet===subjectFromDb.ime)
+    {
+      ocjene.push(o)
+    }
+    })
+  console.log(ocjene)
+   res.render('./ocjene/delete.ejs',{
+     ucenik:studentFromDb._id,
+     ocjene:ocjene,
+     ime:studentFromDb.ime,
+     prezime:studentFromDb.prezime,
+     predmet:subjectFromDb
+   })
+  })
+  })
+  
+
+})
+
+
+   
+})
+app.post('/deleteGrade',(req,res)=>{
+  MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+if(err) throw err
+db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.body.student)},{ $pull: { ocjene: {id:req.body.id } } },(err,student)=>{
+  if(err) throw err;
+  console.log("done")
+  res.redirect("/home")
+})
+
+
+  })
+  
 })
 
 //-----------------------------------------------------------------------------------------------------

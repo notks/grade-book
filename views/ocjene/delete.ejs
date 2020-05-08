@@ -2,7 +2,7 @@
 
     <html>
         <head>
-            <title>Predmet</title>
+            <title><%= predmet.ime %> </title>
             <link rel="stylesheet" href="../style/style.css">
         </head>
         
@@ -19,7 +19,7 @@
                            
                             
                             
-                                <a href="/home"><p class="ime">Admin </p></a>
+                                <a href="/home"><p class="ime"><%= ime %><%= prezime %>   </p></a>
                            
                         </div>
                         <div id="settings">
@@ -56,61 +56,17 @@
                             
                             </div>
                         <div class="main" id="main">
-                           
-                      <table border="1">
-                          <tr>
-                              <td>Predmet</td>
-                              <td> Smjer</td>
-                              <td>
-                                Razared
-                              </td>
-                              <td>
-                                  Broj modula
-                              </td>
-                              <td>Opis</td>
-                              <td>
-                                  Obrisi
-                              </td>
-                          </tr>
-                            <%predmeti.forEach(p=>{%>
-<tr>
-<td>
-
-<%=p.ime%>
-</td>
-<td>
-    <%=p.smjer%>
-</td>
-<td>
-    <%=p.razred%>
-</td>
-<td>
-    <%=p.brojModula%>
-</td>
-<td>
-    <%=p.opis%>
-</td>
-<td>
-
-    <form action="/predmeti" onclick="this.form.submit();">
-<button class="deletebtn" value="<%= p._id %>" name="del">Delete</button>
-
-    </form>
+                           <table class="deletetable">
+<form action="/deleteGrade" method="POST" onclick="this.form.submit()">
+    <input value="<%=ucenik%>" hidden type="text" name="student">
+    <% ocjene.forEach(o => {%>
+        <tr><td><%= o.ocijena %></td><td><%= o.datum %> </td> <td><%= o.opis %> </td><td><button class="deletebtn" value="<%= o.id %>" name="id">Delete</button></td></tr> 
+      <% }) %> 
+</form>
 
 
-</td>
-
-</tr>
-                                    
-                           <% })%>
-
-
-                      </table>     
-                           
-                           
-                           
-                           
-                           
+                           </table>
+                     
                            
                            
                            
@@ -119,11 +75,7 @@
                            
                            
                             
-                           <form action="/predmeti" >
-
-                            <button class="btn" type="submit" name="action" value="dodaj">dodaj</button>
-                            
-                        </form>
+                          
                         
                         </div>
                     </div>

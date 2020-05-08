@@ -325,7 +325,7 @@ btn.style.backgroundColor="#4e5247"}
             <%user_predmet.forEach(up=>{%>
                 <% if(predmet.ime==up.ime && predmet.razred==up.razred ){%>
                  
-                      <p align="center"></p> <button class="btn"  value="<%=JSON.stringify(predmet)%>" name="predmet">Dodaj ocjenu</button>
+                      <p align="center"><button class="btn"  value="<%=predmet._id%>" name="predmet">Dodaj ocjenu</button></p> 
                   
                           <%}%>
     
@@ -341,16 +341,16 @@ btn.style.backgroundColor="#4e5247"}
             <% if(predmet.ime==user_predmet.ime && predmet.razred==user_predmet.razred){%>
                <p align="center">
 
-                <button class="btn"  value="<%=JSON.stringify(predmet)%>" name="predmet">Dodaj ocjenu</button>
+                <button class="btn"  value="<%=predmet._id%>" name="predmet">Dodaj ocjenu</button>
                </p> 
                       <%}%>
 
 
          <%}%>
-                <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
+                <input type="text" value="<%=ucenik._id%>" name="ucenik" hidden>
 
                 </form>
-                <form action="/ocjene/predmet" id="procenat" >
+                <form action="/ocjene/predmet" id="procenat" onclick="this.form.submit()" >
                     <table class="procentage">
 <tr>
 <td style="color: #c2484e;">Test modula:</td><td><input type="number" class="" name="Testmodula" placeholder="Test modula" value="<%= predmet.procenti.testModula %>" step="any">     % </td>
@@ -377,8 +377,8 @@ btn.style.backgroundColor="#4e5247"}
 
                     </table>
                   
-                    <input type="text" value="<%= JSON.stringify(ucenik) %>" name="ucenik" hidden>
-                    <input type="text" value="<%= JSON.stringify(predmet) %>" name="predmet" hidden>
+                    <input type="text" value="<%=ucenik._id%>" name="ucenik" hidden>
+                    <input type="text" value="<%=predmet._id%>" name="predmet" hidden>
                     <%if(brojpredmeta){%>
                     <%user_predmet.forEach(up=>{%>
                         <% if(predmet.ime==up.ime && predmet.razred==up.razred ){%>
@@ -405,11 +405,46 @@ btn.style.backgroundColor="#4e5247"}
         
         
                  <%}%>
-                 <p align="center">
-        
-                    <button class="btn">Obriši ocjenu</button>
-                   </p> 
+                
+
+
+                   
                 </form>
+                <form action="/deleteGrade"onclick="this.form.submit()">
+                  
+
+                <%if(brojpredmeta){%>
+                    <%user_predmet.forEach(up=>{%>
+                        <% if(predmet.ime==up.ime && predmet.razred==up.razred ){%>
+                            <input type="text" value="<%=ucenik._id%>" name="ucenik" hidden>
+
+                              <p align="center"> <button class="btn" name="predmet" value="<%=predmet._id%>">Obriši ocjenu</button> </p> 
+                          
+                                  <%}%>
+            
+            
+                     <%})%>
+                    
+                 
+        
+                 <%}else{%>
+                   
+        
+        
+                    <% if(predmet.ime==user_predmet.ime && predmet.razred==user_predmet.razred){%>
+                       <p align="center">
+                        <button class="btn" name="predmet" value="<%=predmet._id%>">Obriši ocjenu</button>
+                       </p> 
+                              <%}%>
+        
+        
+                 <%}%>
+                
+                
+
+                </form>
+                
+                 
 
 
 <!-- The Modal -->
