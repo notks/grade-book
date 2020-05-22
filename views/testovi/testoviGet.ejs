@@ -1,7 +1,8 @@
 
+
     <html>
         <head>
-            <title>Home</title>
+            <title>Predmet</title>
             <link rel="stylesheet" href="../style/style.css">
         </head>
         
@@ -18,7 +19,7 @@
                            
                             
                             
-                                <a href="/home"><p class="ime"><%= ime %> <%= prezime %> </p></a>
+                                <a href="/home"><p class="ime">Admin </p></a>
                            
                         </div>
                         <div id="settings">
@@ -29,7 +30,6 @@
                                     
                                     </a>
                                 </li>
-                                
                                 <hr>
                                 <li>
                                     <a href="/settings">
@@ -56,31 +56,26 @@
                             
                             </div>
                         <div class="main" id="main">
-<form action="/ocjene/ucenik" onclick="this.form.submit()">
-            
-           
-                <% ucenici.forEach(o=>{%>
-
-                    <button class="btn" name="ucenik" value="<%= o._id %>"><%= o.ime %> <%= o.prezime %> </button>
-
-
-                <%}) %> 
-                
-
-    
-
-             
-            
-        </form>
-        
-<form action="/testovi">
- <button class="btn" type="submit" name="odjeljenje" value="<%= odjeljenje %>">Neodrađeni testovi</button> 
-</form>
- 
-
-        
-      
-       
+                     <form action="/testovi" method="POST" >
+                    <select name="test" id="test-select">
+                        <option hidden selected>Izaberite vrstu ocijene</option>
+                    <option>Test modula</option>
+                    <option>Pismena provjera</option>
+                    <option>Esej</option>
+                    <option>Usmena provjera</option>
+                    <option>Aktivnost</option>
+                    <option>Vjezba</option>
+                    </select>
+                    <select name="predmet" id="test-select">
+                        <option hidden selected>Izaberite predmet</option>
+                   <%predmeti.forEach(p => {%>
+                     <option><%= p.ime %> </option>  
+                   <%}) %> 
+                    </select>
+                    <input name="odjeljenje" value="<%= odjeljenje %>" hidden type="text">
+                    <input type="submit" value="submit">
+                    </form>
+                        
                         </div>
                     </div>
                     <script>
@@ -115,6 +110,8 @@
                     
                 
                 </html>
+        
+        
 
 
 
@@ -139,7 +136,4 @@
 
 
 
-
-
-
-    
+   

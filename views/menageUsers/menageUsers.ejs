@@ -1,8 +1,47 @@
 
+
     <html>
         <head>
-            <title>Home</title>
+            <title>Predmet</title>
             <link rel="stylesheet" href="../style/style.css">
+            <style>
+                * {
+                  box-sizing: border-box;
+                }
+                
+                #myInput {
+                  background-color: transparent;
+                  background-position: 10px 10px;
+                  background-repeat: no-repeat;
+                  width: 100%;
+                  font-size: 16px;
+                  padding: 12px 20px 12px 40px;
+                  border:none;
+                  color: white;
+                  margin-bottom: 12px;
+                }
+                
+                #myTable {
+                  border-collapse: collapse;
+                  width: 100%;
+                  border: 2px solid #72b88f;
+                  font-size: 18px;
+                  color: white;
+                }
+                
+                #myTable th, #myTable td {
+                  text-align: left;
+                  padding: 12px;
+                }
+                
+                #myTable tr {
+                  border-bottom: 2px solid #72b88f;
+                }
+                
+                #myTable tr.header, #myTable tr:hover {
+                background-color: #72b88f;
+                }
+                </style>
         </head>
         
                 <body id="body">
@@ -18,7 +57,7 @@
                            
                             
                             
-                                <a href="/home"><p class="ime"><%= ime %> <%= prezime %> </p></a>
+                                <a href="/home"><p class="ime">Admin </p></a>
                            
                         </div>
                         <div id="settings">
@@ -29,7 +68,6 @@
                                     
                                     </a>
                                 </li>
-                                
                                 <hr>
                                 <li>
                                     <a href="/settings">
@@ -56,31 +94,39 @@
                             
                             </div>
                         <div class="main" id="main">
-<form action="/ocjene/ucenik" onclick="this.form.submit()">
-            
-           
-                <% ucenici.forEach(o=>{%>
+                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
 
-                    <button class="btn" name="ucenik" value="<%= o._id %>"><%= o.ime %> <%= o.prezime %> </button>
-
-
-                <%}) %> 
-                
-
+<form action="/menageUser"> 
+ <table id="myTable">
+<tr class="header">
+    <th>
+        Ime i prezime
+    </td>
+    <th colspan="2">
+        Role
+    </td>
+   
     
+</tr>
+<%users.forEach(u=>{%>
+    <tr>
+        <td>
+            <%=u.ime%> <%=u.prezime%>
+        </td>
+        <td>
+            <%=u.role%></td>
+            <td>
+                <button class="deletebtn" type="submit" name="id" value="<%=u._id%>">Uredi</button>
+            </td>
+    </tr>
+<%}) %> 
 
-             
-            
-        </form>
-        
-<form action="/testovi">
- <button class="btn" type="submit" name="odjeljenje" value="<%= odjeljenje %>">Neodrađeni testovi</button> 
+                     </table>
+
 </form>
- 
 
-        
-      
-       
+                    
+                        
                         </div>
                     </div>
                     <script>
@@ -108,13 +154,33 @@
                         }
                     }
                 }
-                    
+
+                function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
                     
                     </script>
                 </body>
                     
                 
                 </html>
+        
+        
 
 
 
@@ -139,7 +205,4 @@
 
 
 
-
-
-
-    
+   

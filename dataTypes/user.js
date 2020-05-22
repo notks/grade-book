@@ -1,5 +1,5 @@
 class Ucenik{
-    constructor(ime,prezime,email,password,brojTelefona,adresa,smjer,odjeljenje,imeroditelj1,telefonroditelj1,imeroditelj2,telefonroditelj2,jmbg,predmeti,ocjene,role){
+    constructor(ime,prezime,email,password,brojTelefona,adresa,smjer,odjeljenje,imeroditelj1,telefonroditelj1,imeroditelj2,telefonroditelj2,jmbg,predmeti,ocjene,role,firstlogin){
         this.ime=ime,
         this.prezime=prezime,
         this.email=email,
@@ -16,13 +16,14 @@ class Ucenik{
         this.jmbg=jmbg,
         this.ocjene=ocjene,
         this.predmeti=predmeti
+        this.firstlogin=firstlogin
         
 
         }
 
 }
 class Profesor{
-    constructor(ime,prezime,email,password,predmet,brojTelefona,adresa,role,odjeljenjeKojimaPredaje,{razrednoOdjeljenje}={}){
+    constructor(ime,prezime,email,password,predmet,brojTelefona,adresa,role,odjeljenjeKojimaPredaje,firstlogin,{razrednoOdjeljenje}={}){
         this.ime=ime,
         this.prezime=prezime,
         this.email=email,
@@ -33,11 +34,12 @@ class Profesor{
         this.razrednoOdjeljenje=razrednoOdjeljenje,
         this.role=role
         this.odjeljenjeKojimaPredaje=odjeljenjeKojimaPredaje
+        this.firstlogin=firstlogin
         }
 
 }
 class Admin{
-    constructor(ime,prezime,email,password,brojTelefona,adresa,role){
+    constructor(ime,prezime,email,password,brojTelefona,adresa,role,firstlogin){
         this.ime=ime,
         this.prezime=prezime,
         this.email=email,
@@ -45,6 +47,7 @@ class Admin{
         this.brojTelefona=brojTelefona,
         this.adresa=adresa,
         this.role=role
+        this.firstlogin=firstlogin
         }
 }
 module.exports={
