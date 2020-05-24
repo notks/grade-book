@@ -727,6 +727,7 @@ app.get('/menageUser',checkAuthenticated,checkAdmin,(req,res)=>{
       if(err) throw err
      if(user.role==="ucenik"){
        res.render('./menageUsers/menageUcenik.ejs',{
+         id:req.query.id,
         ime:user.ime,
         prezime:user.prezime,
         odjeljenje:user.odjeljenje,
@@ -743,7 +744,8 @@ app.get('/menageUser',checkAuthenticated,checkAdmin,(req,res)=>{
        })
      }if(user.role==="profesor"){
       res.render('./menageUsers/menageProfesor.ejs',{
-        ime:user.ime,
+    id:req.query.id,
+     ime:user.ime,
     tel:user.brojTelefona,
     prezime:user.prezime,
     odjeljenje:user.razrednoOdjeljenje,
@@ -754,6 +756,7 @@ app.get('/menageUser',checkAuthenticated,checkAdmin,(req,res)=>{
      }
      if(user.role==="admin")
      res.render('./menageUsers/menageAdmin.ejs',{
+      id:req.query.id,
       ime:user.ime,
       tel:user.brojTelefona,
       prezime:user.prezime,
@@ -765,7 +768,265 @@ app.get('/menageUser',checkAuthenticated,checkAdmin,(req,res)=>{
   })
   
 })
+app.post('/manageUsers',checkAuthenticated,checkAdmin,(req,res)=>{
+  async function createPassword(){
+     MongoClient.connect(url, { useUnifiedTopology: true }, async (err, db) => {
+       if (err)
+         throw err
+       var password = await bcrypt.hash('changeme', 10)
+       db.db(skolskaGodina).collection('users').findOneAndUpdate({ _id: ObjectID(req.body.id) }, { $set: { password: password } }, (err, resp) => {
+         
+         if (err)
+           throw err
+       })
+     })
+res.redirect('/manageusers')
+    }
 
+
+   
+  if(req.body.action==="resetpwd"){
+    
+    createPassword()
+    
+   }
+
+  
+  if(req.body.action==="ucenik"){
+   
+const {name,surname,clas,dep,email,tel,p1tel,p2tel,adresa}=req.body
+    
+                   MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+
+                   
+             
+                db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.body.id)},
+              {
+                $set:{
+                  ime:name,
+                  prezime:surname,
+                  smjer:dep,
+                  odjeljenje:clas,
+                  email:email,
+                  brojTelefona:tel,
+                  telefonroditelj2:p2tel,
+                  telefonroditelj1:p1tel,
+                  adresa:adresa
+                }
+              },(err,response)=>{
+              if(err)throw err
+                res.redirect('/manageusers')
+              })
+             
+            })
+
+
+            
+          
+        
+       
+            }  
+            if(req.body.action==="profesor"){
+   
+              const {name,surname,clas,email,tel,adresa}=req.body
+                  
+                                 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+              
+                                 
+                           
+                              db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.body.id)},
+                            {
+                              $set:{
+                                ime:name,
+                                prezime:surname,
+                                razrednoOdjeljenje:clas,
+                                email:email,
+                                brojTelefona:tel,
+                                adresa:adresa
+                              }
+                            },(err,response)=>{
+                            if(err)throw err
+                              res.redirect('/manageusers')
+                            })
+                           
+                          })
+              
+              
+                          
+                        
+                      
+                     
+                          }  
+                          if(req.body.action==="admin"){
+   
+                            const {name,surname,email,tel,adresa}=req.body
+                                
+                                               MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+                            
+                                               
+                                         
+                                            db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.body.id)},
+                                          {
+                                            $set:{
+                                              ime:name,
+                                              prezime:surname,
+                                              email:email,
+                                              brojTelefona:tel,
+                                              adresa:adresa
+                                            }
+                                          },(err,response)=>{
+                                          if(err)throw err
+                                            res.redirect('/manageusers')
+                                          })
+                                         
+                                        })
+                            
+                            
+                                        
+                                      
+                                    
+                                   
+                                        }  
+
+
+      
+  
+})/*
+  if(req.user.role==="profesor"){
+    const {oldpwd,newpwd,newpwd2,email,tel,clas,adresa}=req.body
+    console.log("body:"+req.body)
+     try{
+       MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
+         if(err)throw err
+         console.log("oldpwd"+oldpwd)
+         if(oldpwd!=''){
+            
+  
+         
+           await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
+             if (err) throw err
+             if(match){
+              console.log("match")
+              
+
+               if (newpwd===newpwd2){
+                console.log("new"+newpwd)
+                console.log("new2"+newpwd2)
+
+                 
+ var password=await bcrypt.hash(newpwd,10)
+                 db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+               {
+                 $set:{
+                   email:email,
+                   adresa:adresa,
+                   brojTelefona:tel,
+                   password:password,
+                   razrednoOdjeljenje:clas
+                 }
+               },(err,response)=>{
+               if(err)throw err
+                 res.redirect(307,'/logout?_method=DELETE')
+               })
+               }else{
+                 
+                 res.send("Not matching passwords")
+               }
+             
+ 
+ 
+             }
+           })
+         }
+         
+         db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+         {$set:{
+           email:email,
+           brojTelefona:tel,
+           adresa:adresa,
+           razrednoOdjeljenje:clas
+         }},(err,response)=>{
+           if(err)throw err
+           res.redirect(307,'/logout?_method=DELETE')
+         })
+       })
+ 
+ 
+     }catch(e){
+      if (e) throw e
+     }
+       
+   }if(req.user.role==="admin"){
+     const {oldpwd,newpwd,newpwd2,email,tel,adresa}=req.body
+     console.log(req.body)
+
+     try{
+       MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
+         if(err)throw err
+                   console.log("oldpwd"+oldpwd)
+
+         if(oldpwd!=''){
+
+          
+           await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
+             if(match){
+              console.log("match")
+
+               if (newpwd===newpwd2){
+                 
+                console.log("new"+newpwd)
+                console.log("new2"+newpwd2)
+ var password=await bcrypt.hash(newpwd,10)
+                 db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+               {
+                 $set:{
+                   email:email,
+                   brojTelefona:tel,
+                   adresa:adresa,
+                   password:password
+                 }
+               },(err,response)=>{
+                console.log("inertedpwd")
+
+               if(err)throw err
+                 res.redirect(307,'/logout?_method=DELETE')
+               })
+               }else{
+                 
+                 res.send("Not matching passwords")
+               }
+             
+ 
+ 
+             }
+           })
+         }else{
+db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+         {$set:{
+           email:email,
+           brojTelefona:tel,
+           adresa:adresa
+         }},(err,response)=>{
+           console.log("inerted no pwd")
+           if(err)throw err
+           res.redirect(307,'/logout?_method=DELETE')
+         })
+
+         }
+         
+         
+       })
+ 
+ 
+     }catch(e){
+      if (e) throw e
+     }
+       
+   }
+
+*/
+
+//})
 
 app.get('/predmeti',checkAuthenticated,checkAdmin,(req,res)=>{
 
@@ -990,6 +1251,7 @@ const {oldpwd,newpwd,newpwd2,email,tel,p1tel,p2tel,adresa}=req.body
          
          
           await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
+            if(err) throw err
             if(match){
              
               if (newpwd===newpwd2){
@@ -1008,11 +1270,11 @@ var password=await bcrypt.hash(newpwd,10)
                 }
               },(err,response)=>{
               if(err)throw err
-                res.redirect(307,'/logout?_method=DELETE')
+                res.redirect('/logout?_method=DELETE',307)
+              
               })
               }else{
                 
-                res.send("Not matching passwords")
               }
             
 

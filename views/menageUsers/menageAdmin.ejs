@@ -52,7 +52,8 @@
                     
                     </div>
                 <div class="main" id="main">
-                    <form action="/settings" method="POST">
+                    <form action="/manageUsers" method="POST">
+                        <input type="text" name="id" value="<%= id %>" hidden>
                       <!--
  <div>
                          <img src="../media/user.svg" name="avatar" id="avatar" class="avatarsettings">
@@ -98,7 +99,7 @@
                            </div>
                             <div class="inputdiv">
                             
-                             <button type="submit" class="btn">Update info</button>
+                             <button type="submit" name="action" value="admin" class="btn">Update info</button>
                             
                             </div>
                            
