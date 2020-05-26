@@ -624,7 +624,6 @@ app.post('/testovi',checkAuthenticated,checkProfesor,(req,res)=>{
   )
   
    })
-   console.log(studentsWithoutGrade)
       res.render('./testovi/testoviShow.ejs',{
         studentsWithoutGrade:studentsWithoutGrade
       })
