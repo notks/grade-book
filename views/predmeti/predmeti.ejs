@@ -4,6 +4,44 @@
         <head>
             <title>Predmet</title>
             <link rel="stylesheet" href="../style/style.css">
+            <style>
+                * {
+                  box-sizing: border-box;
+                }
+                
+                #myInput {
+                  background-color: transparent;
+                  background-position: 10px 10px;
+                  background-repeat: no-repeat;
+                  width: 100%;
+                  font-size: 16px;
+                  padding: 12px 20px 12px 40px;
+                  border:none;
+                  color: white;
+                  margin-bottom: 12px;
+                }
+                
+                #myTable {
+                  border-collapse: collapse;
+                  width: 100%;
+                  border: 2px solid #72b88f;
+                  font-size: 18px;
+                  color: white;
+                }
+                
+                #myTable th, #myTable td {
+                  text-align: left;
+                  padding: 12px;
+                }
+                
+                #myTable tr {
+                  border-bottom: 2px solid #72b88f;
+                }
+                
+                #myTable tr.header, #myTable tr:hover {
+                background-color: #72b88f;
+                }
+                </style>
         </head>
         
                 <body id="body">
@@ -56,21 +94,22 @@
                             
                             </div>
                         <div class="main" id="main">
-                           
-                      <table border="1">
-                          <tr>
-                              <td>Predmet</td>
-                              <td> Smjer</td>
-                              <td>
+                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+                      <table id="myTable" border="1">
+                          <tr class="header">
+                              <th>Predmet</th>
+                              <th> Smjer</th>
+                              <th>
                                 Razared
-                              </td>
-                              <td>
+                              </th>
+                              <th>
                                   Broj modula
-                              </td>
-                              <td>Opis</td>
-                              <td>
+                              </th>
+                              <th>Opis</th>
+                              <th>
                                   Obrisi
-                              </td>
+                              </th>
                           </tr>
                             <%predmeti.forEach(p=>{%>
 <tr>
@@ -153,7 +192,24 @@
                     }
                 }
                     
-                    
+                function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
                     </script>
                 </body>
                     
