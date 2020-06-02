@@ -1,40 +1,73 @@
-<head>
-    <title>
-        Register Professor
-    </title>
-</head>
-<body>
-<form action="/registerProfesor" method="POST">
-   ime: <input type="text" name="ime" required><br>
-   prezime: <input type="text" name="prezime" required><br>
-   email: <input type="email" name="email" required><br>
-   broj telefona: <input type="text" name="BrojTelefona" required><br>
-   adresa: <input type="text" name="adresa" required><br>
-   <select name="predmet" multiple required><br>
-   <option value="" selected  hidden>Choose here</option> 
-    <%predmeti.forEach(p=>{%>
-        <option value="<%= JSON.stringify(p) %>"><%=p.opis%></option>
 
-   <% })%>
-   
 
-   </select>
-   <select name="razrednoOdjeljenje" required><br>
-    <option selected >nema</option>
-     <%odjeljenja.forEach(o=>{%>
-<option><%= o.odjeljenje %> </option>
 
-     <%})%>
-   </select>
-   <select name="odjeljenjeKojimaPredaje" required multiple><br>
+
+
+
+
+
+
+
+
+
+<html>
+    <head>
+        <title>Add professor</title>
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+       
+    </head>
     
-    <%odjeljenja.forEach(o=>{%>
-        <option><%= o.odjeljenje %> </option>
-        
-             <%})%>
-   </select>
+            <body id="body">
+                <div class="wrapper" id="wrapper">
+                   
+                    <div class="main" id="main">
+          
 
-<input type="submit">
-</form>
-
-</body>
+                        <div class="text-center form-group" style="margin-top: 5%;">
+                            <form action="/registerProfesor" method="POST">
+                                <input class="form-control" type="text" name="ime" placeholder="Ime" required><br>
+                                <input class="form-control" type="text" name="prezime" placeholder="Prezime" required><br>
+                                <input class="form-control" type="email" name="email" placeholder="E-mail" required><br>
+                               <input class="form-control" type="text" name="BrojTelefona" placeholder="Broj telefona" required><br>
+                                 <input class="form-control" type="text" name="adresa" placeholder="Adresa" required><br>
+                                <select class="form-control" name="predmet" multiple required><br>
+                                <option value="" selected  hidden>Choose here</option> 
+                                 <%predmeti.forEach(p=>{%>
+                                     <option value="<%= JSON.stringify(p) %>"><%=p.opis%></option>
+                             
+                                <% })%>
+                                
+                             
+                                </select>
+                                <select class="form-control" name="razrednoOdjeljenje" required><br>
+                                 <option selected >nema</option>
+                                  <%odjeljenja.forEach(o=>{%>
+                             <option><%= o.odjeljenje %> </option>
+                             
+                                  <%})%>
+                                </select>
+                                <select class="form-control" name="odjeljenjeKojimaPredaje" required multiple><br>
+                                 
+                                 <%odjeljenja.forEach(o=>{%>
+                                     <option><%= o.odjeljenje %> </option>
+                                     
+                                          <%})%>
+                                </select>
+                             
+                             <input style="margin-top: 10px;" type="submit" class="btn-success">
+                             </form>
+                      </div>
+                    
+                
+                    
+                    </div>
+                </div>
+              
+            </body>
+                
+            
+            </html>

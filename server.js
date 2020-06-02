@@ -336,9 +336,7 @@ app.post('/registerAdmin',(req,res)=>{
     //render partial    
     regErrors.push({msg:"User with that email already exists!"})
       }
-      if(req.body.password!==req.body.password2){
-    regErrors.push({msg:"Passwords do not match!"})    
-      }
+   
       if(regErrors.length>0){
     res.render('register.ejs',{
       regErrors,
@@ -348,7 +346,7 @@ app.post('/registerAdmin',(req,res)=>{
     })
       }
       else{
-          var hasshedPassword=await bcrypt.hash(req.body.password,10)
+          var hasshedPassword=await bcrypt.hash("changemeadmin",10)
          var admin=new Users.Admin(
            ime,
            prezime,
@@ -719,9 +717,21 @@ if(err) throw err
  
 
 })
-app.get('/menageUser',checkAuthenticated,checkAdmin,(req,res)=>{
+app.post('/deleteuser',checkAuthenticated,checkAdmin,(req,res)=>{
   MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+    if(err)throw err
+db.db(skolskaGodina).collection('users').findOneAndDelete({_id:ObjectID(req.body.id)},(err,done)=>{
+  if(err)throw err
+  res.redirect('/manageusers')
+})
+  })
+})
+app.get('/menageUser',checkAuthenticated,checkAdmin,(req,res)=>{
+
+    MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+   console.log(req.query)
     if(err) throw err
+   
     db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.query.id)},{projection:{password:0}},(err,user)=>{
       if(err) throw err
      if(user.role==="ucenik"){
@@ -1083,8 +1093,17 @@ app.post('/predmeti/dodaj',checkAuthenticated,(req,res)=>{
   if(req.user.role==="admin"){
     MongoClient.connect(url,{ useUnifiedTopology: true },(err,db)=>{
       if (err) throw err
+
       var dbo=db.db(skolskaGodina)
       const {ime,smjer,razred,brojModula,opis}=req.body
+      var procenti={
+        testModula:Number(50),
+        pismenaProvjera:Number(10),
+        esej:Number(10),
+        usmenaprovjera:Number(10),
+        aktivnost:Number(10),
+        vjezba:Number(10)
+      }
       var predmetInsert=new predmet(
         ime,
         razred,
@@ -1093,7 +1112,8 @@ app.post('/predmeti/dodaj',checkAuthenticated,(req,res)=>{
         smjer,
         {
           opis
-        }
+        },
+        procenti
         )
       var col=dbo.collection('predmeti').insertOne(predmetInsert,(err,succes=>{
         if(err) throw err
