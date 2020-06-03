@@ -17,7 +17,7 @@ const ObjectID = require('mongodb').ObjectID
 const fr=require('./firstrun')
 const url=process.env.url
 const skolskaGodina=process.env.skolskaGodina
-
+const nodemailer=require('nodemailer')
 
 initializePassport(passport)
 
@@ -129,9 +129,111 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 
 })
 )
+//forgot pwd  on login
+app.get('/getemail',(req,res)=>{
+  res.render('getemailforgotpwd.ejs',{
+    msg:''
+  })
+})
+app.get('/resetpassword',(req,res)=>{
+  async function sendmail(code){
+  let transporter = nodemailer.createTransport({
+    service:'gmail',
+    host:'smtp.gmail.com',
+   
+   // true for 465, false for other ports
+    auth: {
+      user:'ednevnik.ets@gmail.com' , // generated ethereal user
+      pass: 'skolaskola', // generated ethereal password
+    },
+  });
+  var mailOptions = {
+    from: 'ednevnik.ets@gmail.com',
+    to: req.query.email,
+    subject: 'Password reset',
+    text: 'Code for reseting password is:'+code
+  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      throw err
+    } else {
+     
+      res.render('validatepwdreset.ejs',{
+        msg:''
+      })
+    }
+  });
+ }
+ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+if(err) throw err
+db.db(skolskaGodina).collection('users').findOne({email:req.query.email},(err,user)=>{
+  if(err)throw err
+  if(user===null)
+  {
+    res.render('getemailforgotpwd.ejs',{
+      msg:'No user with that email'
+    })
+  }
+  else{
+    var verificationCode= Math.floor(100000 + Math.random() * 900000).toString()
+   sendmail(verificationCode)
+   db.db(skolskaGodina).collection('users').findOneAndUpdate({email:req.query.email},{$set:{resetcode:verificationCode}},(err,resp)=>{
+     if(err) throw err
+   })
+}
+})
+  })
 
 
+ 
+ 
+})
+ 
+app.post('/validatecode',(req,res)=>{
+console.log(req.body)
 
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+  if(err) throw err
+  console.log(typeof parseInt(req.body.code))
+  db.db(skolskaGodina).collection('users').findOne({resetcode:req.body.code},(err,user)=>{
+    if(err) throw err
+    console.log(user)
+    if(user===null){
+      res.render('getemailforgotpwd.ejs',{
+      msg:'No user with that code'
+    })
+    }
+    else{
+      res.render('forgotpassword.ejs',{
+        code:req.body.code
+      })
+    }
+    
+  })
+
+})
+})
+
+app.post('/passwordreset', (req,res)=>{
+  console.log(req.body);
+  
+  MongoClient.connect(url,{useUnifiedTopology:true}, (err,db)=>{
+    if(err) throw err
+    bcrypt.hash(req.body.newpassword1,10).then(pwd=>{
+      console.log(pwd)
+      db.db(skolskaGodina).collection('users').findOneAndUpdate({resetcode:req.body.code},{$set:{password:pwd}},(err,user)=>{
+      if(err) throw err
+console.log("changed")
+res.redirect('/login')
+    })
+    }).catch(err=>{
+      console.log(err)
+    })
+    
+    
+
+  })
+})
 //register
 //--------------------------------------------------------------------------------------------------------------------------
 
@@ -729,7 +831,6 @@ db.db(skolskaGodina).collection('users').findOneAndDelete({_id:ObjectID(req.body
 app.get('/menageUser',checkAuthenticated,checkAdmin,(req,res)=>{
 
     MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
-   console.log(req.query)
     if(err) throw err
    
     db.db(skolskaGodina).collection('users').findOne({_id:ObjectID(req.query.id)},{projection:{password:0}},(err,user)=>{
