@@ -190,14 +190,12 @@ db.db(skolskaGodina).collection('users').findOne({email:req.query.email},(err,us
 })
  
 app.post('/validatecode',(req,res)=>{
-console.log(req.body)
 
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
   if(err) throw err
   console.log(typeof parseInt(req.body.code))
   db.db(skolskaGodina).collection('users').findOne({resetcode:req.body.code},(err,user)=>{
     if(err) throw err
-    console.log(user)
     if(user===null){
       res.render('getemailforgotpwd.ejs',{
       msg:'No user with that code'
@@ -220,15 +218,14 @@ app.post('/passwordreset', (req,res)=>{
   MongoClient.connect(url,{useUnifiedTopology:true}, (err,db)=>{
     if(err) throw err
     bcrypt.hash(req.body.newpassword1,10).then(pwd=>{
-      console.log(pwd)
       db.db(skolskaGodina).collection('users').findOneAndUpdate({resetcode:req.body.code},{$set:{password:pwd}},(err,user)=>{
       if(err) throw err
-console.log("changed")
+
 res.redirect('/login')
     })
     }).catch(err=>{
-      console.log(err)
-    })
+if(err) throw err    
+})
     
     
 
@@ -620,6 +617,33 @@ var o=new Ocjena(
   p.ime
   )
 
+  async function sendmail(email){
+    let transporter = nodemailer.createTransport({
+      service:'gmail',
+      host:'smtp.gmail.com',
+     
+     // true for 465, false for other ports
+      auth: {
+        user:'ednevnik.ets@gmail.com' , // generated ethereal user
+        pass: 'skolaskola', // generated ethereal password
+      },
+    });
+    var mailOptions = {
+      from: 'ednevnik.ets@gmail.com',
+      to: email,
+      subject: 'no-reply new grade notification email',
+      text: 'You got new grade!!'
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        throw err
+      } else {
+       
+       
+        
+      }
+    });
+   }
  
 
 MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
@@ -637,6 +661,7 @@ MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
     },(err,res)=>{
       if(err)throw err;
     })
+sendmail(u.email)
   })
 
 })
