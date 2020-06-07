@@ -1280,8 +1280,8 @@ var password=await bcrypt.hash(newpwd,10)
                 }
               },(err,response)=>{
               if(err)throw err
-                res.redirect('/logout?_method=DELETE',307)
               
+                res.redirect(307,'/logout?_method=DELETE')
               })
               }else{
                 
@@ -1289,11 +1289,12 @@ var password=await bcrypt.hash(newpwd,10)
             
 
 
+            }else{
+              res.send("incorect password")
             }
           })
-        }
-        
-        db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+        }else{
+db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
         {$set:{
           email:email,
           brojTelefona:tel,
@@ -1303,7 +1304,13 @@ var password=await bcrypt.hash(newpwd,10)
         }},(err,response)=>{
           if(err)throw err
           res.redirect(307,'/logout?_method=DELETE')
+
         })
+
+        }
+        
+        
+
       })
 
 
@@ -1315,23 +1322,18 @@ var password=await bcrypt.hash(newpwd,10)
   }
   if(req.user.role==="profesor"){
     const {oldpwd,newpwd,newpwd2,email,tel,clas,adresa}=req.body
-    console.log("body:"+req.body)
      try{
        MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
          if(err)throw err
-         console.log("oldpwd"+oldpwd)
          if(oldpwd!=''){
             
   
          
            await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
              if(match){
-              console.log("match")
               
 
                if (newpwd===newpwd2){
-                console.log("new"+newpwd)
-                console.log("new2"+newpwd2)
 
                  
  var password=await bcrypt.hash(newpwd,10)
@@ -1355,20 +1357,25 @@ var password=await bcrypt.hash(newpwd,10)
              
  
  
+             }else{
+               res.send("incorect password")
              }
            })
+         }else{
+                db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
+                        {$set:{
+                          email:email,
+                          brojTelefona:tel,
+                          adresa:adresa,
+                          razrednoOdjeljenje:clas
+                        }},(err,response)=>{
+                          if(err)throw err
+                          res.redirect(307,'/logout?_method=DELETE')
+                        })
+
          }
          
-         db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
-         {$set:{
-           email:email,
-           brojTelefona:tel,
-           adresa:adresa,
-           razrednoOdjeljenje:clas
-         }},(err,response)=>{
-           if(err)throw err
-           res.redirect(307,'/logout?_method=DELETE')
-         })
+         
        })
  
  
@@ -1378,24 +1385,19 @@ var password=await bcrypt.hash(newpwd,10)
        
    }if(req.user.role==="admin"){
      const {oldpwd,newpwd,newpwd2,email,tel,adresa}=req.body
-     console.log(req.body)
 
      try{
        MongoClient.connect(url,{useUnifiedTopology:true},async(err,db)=>{
          if(err)throw err
-                   console.log("oldpwd"+oldpwd)
 
          if(oldpwd!=''){
 
           
            await bcrypt.compare(oldpwd,req.user.password,async(err,match)=>{
              if(match){
-              console.log("match")
 
                if (newpwd===newpwd2){
                  
-                console.log("new"+newpwd)
-                console.log("new2"+newpwd2)
  var password=await bcrypt.hash(newpwd,10)
                  db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
                {
@@ -1406,7 +1408,6 @@ var password=await bcrypt.hash(newpwd,10)
                    password:password
                  }
                },(err,response)=>{
-                console.log("inertedpwd")
 
                if(err)throw err
                  res.redirect(307,'/logout?_method=DELETE')
@@ -1418,7 +1419,9 @@ var password=await bcrypt.hash(newpwd,10)
              
  
  
-             }
+             }else{
+              res.send("incorect password")
+            }
            })
          }else{
 db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user._id)},
@@ -1427,7 +1430,6 @@ db.db(skolskaGodina).collection('users').findOneAndUpdate({_id:ObjectID(req.user
            brojTelefona:tel,
            adresa:adresa
          }},(err,response)=>{
-           console.log("inerted no pwd")
            if(err)throw err
            res.redirect(307,'/logout?_method=DELETE')
          })
