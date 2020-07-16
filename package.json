@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "devStart": "nodemon server.js",
-    "start": "nodemon server.js"
+    "start": "server.js"
   },
   "author": "KS",
   "license": "ISC",
@@ -22,11 +22,12 @@
     "opener": "^1.5.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
-  },
-  "devDependencies": {
+    "path": "^0.12.7",
     "dotenv": "^8.0.0",
     "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    
   },
   "description": "",
   "repository": {
