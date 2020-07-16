@@ -18,6 +18,7 @@ const fr=require('./firstrun')
 const url=process.env.url
 const skolskaGodina=process.env.skolskaGodina
 const nodemailer=require('nodemailer')
+const { json } = require('express')
 
 initializePassport(passport)
 
@@ -512,9 +513,32 @@ prezime:req.user.prezime
 
 
 })
-app.get('/ocjene/predmet',checkAuthenticated,checkProfesor,(req,res)=>{
-  var p=JSON.parse(req.query.predmet) 
-  var u=JSON.parse(req.query.ucenik)
+app.get('/ocjene/predmet',checkAuthenticated,checkProfesor,async(req,res)=>{
+
+  
+var ucenik= req.query.ucenik
+
+ucenik=ucenik.substr(1,24)
+
+  var p=JSON.parse(req.query.predmet)
+  var u={}
+  
+MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
+    if(err) throw err;
+    
+      db.db(skolskaGodina).collection('users').findOne(
+        {_id:ObjectID(ucenik)},{projection:{password:0}},(err,ucenikfromdb)=>{
+          if (err) throw err;
+  u=ucenikfromdb
+  
+
+        })
+      })
+
+      await new Promise(resolve => setTimeout(resolve, 100));
+  
+  
+  
   if(req.query.action=="update"){
 
     MongoClient.connect(url,{useUnifiedTopology:true},(err,db)=>{
@@ -636,7 +660,7 @@ var o=new Ocjena(
     };
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
-        throw err
+        throw error
       } else {
        
        
