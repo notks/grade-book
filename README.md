@@ -1,6 +1,7 @@
 # This is my final high school project
 
 This project was made using **NodeJS**,**MongoDB**,**ExpressJS** and **EJS**.It was built as my high school wanted online grading system for a while and i just wanted to learn NodeJS and MongoDB.
+PS. I know it's not very clean as it was my first node project but will get better i promise.
 
 
 # Heroku
